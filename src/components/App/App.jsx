@@ -31,6 +31,7 @@ function App() {
 
   useEffect(() => {
     dispatch({ type: "FETCH_USER" });
+    console.log("in app, user is:", user);
   }, [dispatch]);
 
   return (
@@ -113,7 +114,8 @@ function App() {
           </Switch>
         </Grid>
         <Grid item xs={2}>
-          <EndNav />
+          {/* Only render endnav if there is a user */}
+          {user && Object.keys(user).length > 0 && <EndNav />}
         </Grid>
       </Grid>
     </Router>

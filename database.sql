@@ -8,3 +8,9 @@ CREATE TABLE "user" (
     "username" VARCHAR (80) UNIQUE NOT NULL,
     "password" VARCHAR (1000) NOT NULL
 );
+
+CREATE TABLE "invite" (
+    "id" SERIAL PRIMARY KEY,
+    "user1_id" INT REFERENCES "user" ON DELETE CASCADE,
+    "user2_id" INT REFERENCES "user" ON DELETE CASCADE
+);

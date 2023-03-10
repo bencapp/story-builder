@@ -9,6 +9,7 @@ const passport = require("./strategies/user.strategy");
 
 // Route includes
 const userRouter = require("./routes/user.router");
+const inviteRouter = require("./routes/invite.router");
 
 // SOCKET.IO INSTALLATION
 const http = require("http");
@@ -29,6 +30,7 @@ app.use(passport.session());
 
 /* Routes */
 app.use("/api/user", userRouter);
+app.use("/api/invite", inviteRouter);
 
 // SOCKET.IO SETUP
 io.on("connection", (socket) => {

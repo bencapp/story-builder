@@ -7,25 +7,42 @@ function EndNav() {
   const allUsers = useSelector((store) => store.allUsers);
   const currentUser = useSelector((store) => store.user);
 
+  const invites = useSelector((store) => store.invites);
+
   useEffect(() => {
     dispatch({ type: "FETCH_ALL_USERS" });
-  }, []);
+    dispatch({ type: "FETCH_INVITES" });
+  }, [currentUser]);
 
   return (
     <div className="nav">
-      <div className="nav-contents">
-        <h3>Users</h3>
-        <section>
-          {allUsers &&
-            allUsers
-              .filter((user) => user.id != currentUser.id)
-              .map((user) => (
+      <div>
+        <div className="nav-contents">
+          <h3>Users</h3>
+          <section>
+            {allUsers &&
+              allUsers
+                .filter((user) => user.id != currentUser.id)
+                .map((user) => (
+                  <div key={user.id}>
+                    <p>{user.username}</p>
+                    <button>Invite to Game</button>
+                  </div>
+                ))}
+          </section>
+        </div>
+        <div id="invites-list">
+          <h3>Invitations</h3>
+          <section>
+            {invites &&
+              invites.map((user) => (
                 <div key={user.id}>
                   <p>{user.username}</p>
-                  <button>Invite to Game</button>
+                  <button>Accept</button>
                 </div>
               ))}
-        </section>
+          </section>
+        </div>
       </div>
     </div>
   );

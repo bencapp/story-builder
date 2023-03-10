@@ -1,14 +1,19 @@
 import "./EndNav.css";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { useEffect } from "react";
 
 function EndNav() {
+  const dispatch = useDispatch();
   const allUsers = useSelector((store) => store.allUsers);
+
+  useEffect(() => {
+    dispatch({ type: "FETCH_ALL_USERS" });
+  }, []);
+
   return (
     <div className="nav">
       <h3>Users</h3>
-      <p>users array goes here</p>
-
-      {/* need a get request */}
+      <ul>{allUsers && allUsers.map((user) => <li>{user.username}</li>)}</ul>
     </div>
   );
 }

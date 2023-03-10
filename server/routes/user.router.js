@@ -17,12 +17,12 @@ router.get("/", rejectUnauthenticated, (req, res) => {
 // Handles GET request for ALL user names.
 // TODO: update this so that it can be used in a search
 router.get("/allUsers", rejectUnauthenticated, (req, res) => {
-  const queryText = `SELECT username, id FROM user`;
+  const queryText = `SELECT "username", "id" FROM "user"`;
   pool
     .query(queryText)
     .then((response) => res.send(response.rows))
     .catch((error) => {
-      console.log("Failed to execute SQL query", queryText, " : ", err);
+      console.log("Failed to execute SQL query", queryText, " : ", error);
       res.sendStatus(500);
     });
 });

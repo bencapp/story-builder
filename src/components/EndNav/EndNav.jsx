@@ -19,8 +19,9 @@ function EndNav() {
 
   const handleAccept = () => {};
 
-  const handleInvite = (user) => {
-    dispatch({ type: "SET_PENDING_INVITE", payload: user });
+  const handleInvite = (invitedUser) => {
+    dispatch({ type: "SET_PENDING_INVITE", payload: invitedUser });
+    dispatch({ type: "POST_INVITE", payload: invitedUser });
     if (location.pathname !== "/new-story") {
       history.push("/new-story");
     }
@@ -34,11 +35,11 @@ function EndNav() {
           <section>
             {allUsers &&
               allUsers
-                .filter((user) => user.id != currentUser.id)
-                .map((user) => (
-                  <div key={user.id}>
-                    <p>{user.username}</p>
-                    <button onClick={() => handleInvite(user)}>
+                .filter((invitedUser) => invitedUser.id != currentUser.id)
+                .map((invitedUser) => (
+                  <div key={invitedUser.id}>
+                    <p>{invitedUser.username}</p>
+                    <button onClick={() => handleInvite(invitedUser)}>
                       Invite to Game
                     </button>
                   </div>

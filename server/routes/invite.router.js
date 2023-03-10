@@ -27,6 +27,17 @@ router.get("/", rejectUnauthenticated, (req, res) => {
  * POST route template
  */
 router.post("/", (req, res) => {
+  const queryText = `INSERT INTO "invite" ("sender_user_id", "recipient_user_id")
+                    VALUES ($1, $2)`;
+  console.log("receiving post invites, req.body is", req.body);
+  const queryParams = [req.user.id, req.body.id];
+  pool
+    .query(queryText, queryParams)
+    .then(() => res.sendStatus(204))
+    .catch((error) => {
+      console.log("Failed to execute SQL query:", queryText, " : ", error);
+      res.sendStatus(500);
+    });
   // POST route code here
 });
 

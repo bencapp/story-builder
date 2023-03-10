@@ -35,9 +35,9 @@ function EndNav() {
           <h3>Invitations</h3>
           <section>
             {invites &&
-              invites.map((user) => (
-                <div key={user.id}>
-                  <p>{user.username}</p>
+              invites.map((sentUser, i) => (
+                <div key={i}>
+                  <p>{sentUser.username}</p>
                   <button>Accept</button>
                 </div>
               ))}

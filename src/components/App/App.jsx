@@ -115,7 +115,7 @@ function App() {
         </Grid>
         <Grid item xs={2}>
           {/* Only render endnav if there is a user */}
-          {user && Object.keys(user).length > 0 && <EndNav />}
+          {Object.keys(user).length > 0 && <EndNav />}
         </Grid>
       </Grid>
     </Router>

@@ -12,8 +12,10 @@ function EndNav() {
 
   return (
     <div className="nav">
-      <h3>Users</h3>
-      <ul>{allUsers && allUsers.map((user) => <li>{user.username}</li>)}</ul>
+      <div className="nav-contents">
+        <h3>Users</h3>
+        <ul>{allUsers && allUsers.map((user) => <li>{user.username}</li>)}</ul>
+      </div>
     </div>
   );
 }

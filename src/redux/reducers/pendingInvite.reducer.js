@@ -1,0 +1,14 @@
+// PENDING INVITE: STATE IS THE USER OBJECT
+
+const pendingInvite = (state = {}, action) => {
+  switch (action.type) {
+    case "SET_PENDING_INVITE":
+      return action.payload;
+    default:
+      return state;
+  }
+};
+
+// user will be on the redux state at:
+// state.user
+export default pendingInvite;

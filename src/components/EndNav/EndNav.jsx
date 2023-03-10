@@ -1,9 +1,12 @@
 import "./EndNav.css";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
+import { useHistory, useLocation } from "react-router-dom";
 
 function EndNav() {
   const dispatch = useDispatch();
+  const history = useHistory();
+  const location = useLocation();
   const allUsers = useSelector((store) => store.allUsers);
   const currentUser = useSelector((store) => store.user);
 
@@ -13,6 +16,15 @@ function EndNav() {
     dispatch({ type: "FETCH_ALL_USERS" });
     dispatch({ type: "FETCH_INVITES" });
   }, [currentUser]);
+
+  const handleAccept = () => {};
+
+  const handleInvite = (user) => {
+    dispatch({ type: "SET_PENDING_INVITE", payload: user });
+    if (location.pathname !== "/new-story") {
+      history.push("/new-story");
+    }
+  };
 
   return (
     <div className="nav">
@@ -26,7 +38,9 @@ function EndNav() {
                 .map((user) => (
                   <div key={user.id}>
                     <p>{user.username}</p>
-                    <button>Invite to Game</button>
+                    <button onClick={() => handleInvite(user)}>
+                      Invite to Game
+                    </button>
                   </div>
                 ))}
           </section>
@@ -38,7 +52,7 @@ function EndNav() {
               invites.map((sentUser, i) => (
                 <div key={i}>
                   <p>{sentUser.username}</p>
-                  <button>Accept</button>
+                  <button onClick={handleAccept}>Accept</button>
                 </div>
               ))}
           </section>

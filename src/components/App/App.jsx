@@ -16,9 +16,9 @@ import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 
 import AboutPage from "../AboutPage/AboutPage";
 import UserPage from "../UserPage/UserPage";
-import InfoPage from "../InfoPage/InfoPage";
 import LandingPage from "../LandingPage/LandingPage";
 import LoginPage from "../LoginPage/LoginPage";
+import NewStory from "../NewStory/NewStory";
 import RegisterPage from "../RegisterPage/RegisterPage";
 import EndNav from "../EndNav/EndNav";
 
@@ -31,7 +31,6 @@ function App() {
 
   useEffect(() => {
     dispatch({ type: "FETCH_USER" });
-    console.log("in app, user is:", user);
   }, [dispatch]);
 
   return (
@@ -69,9 +68,9 @@ function App() {
             <ProtectedRoute
               // logged in shows InfoPage else shows LoginPage
               exact
-              path="/info"
+              path="/new-story"
             >
-              <InfoPage />
+              <NewStory />
             </ProtectedRoute>
 
             <Route exact path="/login">

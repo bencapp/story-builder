@@ -19,9 +19,9 @@ function* postInvite(action) {
   }
 }
 
-function* invitesSaga() {
+function* inviteSaga() {
   yield takeEvery("FETCH_INVITES", fetchInvites);
   yield takeEvery("POST_INVITE", postInvite);
 }
 
-export default invitesSaga;
+export default inviteSaga;

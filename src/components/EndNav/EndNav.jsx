@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 
-function EndNav({socket}) {
+function EndNav({ socket }) {
   const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
@@ -15,6 +15,15 @@ function EndNav({socket}) {
   useEffect(() => {
     dispatch({ type: "FETCH_ALL_USERS" });
     dispatch({ type: "FETCH_INVITES" });
+
+    // socket listener to update invites on invitation
+    socket.on("private invite", (invite) => {
+      console.log("receiving private invite, 'invite' is:", invite);
+      if (invite.invitedUser.id === currentUser.id) {
+        console.log("received invite to current user");
+        dispatch({ type: "FETCH_INVITES" });
+      }
+    });
   }, [currentUser]);
 
   const handleAccept = () => {};
@@ -26,7 +35,7 @@ function EndNav({socket}) {
     dispatch({ type: "POST_INVITE", payload: invitedUser });
 
     // also immediately push invite via socket
-    socket.emit("private invite", currentUser);
+    socket.emit("private invite", currentUser, invitedUser);
 
     if (location.pathname !== "/new-story") {
       history.push("/new-story");

@@ -29,7 +29,6 @@ router.get("/", rejectUnauthenticated, (req, res) => {
 router.post("/", (req, res) => {
   const queryText = `INSERT INTO "invite" ("sender_user_id", "recipient_user_id")
                     VALUES ($1, $2)`;
-  console.log("receiving post invites, req.body is", req.body);
   const queryParams = [req.user.id, req.body.id];
   pool
     .query(queryText, queryParams)

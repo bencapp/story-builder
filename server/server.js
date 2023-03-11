@@ -35,11 +35,23 @@ app.use("/api/invite", inviteRouter);
 // SOCKET.IO SETUP
 io.on("connection", (socket) => {
   console.log("a user connected");
+  // user should join the room that is associated with their user.id
+
   socket.on("disconnect", () => {
     console.log("user disconnected");
   });
   socket.on("chat message", (msg) => {
+    console.log("receiving chat message:", msg);
     io.emit("chat message", msg);
+  });
+  socket.on("private invite", (invitingUser) => {
+    console.log(
+      "receiving private invite from",
+      invitingUser,
+      "to"
+      // invitedUser
+    );
+    io.emit("private invite", invitingUser);
   });
 });
 

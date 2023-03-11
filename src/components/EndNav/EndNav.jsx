@@ -3,7 +3,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 
+import { io } from "socket.io-client";
+
 function EndNav() {
+  const socket = io();
   const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
@@ -20,8 +23,14 @@ function EndNav() {
   const handleAccept = () => {};
 
   const handleInvite = (invitedUser) => {
+    console.log("in handle invite");
+    // dispatch invite to database so that it can be stored for later
     dispatch({ type: "SET_PENDING_INVITE", payload: invitedUser });
     dispatch({ type: "POST_INVITE", payload: invitedUser });
+
+    // also immediately push invite via socket
+    socket.emit("private invite", currentUser);
+
     if (location.pathname !== "/new-story") {
       history.push("/new-story");
     }

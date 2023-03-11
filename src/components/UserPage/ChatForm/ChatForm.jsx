@@ -3,7 +3,9 @@ import React, { useState } from "react";
 function ChatForm({ socket }) {
   const [message, setMessage] = useState("");
   const [messageList, setMessageList] = useState([]);
-  const handleSubmit = () => {
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
     console.log("sending message:", message);
     socket.emit("chat message", message);
   };

@@ -3,10 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 
-import { io } from "socket.io-client";
-
-function EndNav() {
-  const socket = io();
+function EndNav({socket}) {
   const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();

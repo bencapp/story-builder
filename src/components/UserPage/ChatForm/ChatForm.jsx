@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 function ChatForm({ socket }) {
   const [message, setMessage] = useState("");
@@ -10,9 +10,11 @@ function ChatForm({ socket }) {
     socket.emit("chat message", message);
   };
 
-  socket.on("chat message", (msg) => {
-    setMessageList([...messageList, msg]);
-  });
+  useEffect(() => {
+    socket.on("chat message", (msg) => {
+      setMessageList([...messageList, msg]);
+    });
+  }, []);
 
   return (
     <>

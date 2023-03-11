@@ -13,9 +13,18 @@ const inviteRouter = require("./routes/invite.router");
 
 // SOCKET.IO INSTALLATION
 const http = require("http");
+const cors = require("cors");
+
+app.use(cors());
+
 const server = http.createServer(app);
+
 const { Server } = require("socket.io");
-const io = new Server(server);
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:3000",
+  },
+});
 
 // Body parser middleware
 app.use(bodyParser.json());

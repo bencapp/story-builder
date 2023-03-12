@@ -28,7 +28,7 @@ function NewStory({ socket }) {
     });
 
     // update story when text is added
-    socket.once("add text", (text) => {
+    socket.on("add text", (text) => {
       console.log("received text, text is", text);
       setStory((story) => [...story, text]);
     });

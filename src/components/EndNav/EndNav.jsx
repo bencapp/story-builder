@@ -24,10 +24,26 @@ function EndNav({ socket }) {
         dispatch({ type: "FETCH_INVITES" });
       }
     });
+
+    // socket listener to for when one's invitation was accepted
+    // TODO: allow user to navigate to new story instead of
+    // being immediately redirected there
+    socket.on("accept invite", (sentUser, acceptedUser) => {
+      // if user is the one who sent the invite, join the room
+      // and redirect to the new story page
+      if (currentUser.id == sentUser.id) {
+        console.log("invite accepted, joining room and rerouting");
+        socket.emit("join room", currentUser);
+        if (location.pathname !== "/new-story") {
+          history.push("/new-story");
+        }
+      }
+    });
   }, [currentUser]);
 
   const handleAccept = (invitingUser) => {
     socket.emit("accept invite", invitingUser, currentUser);
+    // socket.emit("join room", currentUser);
     history.push("/new-story");
   };
 

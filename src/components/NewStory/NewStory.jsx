@@ -39,7 +39,7 @@ function NewStory({ socket }) {
     event.preventDefault();
     console.log("sending new text:", newText);
     // add text to specified room
-    socket.emit("add text", newText, room);
+    socket.emit("add text", newText, "test-room");
   };
 
   return (

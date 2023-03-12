@@ -30,21 +30,31 @@ function EndNav({ socket }) {
     // being immediately redirected there
     socket.on("accept invite", (sentUser, acceptedUser) => {
       // if user is the one who sent the invite, join the room
-      // and redirect to the new story page
       if (currentUser.id == sentUser.id) {
         console.log("invite accepted, joining room and rerouting");
         socket.emit("join room", currentUser);
-        if (location.pathname !== "/new-story") {
-          history.push("/new-story");
-        }
+
+        // and redirect to the new story page
+        // if (location.pathname !== "/new-story") {
+        //   history.push("/new-story");
+        // }
       }
     });
   }, [currentUser]);
 
-  const handleAccept = (invitingUser) => {
-    socket.emit("accept invite", invitingUser, currentUser);
-    // socket.emit("join room", currentUser);
+  const handleAccept = (invite) => {
+    // send socket message saying invite accepted
+    socket.emit(
+      "accept invite",
+      { username: invite.username, id: invite.user_id },
+      currentUser
+    );
     history.push("/new-story");
+    // remove invite from the database
+    dispatch({
+      type: "DELETE_INVITE",
+      payload: invite.invite_id,
+    });
   };
 
   const handleInvite = (invitedUser) => {
@@ -84,10 +94,10 @@ function EndNav({ socket }) {
           <h3>Invitations</h3>
           <section>
             {invites &&
-              invites.map((sentUser) => (
-                <div key={sentUser.id}>
-                  <p>{sentUser.username}</p>
-                  <button onClick={() => handleAccept(sentUser)}>Accept</button>
+              invites.map((invite) => (
+                <div key={invite.invite_id}>
+                  <p>{invite.username}</p>
+                  <button onClick={() => handleAccept(invite)}>Accept</button>
                 </div>
               ))}
           </section>

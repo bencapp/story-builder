@@ -5,6 +5,7 @@ import { put, takeEvery } from "redux-saga/effects";
 function* fetchInvites() {
   try {
     const response = yield axios.get("/api/invite");
+    console.log("got invites, response is", response);
     yield put({ type: "SET_INVITES", payload: response.data });
   } catch (error) {
     console.log("Invite GET request failed", error);
@@ -19,9 +20,21 @@ function* postInvite(action) {
   }
 }
 
+function* deleteInvite(action) {
+  try {
+    // action.payload should be the id of the user who accepted the invitation
+    console.log("in delete saga, action is", action);
+    yield axios.delete(`/api/invite/${action.payload}`);
+    yield put({ type: "FETCH_INVITES" });
+  } catch (error) {
+    console.log("Invite DELETE request failed", error);
+  }
+}
+
 function* inviteSaga() {
   yield takeEvery("FETCH_INVITES", fetchInvites);
   yield takeEvery("POST_INVITE", postInvite);
+  yield takeEvery("DELETE_INVITE", deleteInvite);
 }
 
 export default inviteSaga;

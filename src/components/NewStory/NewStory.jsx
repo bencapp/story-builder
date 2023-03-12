@@ -11,7 +11,7 @@ function NewStory({ socket }) {
   const [partnerUser, setPartnerUser] = useState();
 
   // socket room string
-  const [room, setRoom] = useState();
+  //   const [room, setRoom] = useState();
 
   // current value in form
   const [newText, setNewText] = useState("");
@@ -20,11 +20,11 @@ function NewStory({ socket }) {
   const [story, setStory] = useState([]);
 
   useEffect(() => {
-    socket.on("accept invite", (user1, user2, room) => {
+    socket.on("accept invite", (user1, user2) => {
       // determine who is the partner and who is the current user
       setPartnerUser(user1.id == currentUser.id ? user2 : user1);
       // set the local state room variable
-      setRoom(room);
+      //   setRoom(room);
     });
 
     // update story when text is added

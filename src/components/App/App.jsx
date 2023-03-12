@@ -14,10 +14,6 @@ import Grid from "@mui/material/Grid";
 // import socket
 import { socket } from "../../socket";
 
-import { ConnectionManager } from "../SocketTests/ConnectionManager/ConnectionManager";
-import { Events } from "../SocketTests/Events/Events";
-import { ConnectionState } from "../SocketTests/ConnectionState/ConnectionState";
-
 import Nav from "../Nav/Nav";
 
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
@@ -67,9 +63,6 @@ function App() {
 
   return (
     <Router>
-      <ConnectionState isConnected={isConnected} />
-      <Events events={fooEvents} />
-      <ConnectionManager />
       <Grid container direction="row" id="app-container">
         <Grid item xs={2}>
           <Nav />

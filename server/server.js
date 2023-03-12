@@ -68,8 +68,10 @@ io.on("connection", (socket) => {
   // when an invite is accepted, create a new room
   socket.on("accept invite", (user1, user2) => {
     console.log("sending two users to a room:", user1, user2);
+    //join the socket room, use the first user's id to define the room
+    socket.join(user1.id);
     // TODO: CREATE LOGIC TO GENERATE A NEW ROOM NAME WHENEVER THIS NEXT LINE TRIGGERS
-    io.emit("accept invite", (user1, user2));
+    io.emit("accept invite", user1, user2, user1.id);
   });
 
   socket.on("add text", (text, room) => {

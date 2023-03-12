@@ -11,6 +11,7 @@ function Nav() {
   return (
     <div className="nav">
       <div className="nav-contents">
+        <h3>{user.username}</h3>
         <Link to="/home">
           <h2 className="nav-title">StoryBuilder</h2>
         </Link>

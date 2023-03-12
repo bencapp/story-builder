@@ -27,7 +27,7 @@ function EndNav({ socket }) {
   }, [currentUser]);
 
   const handleAccept = (invitingUser) => {
-    socket.emit("accept invite", (invitingUser, currentUser));
+    socket.emit("accept invite", invitingUser, currentUser);
     history.push("/new-story");
   };
 

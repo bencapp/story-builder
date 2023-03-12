@@ -9,7 +9,7 @@ const userStrategy = require("../strategies/user.strategy");
 const router = express.Router();
 
 router.get("/", rejectUnauthenticated, (req, res) => {
-  const queryText = `SELECT "user".username FROM invite 
+  const queryText = `SELECT "user".username, "user".id FROM invite 
                     JOIN "user" ON sender_user_id = "user".id 
                     WHERE recipient_user_id = $1;;`;
   // query params is the user id who is receiving the invitation (current user)

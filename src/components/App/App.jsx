@@ -105,7 +105,7 @@ function App() {
               exact
               path="/new-story"
             >
-              <NewStory />
+              <NewStory socket={socket} />
             </ProtectedRoute>
 
             <Route exact path="/login">

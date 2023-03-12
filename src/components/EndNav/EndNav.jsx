@@ -26,7 +26,10 @@ function EndNav({ socket }) {
     });
   }, [currentUser]);
 
-  const handleAccept = () => {};
+  const handleAccept = (invitingUser) => {
+    socket.emit("accept invite", (invitingUser, currentUser));
+    history.push("/new-story");
+  };
 
   const handleInvite = (invitedUser) => {
     console.log("in handle invite");
@@ -65,10 +68,10 @@ function EndNav({ socket }) {
           <h3>Invitations</h3>
           <section>
             {invites &&
-              invites.map((sentUser, i) => (
-                <div key={i}>
+              invites.map((sentUser) => (
+                <div key={sentUser.id}>
                   <p>{sentUser.username}</p>
-                  <button onClick={handleAccept}>Accept</button>
+                  <button onClick={() => handleAccept(sentUser)}>Accept</button>
                 </div>
               ))}
           </section>

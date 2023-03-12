@@ -49,10 +49,12 @@ io.on("connection", (socket) => {
   socket.on("disconnect", () => {
     console.log("user disconnected");
   });
+
   socket.on("chat message", (msg) => {
     console.log("receiving chat message:", msg);
     io.emit("chat message", msg);
   });
+
   socket.on("private invite", (invitingUser, invitedUser) => {
     console.log(
       "receiving private invite from",
@@ -61,6 +63,17 @@ io.on("connection", (socket) => {
       invitedUser
     );
     io.emit("private invite", { invitingUser, invitedUser });
+  });
+
+  // when an invite is accepted, create a new room
+  socket.on("accept invite", (user1, user2) => {
+    console.log("sending two users to a room:", user1, user2);
+    // TODO: CREATE LOGIC TO GENERATE A NEW ROOM NAME WHENEVER THIS NEXT LINE TRIGGERS
+    io.emit("accept invite", (user1, user2));
+  });
+
+  socket.on("add text", (text, room) => {
+    io.to(room).emit("add text", text);
   });
 });
 

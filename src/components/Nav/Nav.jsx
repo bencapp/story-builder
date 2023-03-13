@@ -3,16 +3,17 @@ import { useHistory } from "react-router-dom";
 import LogOutButton from "../LogOutButton/LogOutButton";
 import { useSelector } from "react-redux";
 
-import { Button } from "@mui/material";
+import { Button, Box } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 
 import "./Nav.css";
 
 function Nav() {
   const user = useSelector((store) => store.user);
   const history = useHistory();
-
+  const theme = useTheme();
   return (
-    <div className="nav">
+    <Box sx={{ backgroundColor: theme.palette.primary.main }} className="nav">
       <div className="nav-contents">
         <p>StoryBuilder</p>
         {user && <h3>{user.username}</h3>}
@@ -23,6 +24,7 @@ function Nav() {
             <>
               {/* If there's no user, show login/registration links */}
               <Button
+                color="tertiary"
                 onClick={() => {
                   history.push("/login");
                 }}
@@ -31,6 +33,7 @@ function Nav() {
               </Button>
               {/* also show a nav button to the main feed page */}
               <Button
+                color="tertiary"
                 onClick={() => {
                   history.push("/home");
                 }}
@@ -44,6 +47,7 @@ function Nav() {
           {user.id && (
             <>
               <Button
+                color="tertiary"
                 onClick={() => {
                   history.push("/user");
                 }}
@@ -51,6 +55,7 @@ function Nav() {
                 My Feed
               </Button>
               <Button
+                color="tertiary"
                 onClick={() => {
                   history.push("/user-stories");
                 }}
@@ -63,6 +68,7 @@ function Nav() {
           )}
 
           <Button
+            color="tertiary"
             onClick={() => {
               history.push("/about");
             }}
@@ -71,7 +77,7 @@ function Nav() {
           </Button>
         </>
       </div>
-    </div>
+    </Box>
   );
 }
 

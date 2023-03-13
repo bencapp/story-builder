@@ -7,12 +7,13 @@ import {
 } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
-import { useState } from "react";
 
 import Grid from "@mui/material/Grid";
 
 // import socket
 import { socket } from "../../socket";
+
+import { useTheme } from "@mui/material";
 
 import Nav from "../Nav/Nav";
 
@@ -32,6 +33,7 @@ function App() {
   const dispatch = useDispatch();
 
   const user = useSelector((store) => store.user);
+  const theme = useTheme();
 
   useEffect(() => {
     dispatch({ type: "FETCH_USER" });
@@ -39,7 +41,12 @@ function App() {
 
   return (
     <Router>
-      <Grid container direction="row" id="app-container">
+      <Grid
+        sx={{ backgroundColor: theme.palette.tertiary.main }}
+        container
+        direction="row"
+        id="app-container"
+      >
         <Grid item xs={2}>
           <Nav />
         </Grid>

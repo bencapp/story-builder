@@ -12,18 +12,20 @@ function LoginPage() {
   return (
     <Paper
       sx={{
-        backgroundColor: theme.palette.secondary.main,
-        height: "400px",
+        backgroundColor: theme.palette.primary.main,
+        height: "auto",
         width: "350px",
         margin: "auto",
         marginTop: "100px",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
+        paddingBottom: "20px",
       }}
     >
       <h2>Login</h2>
       <LoginForm />
+
       <br></br>
       <p>First time?</p>
       <Button

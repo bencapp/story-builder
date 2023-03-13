@@ -3,7 +3,7 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 import RegisterForm from "../RegisterForm/RegisterForm";
 
-import { Paper, Button } from "@mui/material";
+import { Paper, Button, Box } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 
 function RegisterPage() {
@@ -14,14 +14,15 @@ function RegisterPage() {
   return (
     <Paper
       sx={{
-        backgroundColor: theme.palette.secondary.main,
-        height: "400px",
+        backgroundColor: theme.palette.primary.main,
+        height: "auto",
         width: "350px",
         margin: "auto",
         marginTop: "100px",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
+        paddingBottom: "20px",
       }}
     >
       <h2>Register User</h2>

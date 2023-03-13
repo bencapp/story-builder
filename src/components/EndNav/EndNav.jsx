@@ -3,10 +3,14 @@ import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 
+import { Box, Button } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
+
 function EndNav({ socket }) {
   const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
+  const theme = useTheme();
   const allUsers = useSelector((store) => store.allUsers);
   const currentUser = useSelector((store) => store.user);
 
@@ -72,7 +76,7 @@ function EndNav({ socket }) {
   };
 
   return (
-    <div className="nav">
+    <Box sx={{ backgroundColor: theme.palette.primary.main }} className="nav">
       <div>
         <div className="nav-contents">
           <h3>Users</h3>
@@ -83,9 +87,12 @@ function EndNav({ socket }) {
                 .map((invitedUser) => (
                   <div key={invitedUser.id}>
                     <p>{invitedUser.username}</p>
-                    <button onClick={() => handleInvite(invitedUser)}>
+                    <Button
+                      color="tertiary"
+                      onClick={() => handleInvite(invitedUser)}
+                    >
                       Invite to Game
-                    </button>
+                    </Button>
                   </div>
                 ))}
           </section>
@@ -97,13 +104,15 @@ function EndNav({ socket }) {
               invites.map((invite) => (
                 <div key={invite.invite_id}>
                   <p>{invite.username}</p>
-                  <button onClick={() => handleAccept(invite)}>Accept</button>
+                  <Button color="tertiary" onClick={() => handleAccept(invite)}>
+                    Accept
+                  </Button>
                 </div>
               ))}
           </section>
         </div>
       </div>
-    </div>
+    </Box>
   );
 }
 

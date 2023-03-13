@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { Button, TextField } from "@mui/material";
+import { Button, TextField, Box } from "@mui/material";
 
 import "../LoginForm/LoginForm.css";
 
@@ -24,33 +24,41 @@ function RegisterForm() {
   }; // end registerUser
 
   return (
-    <form className="login-register-form" onSubmit={registerUser}>
+    <>
+      <form className="login-register-form" onSubmit={registerUser}>
+        <TextField
+          sx={{ marginBottom: "10px" }}
+          color="outline"
+          type="text"
+          label="Username"
+          value={username}
+          required
+          onChange={(event) => setUsername(event.target.value)}
+        />
+
+        <TextField
+          sx={{ marginBottom: "10px" }}
+          color="outline"
+          type="password"
+          label="Password"
+          value={password}
+          required
+          onChange={(event) => setPassword(event.target.value)}
+        />
+
+        <Button type="submit">SUBMIT</Button>
+      </form>
       {errors.registrationMessage && (
-        <h3 className="alert" role="alert">
+        <Box
+          sx={{ width: "80%", textAlign: "center" }}
+          className="alert"
+          role="alert"
+        >
+          <br></br>
           {errors.registrationMessage}
-        </h3>
+        </Box>
       )}
-
-      <TextField
-        color="outline"
-        type="text"
-        label="Username"
-        value={username}
-        required
-        onChange={(event) => setUsername(event.target.value)}
-      />
-
-      <TextField
-        color="outline"
-        type="password"
-        label="Password"
-        value={password}
-        required
-        onChange={(event) => setPassword(event.target.value)}
-      />
-
-      <Button type="submit">SUBMIT</Button>
-    </form>
+    </>
   );
 }
 

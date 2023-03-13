@@ -1,27 +1,44 @@
-import React from 'react';
+import React from "react";
 
-import { useHistory } from 'react-router-dom';
-import RegisterForm from '../RegisterForm/RegisterForm';
+import { useHistory } from "react-router-dom";
+import RegisterForm from "../RegisterForm/RegisterForm";
+
+import { Paper, Button } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 
 function RegisterPage() {
   const history = useHistory();
 
-  return (
-    <div>
-      <RegisterForm />
+  const theme = useTheme();
 
-      <center>
-        <button
-          type="button"
-          className="btn btn_asLink"
-          onClick={() => {
-            history.push('/login');
-          }}
-        >
-          Login
-        </button>
-      </center>
-    </div>
+  return (
+    <Paper
+      sx={{
+        backgroundColor: theme.palette.secondary.main,
+        height: "400px",
+        width: "350px",
+        margin: "auto",
+        marginTop: "100px",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
+      <h2>Register User</h2>
+
+      <RegisterForm />
+      <br></br>
+
+      <p>Already a user?</p>
+      <Button
+        className="btn btn_asLink"
+        onClick={() => {
+          history.push("/login");
+        }}
+      >
+        Login
+      </Button>
+    </Paper>
   );
 }
 

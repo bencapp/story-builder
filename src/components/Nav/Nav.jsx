@@ -1,43 +1,74 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import LogOutButton from "../LogOutButton/LogOutButton";
 import { useSelector } from "react-redux";
+
+import { Button } from "@mui/material";
 
 import "./Nav.css";
 
 function Nav() {
   const user = useSelector((store) => store.user);
+  const history = useHistory();
 
   return (
     <div className="nav">
       <div className="nav-contents">
-        <h3>{user.username}</h3>
-        <Link to="/home">
-          <h2 className="nav-title">StoryBuilder</h2>
-        </Link>
+        <p>StoryBuilder</p>
+        {user && <h3>{user.username}</h3>}
+
         <>
           {/* If no user is logged in, show these links */}
           {!user.id && (
-            // If there's no user, show login/registration links
-            <Link className="navLink" to="/login">
-              Login / Register
-            </Link>
+            <>
+              {/* If there's no user, show login/registration links */}
+              <Button
+                onClick={() => {
+                  history.push("/login");
+                }}
+              >
+                Login / Register
+              </Button>
+              {/* also show a nav button to the main feed page */}
+              <Button
+                onClick={() => {
+                  history.push("/home");
+                }}
+              >
+                View Stories
+              </Button>
+            </>
           )}
 
           {/* If a user is logged in, show these links */}
           {user.id && (
             <>
-              <Link className="navLink" to="/user">
-                Home
-              </Link>
+              <Button
+                onClick={() => {
+                  history.push("/user");
+                }}
+              >
+                My Feed
+              </Button>
+              <Button
+                onClick={() => {
+                  history.push("/user-stories");
+                }}
+              >
+                My Stories
+              </Button>
 
-              <LogOutButton className="navLink" />
+              <LogOutButton />
             </>
           )}
 
-          <Link className="navLink" to="/about">
-            About
-          </Link>
+          <Button
+            onClick={() => {
+              history.push("/about");
+            }}
+          >
+            ABOUT
+          </Button>
         </>
       </div>
     </div>

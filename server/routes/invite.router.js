@@ -2,9 +2,7 @@ const express = require("express");
 const {
   rejectUnauthenticated,
 } = require("../modules/authentication-middleware");
-const encryptLib = require("../modules/encryption");
 const pool = require("../modules/pool");
-const userStrategy = require("../strategies/user.strategy");
 
 const router = express.Router();
 
@@ -16,23 +14,51 @@ router.get("/", rejectUnauthenticated, (req, res) => {
   const queryParams = [req.user.id];
   pool
     .query(queryText, queryParams)
-    .then((response) => res.send(response.rows))
+    .then((response) => {
+      console.log("got invites, response.rows is", response.rows);
+      // wait until invitation has been posted to the DB before sending
+      // the socket emit. Otherwise, the GET request from the other client
+      // will occur BEFORE the database has been successfully updated
+      console.log("got invites, req.io is", req.io);
+      // req.io
+      //   .on("connection", (socket) => {
+      //     socket.on("private invite", (invitingUser, invitedUser) => {
+      //       console.log(
+      //         "receiving private invite from",
+      //         invitingUser,
+      //         "to",
+      //         invitedUser
+      //       );
+      //       req.io.emit("private invite", { invitingUser, invitedUser });
+      //     });
+      res.send(response.rows);
+    })
     .catch((error) => {
       console.log("Failed to execute SQL query:", queryText, " : ", error);
       res.sendStatus(500);
     });
 });
+// });
 
 /**
- * POST route template
+ * POST route
  */
 router.post("/", rejectUnauthenticated, (req, res) => {
+  const invitingUserID = req.user.id;
+  const invitedUserID = req.body.id;
   const queryText = `INSERT INTO "invite" ("sender_user_id", "recipient_user_id")
                     VALUES ($1, $2)`;
-  const queryParams = [req.user.id, req.body.id];
+  const queryParams = [invitingUserID, invitedUserID];
   pool
     .query(queryText, queryParams)
-    .then(() => res.sendStatus(204))
+    .then(() => {
+      // also emit an invitation via SOCKET so that listening clients will
+      // perform a GET request and retrieve the new data
+      console.log("in POST, req.io is", req.io);
+      req.io.emit("private invite", { invitingUserID, invitedUserID });
+
+      res.sendStatus(204);
+    })
     .catch((error) => {
       console.log("Failed to execute SQL query:", queryText, " : ", error);
       res.sendStatus(500);
@@ -41,7 +67,7 @@ router.post("/", rejectUnauthenticated, (req, res) => {
 });
 
 /**
- * DELETE route template
+ * DELETE route
  */
 router.delete("/:id", rejectUnauthenticated, (req, res) => {
   console.log(
@@ -59,7 +85,6 @@ router.delete("/:id", rejectUnauthenticated, (req, res) => {
       console.log("Failed to execute SQL query:", queryText, " : ", error);
       res.sendStatus(500);
     });
-  // POST route code here
 });
 
 module.exports = router;

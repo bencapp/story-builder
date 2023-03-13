@@ -19,7 +19,7 @@ function EndNav({ socket }) {
     // socket listener to update invites on invitation
     socket.on("private invite", (invite) => {
       console.log("receiving private invite, 'invite' is:", invite);
-      if (invite.invitedUser.id === currentUser.id) {
+      if (invite.invitedUserID === currentUser.id) {
         console.log("received invite to current user");
         dispatch({ type: "FETCH_INVITES" });
       }

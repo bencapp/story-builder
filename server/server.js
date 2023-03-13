@@ -37,6 +37,14 @@ app.use(sessionMiddleware);
 app.use(passport.initialize());
 app.use(passport.session());
 
+// assign io object to the invite router. That way, we can call the
+// socket functions within express endpoints.
+// middleware
+app.use((req, res, next) => {
+  req.io = io;
+  return next();
+});
+
 /* Routes */
 app.use("/api/user", userRouter);
 app.use("/api/invite", inviteRouter);

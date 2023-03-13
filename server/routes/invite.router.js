@@ -15,22 +15,6 @@ router.get("/", rejectUnauthenticated, (req, res) => {
   pool
     .query(queryText, queryParams)
     .then((response) => {
-      console.log("got invites, response.rows is", response.rows);
-      // wait until invitation has been posted to the DB before sending
-      // the socket emit. Otherwise, the GET request from the other client
-      // will occur BEFORE the database has been successfully updated
-      console.log("got invites, req.io is", req.io);
-      // req.io
-      //   .on("connection", (socket) => {
-      //     socket.on("private invite", (invitingUser, invitedUser) => {
-      //       console.log(
-      //         "receiving private invite from",
-      //         invitingUser,
-      //         "to",
-      //         invitedUser
-      //       );
-      //       req.io.emit("private invite", { invitingUser, invitedUser });
-      //     });
       res.send(response.rows);
     })
     .catch((error) => {
@@ -54,7 +38,6 @@ router.post("/", rejectUnauthenticated, (req, res) => {
     .then(() => {
       // also emit an invitation via SOCKET so that listening clients will
       // perform a GET request and retrieve the new data
-      console.log("in POST, req.io is", req.io);
       req.io.emit("private invite", { invitingUserID, invitedUserID });
 
       res.sendStatus(204);

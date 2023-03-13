@@ -77,7 +77,6 @@ io.on("connection", (socket) => {
   socket.on("accept invite", (invitingUser, acceptedUser) => {
     console.log("sending two users to a room:", invitingUser, acceptedUser);
     //join the socket room, use the first user's id to define the room
-    // socket.join(invitingUser.id);
     socket.join("test-room");
     console.log("User", acceptedUser.id, "joined the test room");
 

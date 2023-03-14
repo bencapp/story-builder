@@ -10,6 +10,8 @@ const passport = require("./strategies/user.strategy");
 // Route includes
 const userRouter = require("./routes/user.router");
 const inviteRouter = require("./routes/invite.router");
+const storyRouter = require("./routes/story.router");
+const textRouter = require("./routes/text.router");
 
 // SOCKET.IO INSTALLATION
 const http = require("http");
@@ -48,6 +50,8 @@ app.use((req, res, next) => {
 /* Routes */
 app.use("/api/user", userRouter);
 app.use("/api/invite", inviteRouter);
+app.use("/api/story", storyRouter);
+app.use("/api/text", textRouter);
 
 // SOCKET.IO SETUP
 io.on("connection", (socket) => {

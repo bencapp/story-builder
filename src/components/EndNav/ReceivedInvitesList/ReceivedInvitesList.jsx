@@ -54,6 +54,9 @@ function ReceivedInvitesList() {
       type: "DELETE_INVITE",
       payload: invite.invite_id,
     });
+    // create a new story
+    dispatch({ type: "POST_STORY" });
+    // set current story to the new story
   };
 
   return (

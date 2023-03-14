@@ -54,6 +54,21 @@ router.post("/", rejectUnauthenticated, (req, res) => {
   pool
     .query(queryText, queryParams)
     .then(() => {
+      // then, perform an insert into the story table as well
+      const storyQueryText = `INSERT INTO "story" ("title", "speed_type", "length_type")
+                      VALUES ($1, 'default', 'default')`;
+      const storyQueryParams = [req.body.title];
+      pool
+        .query(queryText, queryParams)
+        .then(() => {
+          // get the id of the story that was just inserted
+          res.sendStatus(204);
+        })
+        .catch((error) => {
+          console.log("Failed to execute SQL query:", queryText, " : ", error);
+          res.sendStatus(500);
+        });
+
       // also emit an invitation via SOCKET so that listening clients will
       // perform a GET request and retrieve the new data
       req.io.emit("private invite", { invitingUserID, invitedUserID });

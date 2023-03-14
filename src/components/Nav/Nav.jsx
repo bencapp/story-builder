@@ -15,7 +15,7 @@ function Nav() {
   return (
     <Box sx={{ backgroundColor: theme.palette.primary.main }} className="nav">
       <div className="nav-contents">
-        <p>StoryBuilder</p>
+        <h2>StoryBuilder</h2>
         {user && <h3>{user.username}</h3>}
 
         <>

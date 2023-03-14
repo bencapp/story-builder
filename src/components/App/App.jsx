@@ -20,9 +20,10 @@ import AboutPage from "../AboutPage/AboutPage";
 import UserPage from "../UserPage/UserPage";
 import LandingPage from "../LandingPage/LandingPage";
 import LoginPage from "../LoginPage/LoginPage";
-import NewStory from "../NewStory/NewStory";
+import WriteStory from "../WriteStory/WriteStory";
 import RegisterPage from "../RegisterPage/RegisterPage";
 import EndNav from "../EndNav/EndNav";
+import NewInvitation from "../NewInvitation/NewInvitation";
 
 import "./App.css";
 
@@ -78,7 +79,15 @@ function App() {
               exact
               path="/new-story"
             >
-              <NewStory />
+              <WriteStory />
+            </ProtectedRoute>
+
+            <ProtectedRoute
+              // logged in shows InfoPage else shows LoginPage
+              exact
+              path="/new-invitation"
+            >
+              <NewInvitation />
             </ProtectedRoute>
 
             <Route exact path="/login">

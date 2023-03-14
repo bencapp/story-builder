@@ -12,15 +12,11 @@ function UsersList() {
 
   const handleInvite = (invitedUser) => {
     console.log("in handle invite");
-    // dispatch invite to database so that it can be stored for later
-    dispatch({ type: "SET_PENDING_INVITE", payload: invitedUser });
-    dispatch({ type: "POST_INVITE", payload: invitedUser });
-
-    // also immediately push invite via socket
-    socket.emit("private invite", currentUser, invitedUser);
-
-    if (location.pathname !== "/new-story") {
-      history.push("/new-story");
+    // set invited user to user clicked on
+    dispatch({ type: "SET_INVITED_USER", payload: invitedUser });
+    // redirect to create story page
+    if (location.pathname !== "/new-invitation") {
+      history.push("/new-invitation");
     }
   };
 

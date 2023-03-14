@@ -2,6 +2,8 @@ import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 
 import Timer from "./Timer/Timer";
+import Story from "./Story/Story";
+import TextForm from "./TextForm/TextForm";
 
 import theme from "../Theme/Theme";
 
@@ -17,9 +19,6 @@ function NewStory() {
 
   // socket room string
   //   const [room, setRoom] = useState();
-
-  // current value in form
-  const [newText, setNewText] = useState("");
 
   // full story, store as an array
   const [story, setStory] = useState([]);
@@ -42,21 +41,6 @@ function NewStory() {
     // return socket.off("add text");
   }, []);
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    console.log("in handleSubmit");
-    // check if text is a valid entry. for base mode, only single words are valid
-    const regex = new RegExp("^[A-Za-z'\"]+$");
-    if (regex.test(newText)) {
-      console.log("sending new text:", newText);
-      // add text to specified room
-      socket.emit("add text", newText, "test-room");
-      setNewText("");
-    } else {
-      console.log("invalid entry");
-    }
-  };
-
   return (
     <>
       <Box sx={{ marginLeft: "20px" }}>
@@ -76,20 +60,9 @@ function NewStory() {
           container
         >
           <Grid item xs={10}>
-            <p>Starting new story with {partnerUser.username}</p>
-            <form onSubmit={handleSubmit}>
-              <input
-                placeholder="Write the next word!"
-                value={newText}
-                onChange={(e) => setNewText(e.target.value)}
-              ></input>
-              <button type="submit">SUBMIT</button>
-            </form>
-            <p>
-              {story.map((text, i) => (
-                <span key={i}>{text} </span>
-              ))}
-            </p>
+            <b>Starting new story with {partnerUser.username}</b>
+            <Story story={story} />
+            <TextForm />
           </Grid>
           <Grid
             sx={{

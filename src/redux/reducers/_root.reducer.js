@@ -4,6 +4,8 @@ import user from "./user.reducer";
 import allUsers from "./allUsers.reducer";
 import invites from "./invites.reducer";
 import pendingInvites from "./pendingInvites.reducer";
+import invitedUser from "./invitedUser.reducer";
+import currentStory from "./currentStory.reducer";
 
 // rootReducer is the primary reducer for our entire project
 // It bundles up all of the other reducers so our project can use them.
@@ -17,6 +19,8 @@ const rootReducer = combineReducers({
   allUsers,
   invites,
   pendingInvites,
+  invitedUser,
+  currentStory,
 });
 
 export default rootReducer;

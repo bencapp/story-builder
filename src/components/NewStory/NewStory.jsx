@@ -19,6 +19,8 @@ function NewStory() {
   const [story, setStory] = useState([]);
 
   useEffect(() => {
+    // on page load, display a message telling a user that their invitation has been accepted. Add a button
+    // to begin story
     socket.on("accept invite", (user1, user2) => {
       // determine who is the partner and who is the current user
       setPartnerUser(user1.id == currentUser.id ? user2 : user1);
@@ -36,9 +38,16 @@ function NewStory() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log("sending new text:", newText);
-    // add text to specified room
-    socket.emit("add text", newText, "test-room");
+    console.log("in handleSubmit");
+    // check if text is a valid entry. for base mode, only single words are valid
+    const regex = new RegExp("^[A-Za-z'\"]+$");
+    if (regex.test(newText)) {
+      console.log("sending new text:", newText);
+      // add text to specified room
+      socket.emit("add text", newText, "test-room");
+    } else {
+      console.log("invalid entry");
+    }
   };
 
   return (

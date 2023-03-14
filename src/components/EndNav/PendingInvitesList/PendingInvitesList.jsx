@@ -9,7 +9,7 @@ function PendingInvitesList() {
 
   useEffect(() => {
     dispatch({ type: "FETCH_PENDING_INVITES" });
-  });
+  }, []);
 
   return (
     <Box

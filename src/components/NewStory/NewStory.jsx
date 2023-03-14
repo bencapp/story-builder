@@ -1,7 +1,13 @@
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 
+import Timer from "./Timer/Timer";
+
+import theme from "../Theme/Theme";
+
 import { socket } from "../../socket";
+
+import { Grid, Box } from "@mui/material";
 
 function NewStory() {
   // current user
@@ -45,6 +51,7 @@ function NewStory() {
       console.log("sending new text:", newText);
       // add text to specified room
       socket.emit("add text", newText, "test-room");
+      setNewText("");
     } else {
       console.log("invalid entry");
     }
@@ -52,26 +59,54 @@ function NewStory() {
 
   return (
     <>
-      <h3>Create a new story</h3>
+      <Box sx={{ marginLeft: "20px" }}>
+        <h3>Create a New Story</h3>
+      </Box>
       {!partnerUser ? (
         <p>Invite pending.</p>
       ) : (
-        <>
-          <p>Starting new story with {partnerUser.username}</p>
-          <form onSubmit={handleSubmit}>
-            <input
-              placeholder="Write the next word!"
-              value={newText}
-              onChange={(e) => setNewText(e.target.value)}
-            ></input>
-            <button type="submit">SUBMIT</button>
-          </form>
-          <p>
-            {story.map((text, i) => (
-              <span key={i}>{text} </span>
-            ))}
-          </p>
-        </>
+        <Grid
+          sx={{
+            backgroundColor: theme.palette.primary.main,
+            margin: "20px auto",
+            padding: "20px",
+            width: "95%",
+            height: "85%",
+          }}
+          container
+        >
+          <Grid item xs={10}>
+            <p>Starting new story with {partnerUser.username}</p>
+            <form onSubmit={handleSubmit}>
+              <input
+                placeholder="Write the next word!"
+                value={newText}
+                onChange={(e) => setNewText(e.target.value)}
+              ></input>
+              <button type="submit">SUBMIT</button>
+            </form>
+            <p>
+              {story.map((text, i) => (
+                <span key={i}>{text} </span>
+              ))}
+            </p>
+          </Grid>
+          <Grid
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+              alignItems: "center",
+              alignSelf: "center",
+              height: "70%",
+            }}
+            item
+            xs={2}
+          >
+            <Timer />
+            <Timer myTimer={true} />
+          </Grid>
+        </Grid>
       )}
     </>
   );

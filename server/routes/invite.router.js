@@ -46,34 +46,33 @@ router.get("/pending", rejectUnauthenticated, (req, res) => {
  * POST route
  */
 router.post("/", rejectUnauthenticated, (req, res) => {
-  const invitingUserID = req.user.id;
-  const invitedUserID = req.body.id;
-  const queryText = `INSERT INTO "invite" ("sender_user_id", "recipient_user_id")
-                    VALUES ($1, $2)`;
-  const queryParams = [invitingUserID, invitedUserID];
+  // first, insert into the story table
+  const storyQueryText = `INSERT INTO "story" ("title", "speed_type", "length_type")
+  VALUES ($1, 'default', 'default')`;
+  const storyQueryParams = [req.body.storyTitle];
+
   pool
-    .query(queryText, queryParams)
+    .query(storyQueryText, storyQueryParams)
     .then(() => {
-      // then, perform an insert into the story table as well
-      const storyQueryText = `INSERT INTO "story" ("title", "speed_type", "length_type")
-                      VALUES ($1, 'default', 'default')`;
-      const storyQueryParams = [req.body.title];
-      pool
-        .query(queryText, queryParams)
-        .then(() => {
+      // then, get the id of the element that was just added
+      const idQueryText = "SELECT currval('story_id_seq');";
+      pool.query(idQueryText).then((response) => {
+        const invitingUserID = req.user.id;
+        const invitedUserID = req.body.invitedUser.id;
+        const storyID = response.rows[0].currval;
+        // then, perform an insert into the story table as well
+        const inviteQueryText = `INSERT INTO "invite" ("sender_user_id", "recipient_user_id", "story_id")
+                              VALUES ($1, $2, $3)`;
+        const inviteQueryParams = [invitingUserID, invitedUserID, storyID];
+        pool.query(inviteQueryText, inviteQueryParams).then(() => {
           // get the id of the story that was just inserted
+          // also emit an invitation via SOCKET so that listening clients will
+          // perform a GET request and retrieve the new data
+          req.io.emit("private invite", { invitingUserID, invitedUserID });
+
           res.sendStatus(204);
-        })
-        .catch((error) => {
-          console.log("Failed to execute SQL query:", queryText, " : ", error);
-          res.sendStatus(500);
         });
-
-      // also emit an invitation via SOCKET so that listening clients will
-      // perform a GET request and retrieve the new data
-      req.io.emit("private invite", { invitingUserID, invitedUserID });
-
-      res.sendStatus(204);
+      });
     })
     .catch((error) => {
       console.log("Failed to execute SQL query:", queryText, " : ", error);

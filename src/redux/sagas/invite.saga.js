@@ -12,6 +12,16 @@ function* fetchInvites() {
   }
 }
 
+function* fetchPendingInvites() {
+  try {
+    const response = yield axios.get("/api/invite/pending");
+    console.log("got pending invites, response is", response);
+    yield put({ type: "SET_PENDING_INVITES", payload: response.data });
+  } catch (error) {
+    console.log("Pending invite GET request failed", error);
+  }
+}
+
 function* postInvite(action) {
   try {
     yield axios.post("/api/invite", action.payload);
@@ -33,6 +43,7 @@ function* deleteInvite(action) {
 
 function* inviteSaga() {
   yield takeEvery("FETCH_INVITES", fetchInvites);
+  yield takeEvery("FETCH_PENDING_INVITES", fetchPendingInvites);
   yield takeEvery("POST_INVITE", postInvite);
   yield takeEvery("DELETE_INVITE", deleteInvite);
 }

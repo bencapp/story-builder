@@ -1,10 +1,9 @@
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 
-function NewStory({ socket }) {
-  // invited user for setting the display BEFORE invite is accepted
-  const invitedUser = useSelector((store) => store.pendingInvite);
+import { socket } from "../../socket";
 
+function NewStory() {
   // current user
   const currentUser = useSelector((store) => store.user);
 
@@ -46,7 +45,7 @@ function NewStory({ socket }) {
     <>
       <h3>Create a new story</h3>
       {!partnerUser ? (
-        <p>Invite pending to: {invitedUser.username}</p>
+        <p>Invite pending.</p>
       ) : (
         <>
           <p>Starting new story with {partnerUser.username}</p>

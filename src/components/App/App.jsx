@@ -10,9 +10,6 @@ import { useDispatch, useSelector } from "react-redux";
 
 import Grid from "@mui/material/Grid";
 
-// import socket
-import { socket } from "../../socket";
-
 import { useTheme } from "@mui/material";
 
 import Nav from "../Nav/Nav";
@@ -73,7 +70,7 @@ function App() {
               exact
               path="/user"
             >
-              <UserPage socket={socket} />
+              <UserPage />
             </ProtectedRoute>
 
             <ProtectedRoute
@@ -81,7 +78,7 @@ function App() {
               exact
               path="/new-story"
             >
-              <NewStory socket={socket} />
+              <NewStory />
             </ProtectedRoute>
 
             <Route exact path="/login">
@@ -125,7 +122,7 @@ function App() {
         </Grid>
         <Grid item xs={2}>
           {/* Only render endnav if there is a user */}
-          {Object.keys(user).length > 0 && <EndNav socket={socket} />}
+          {Object.keys(user).length > 0 && <EndNav />}
         </Grid>
       </Grid>
     </Router>

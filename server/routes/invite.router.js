@@ -6,10 +6,11 @@ const pool = require("../modules/pool");
 
 const router = express.Router();
 
+// GET ENDPOINT for getting all invitations sent to a specific user
 router.get("/", rejectUnauthenticated, (req, res) => {
   const queryText = `SELECT "user".username, "user".id AS user_id, invite.id AS invite_id FROM invite 
                     JOIN "user" ON sender_user_id = "user".id 
-                    WHERE recipient_user_id = $1;;`;
+                    WHERE recipient_user_id = $1;`;
   // query params is the user id who is receiving the invitation (current user)
   const queryParams = [req.user.id];
   pool
@@ -22,7 +23,24 @@ router.get("/", rejectUnauthenticated, (req, res) => {
       res.sendStatus(500);
     });
 });
-// });
+
+// GET endpoint for all invitations sent by a specific user
+router.get("/pending", rejectUnauthenticated, (req, res) => {
+  const queryText = `SELECT "user".username, "user".id AS user_id, invite.id AS invite_id FROM invite 
+                    JOIN "user" ON recipient_user_id = "user".id 
+                    WHERE sender_user_id = $1;`;
+  // query params is the user id who is receiving the invitation (current user)
+  const queryParams = [req.user.id];
+  pool
+    .query(queryText, queryParams)
+    .then((response) => {
+      res.send(response.rows);
+    })
+    .catch((error) => {
+      console.log("Failed to execute SQL query:", queryText, " : ", error);
+      res.sendStatus(500);
+    });
+});
 
 /**
  * POST route

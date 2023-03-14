@@ -24,19 +24,25 @@ function ReceivedInvitesList() {
       }
     });
 
-    // socket listener to for when one's invitation was accepted
+    // socket listener for when one's invitation was accepted
     // TODO: allow user to navigate to new story instead of
     // being immediately redirected there
     socket.on("accept invite", (sentUser, acceptedUser) => {
-      // if user is the one who sent the invite, join the room
+      // if user is the one who sent the invite
+      // and set the accepted user as the accepted user
       if (currentUser.id == sentUser.id) {
         console.log("invite accepted, joining room and rerouting");
-        socket.emit("join room", currentUser);
+        dispatch({ type: "SET_PARTNER_USER", payload: acceptedUser });
+      } else {
+        // if
+        dispatch({ type: "SET_PARTNER_USER", payload: sentUser });
+      }
+      // current user needs to join the room
+      socket.emit("join room", currentUser);
 
-        // and redirect to the new story page
-        // if (location.pathname !== "/new-story") {
-        //   history.push("/new-story");
-        // }
+      // and redirect both users to the new story page
+      if (location.pathname !== "/new-story") {
+        history.push("/new-story");
       }
     });
   }, [currentUser]);

@@ -5,6 +5,7 @@ import allUsers from "./allUsers.reducer";
 import invites from "./invites.reducer";
 import pendingInvites from "./pendingInvites.reducer";
 import invitedUser from "./invitedUser.reducer";
+import partnerUser from "./acceptedUser.reducer";
 import currentStory from "./currentStory.reducer";
 
 // rootReducer is the primary reducer for our entire project
@@ -20,6 +21,7 @@ const rootReducer = combineReducers({
   invites,
   pendingInvites,
   invitedUser,
+  partnerUser,
   currentStory,
 });
 

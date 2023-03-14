@@ -24,16 +24,18 @@ function NewInvitation() {
   const handleSubmit = (event) => {
     event.preventDefault();
     // dispatch invite to database so that it can be stored for later
-    // dispatch({ type: "SET_PENDING_INVITE", payload: invitedUser });
 
     // POST_INVITE also posts to the story table
     dispatch({
       type: "POST_INVITE",
       payload: { invitedUser: invitedUser, storyTitle: newTitle },
-    }); // TODO: ALSO SEND THE ATTACHED STORY ID
+    });
 
     // also immediately push invite via socket
     socket.emit("private invite", currentUser, invitedUser);
+
+    // finally, reroute user to the home page
+    history.push("/home");
   };
 
   const handleCancel = () => {

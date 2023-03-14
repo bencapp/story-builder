@@ -11,11 +11,12 @@ import { socket } from "../../socket";
 
 import { Grid, Box } from "@mui/material";
 
-function NewStory() {
+function WriteStory() {
   // current user
   const currentUser = useSelector((store) => store.user);
 
-  const [partnerUser, setPartnerUser] = useState();
+  // partner user
+  const partnerUser = useSelector((store) => store.partnerUser);
 
   // socket room string
   //   const [room, setRoom] = useState();
@@ -26,26 +27,23 @@ function NewStory() {
   useEffect(() => {
     // on page load, display a message telling a user that their invitation has been accepted. Add a button
     // to begin story
-    socket.on("accept invite", (user1, user2) => {
-      // determine who is the partner and who is the current user
-      setPartnerUser(user1.id == currentUser.id ? user2 : user1);
-      // set the local state room variable
-      //   setRoom(room);
-    });
 
     // update story when text is added
     socket.on("add text", (text) => {
       console.log("received text, text is", text);
       setStory((story) => [...story, text]);
     });
-    // return socket.off("add text");
   }, []);
+
+  console.log("partnerUser is", partnerUser);
 
   return (
     <>
       <Box sx={{ marginLeft: "20px" }}>
         <h3>Create a New Story</h3>
+        {JSON.stringify(partnerUser)}
       </Box>
+
       {!partnerUser ? (
         <p>Invite pending.</p>
       ) : (
@@ -85,4 +83,4 @@ function NewStory() {
   );
 }
 
-export default NewStory;
+export default WriteStory;

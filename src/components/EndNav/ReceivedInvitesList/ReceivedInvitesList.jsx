@@ -28,10 +28,11 @@ function ReceivedInvitesList() {
     // TODO: allow user to navigate to new story instead of
     // being immediately redirected there
     socket.on("accept invite", (sentUser, acceptedUser) => {
+      console.log("invite accepted, joining room and rerouting");
+
       // if user is the one who sent the invite
       // and set the accepted user as the accepted user
       if (currentUser.id == sentUser.id) {
-        console.log("invite accepted, joining room and rerouting");
         dispatch({ type: "SET_PARTNER_USER", payload: acceptedUser });
       } else {
         // if

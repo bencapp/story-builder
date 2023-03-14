@@ -7,8 +7,6 @@ import TextForm from "./TextForm/TextForm";
 
 import theme from "../Theme/Theme";
 
-import { socket } from "../../socket";
-
 import { Grid, Box } from "@mui/material";
 
 function WriteStory() {
@@ -21,27 +19,15 @@ function WriteStory() {
   // socket room string
   //   const [room, setRoom] = useState();
 
-  // full story, store as an array
-  const [story, setStory] = useState([]);
-
   useEffect(() => {
-    // on page load, display a message telling a user that their invitation has been accepted. Add a button
+    // TODO: on page load, display a message telling a user that their invitation has been accepted. Add a button
     // to begin story
-
-    // update story when text is added
-    socket.on("add text", (text) => {
-      console.log("received text, text is", text);
-      setStory((story) => [...story, text]);
-    });
   }, []);
-
-  console.log("partnerUser is", partnerUser);
 
   return (
     <>
       <Box sx={{ marginLeft: "20px" }}>
         <h3>Create a New Story</h3>
-        {JSON.stringify(partnerUser)}
       </Box>
 
       {!partnerUser ? (
@@ -59,7 +45,7 @@ function WriteStory() {
         >
           <Grid item xs={10}>
             <b>Starting new story with {partnerUser.username}</b>
-            <Story story={story} />
+            <Story />
             <TextForm />
           </Grid>
           <Grid

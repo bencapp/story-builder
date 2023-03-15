@@ -17,7 +17,9 @@ router.get("/", rejectUnauthenticated, (req, res) => {
   pool
     .query(queryText, queryParams)
     .then((response) => {
-      res.send(response.rows);
+      console.log("got invites, response.rows is", response.rows);
+      // now make another GET request to make sure that we send the recipient user name too
+      const queryJoinText = res.send(response.rows);
     })
     .catch((error) => {
       console.log("Failed to execute SQL query:", queryText, " : ", error);

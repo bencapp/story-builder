@@ -5,8 +5,8 @@ function* postText(action) {
   try {
     console.log("in post text, action.payload is", action.payload);
     yield axios.post("/api/text", {
-      storyID: action.payload.storyID,
-      userID: action.payload.userID,
+      story_id: action.payload.story_id,
+      user_id: action.payload.user_id,
       text: action.payload.text,
     });
   } catch (error) {

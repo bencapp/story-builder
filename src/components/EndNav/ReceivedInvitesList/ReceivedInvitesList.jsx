@@ -26,10 +26,14 @@ function ReceivedInvitesList() {
     });
 
     // socket listener for when one's invitation was accepted
+    // BY ANOTHER USER
     // TODO: allow user to navigate to new story instead of
     // being immediately redirected there
     socket.on("accept invite", (invite) => {
-      console.log("invite accepted, joining room and rerouting");
+      console.log(
+        "invite accepted, joining room and rerouting. invite is",
+        invite
+      );
 
       // if user is the one who sent the invite
       // and set the accepted user as the accepted user

@@ -95,10 +95,10 @@ io.on("connection", (socket) => {
     socket.join("test-room");
   });
 
-  socket.on("add text", (text, user, room) => {
-    console.log("received add text:", text, user, room);
-    io.to(room).emit("add text", text, user);
-  });
+  // socket.on("add text", (text, user, room) => {
+  //   console.log("received add text:", text, user, room);
+  //   io.to(room).emit("add text", text, user);
+  // });
 });
 
 // Serve static files

@@ -1,4 +1,4 @@
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 
 import Timer from "./Timer/Timer";
@@ -44,6 +44,7 @@ function WriteStory() {
           container
         >
           <Grid item xs={10}>
+            {JSON.stringify(partnerUser)}
             <b>Starting new story with {partnerUser.username}</b>
             <Story />
             <TextForm />

@@ -8,7 +8,7 @@ function TextForm() {
   const [newText, setNewText] = useState("");
 
   const currentUser = useSelector((store) => store.user);
-  const currentStory = useSelector((store) => store.currentStory);
+  const currentStoryID = useSelector((store) => store.currentStory);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -18,12 +18,12 @@ function TextForm() {
     if (regex.test(newText)) {
       console.log("sending new text:", newText);
       // add text to specified room
-      console.log("current story is", currentStory);
+      console.log("current story is", currentStoryID);
       dispatch({
         type: "POST_TEXT",
         payload: {
-          storyID: currentStory.id,
-          userID: currentUser.id,
+          story_id: currentStoryID,
+          user_id: currentUser.id,
           text: newText,
         },
       });

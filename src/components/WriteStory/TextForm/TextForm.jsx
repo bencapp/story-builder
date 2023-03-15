@@ -10,7 +10,7 @@ function TextForm() {
   const [newText, setNewText] = useState("");
 
   const currentUser = useSelector((store) => store.user);
-  const currentStoryID = useSelector((store) => store.currentStory);
+  const currentStoryID = useSelector((store) => store.currentStoryID);
 
   const handleSubmit = (event) => {
     event.preventDefault();

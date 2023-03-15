@@ -14,8 +14,11 @@ router.post("/", rejectUnauthenticated, (req, res) => {
   pool
     .query(queryText, queryParams)
     .then((response) => {
-      console.log("successfully posted into story table");
-      res.sendStatus(204);
+      // then, send the id of the story just added back to the client
+      const storyIDQueryText = `SELECT currval('story_id_seq')`;
+      pool
+        .query(storyIDQueryText)
+        .then((response) => res.send(response.rows[0].currval));
     })
     .catch((error) => {
       console.log("Failed to execute SQL query:", queryText, " : ", error);

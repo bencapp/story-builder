@@ -1,6 +1,6 @@
-const currentStory = (state = "", action) => {
+const currentStoryID = (state = "", action) => {
   switch (action.type) {
-    case "SET_CURRENT_STORY":
+    case "SET_CURRENT_STORY_ID":
       return action.payload;
     default:
       return state;
@@ -9,4 +9,4 @@ const currentStory = (state = "", action) => {
 
 // user will be on the redux state at:
 // state.user
-export default currentStory;
+export default currentStoryID;

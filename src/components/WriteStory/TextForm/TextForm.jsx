@@ -11,7 +11,6 @@ function TextForm() {
 
   const currentUser = useSelector((store) => store.user);
   const currentStoryID = useSelector((store) => store.currentStoryID);
-  const firstPlayer = useSelector((store) => store.firstPlayer);
 
   const handleSubmit = (event) => {
     event.preventDefault();

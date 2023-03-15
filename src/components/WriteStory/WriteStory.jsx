@@ -12,19 +12,33 @@ import { Grid, Box } from "@mui/material";
 function WriteStory() {
   // current user
   const currentUser = useSelector((store) => store.user);
+  const dispatch = useDispatch();
 
   // partner user
   // format is {id, username}
   const partnerUser = useSelector((store) => store.partnerUser);
+  const firstPlayer = useSelector((store) => store.firstPlayer);
 
   // local state variable for whose turn it is to write
-  const [myTurn, setMyTurn] = useState();
-
+  const myTurn = useSelector((store) => store.myTurn);
   // socket room string
   //   const [room, setRoom] = useState();
 
   useEffect(() => {
-    // TODO: on page load, randomly select a user
+    // On page load, set myTurn based on value of firstPlayer
+    // if my partner is the first player, I am not
+    console.log(
+      "partner user is",
+      partnerUser.inviteSide,
+      "firstPlayer is",
+      firstPlayer
+    );
+    // for now, set recipient to the first player
+
+    dispatch({
+      type: "SET_MY_TURN",
+      payload: partnerUser.inviteSide == "sender",
+    });
   }, []);
 
   return (
@@ -46,9 +60,10 @@ function WriteStory() {
           }}
           container
         >
+          {JSON.stringify(myTurn)}
           <Grid item xs={10}>
             <b>Starting new story with {partnerUser.username}</b>
-            <Story />
+            <Story myTurn={myTurn} />
           </Grid>
           <Grid
             sx={{

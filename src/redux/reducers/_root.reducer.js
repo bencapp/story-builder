@@ -8,6 +8,7 @@ import invitedUser from "./invitedUser.reducer";
 import partnerUser from "./partnerUser.reducer";
 import currentStoryID from "./currentStoryID.reducer";
 import firstPlayer from "./firstPlayer.reducer";
+import myTurn from "./myTurn.reducer";
 
 // rootReducer is the primary reducer for our entire project
 // It bundles up all of the other reducers so our project can use them.
@@ -25,6 +26,7 @@ const rootReducer = combineReducers({
   partnerUser,
   currentStoryID,
   firstPlayer,
+  myTurn,
 });
 
 export default rootReducer;

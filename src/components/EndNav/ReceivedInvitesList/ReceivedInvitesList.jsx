@@ -40,12 +40,14 @@ function ReceivedInvitesList() {
 
       // if user is the one who sent the invite
       // set partner user to the invite recipient
+      // inviteSide property is for determining first player later
       if (currentUser.id == invite.sender_user_id) {
         dispatch({
           type: "SET_PARTNER_USER",
           payload: {
             id: invite.recipient_user_id,
             username: invite.recipient_user_username,
+            inviteSide: "recipient",
           },
         });
       } else {
@@ -56,6 +58,7 @@ function ReceivedInvitesList() {
           payload: {
             id: invite.sender_user_id,
             username: invite.sender_user_username,
+            inviteSide: "sender",
           },
         });
       }

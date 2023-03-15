@@ -1,6 +1,6 @@
 import { Box } from "@mui/system";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { socket } from "../../../socket";
 
 import TextElement from "../TextElement/TextElement";
@@ -11,11 +11,15 @@ function Story() {
   const [story, setStory] = useState([]);
   const currentUser = useSelector((store) => store.user);
 
+  const dispatch = useDispatch();
+
   useEffect(() => {
     // update story when text is added
     socket.on("add text", (text, user) => {
       console.log("received text from user", user, "text is", text);
       setStory((story) => [...story, { text, user }]);
+      // change whose turn it is
+      dispatch({ type: "TOGGLE_MY_TURN" });
     });
   }, []);
 

@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { socket } from "../../../socket";
 
+import "./TextForm.css";
+
 function TextForm() {
   const dispatch = useDispatch();
   // current value in form
@@ -12,9 +14,9 @@ function TextForm() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log("in handleSubmit");
+    console.log("in handleSubmit, newText is", newText);
     // check if text is a valid entry. for base mode, only single words are valid
-    const regex = new RegExp("^[A-Za-z'\"]+$");
+    const regex = new RegExp("^[A-Za-z'\".!?]+$");
     if (regex.test(newText)) {
       console.log("sending new text:", newText);
       // add text to specified room
@@ -35,14 +37,35 @@ function TextForm() {
     }
   };
 
+  // const handleKeyPress = (event, content) => {
+  //   if (event.key === "Enter") {
+  //     console.log("hit enter, text is", content);
+  //     handleSubmit(event);
+  //   }
+  // };
+
   return (
     <form onSubmit={handleSubmit}>
+      {/* <span
+        class="input"
+        role="textbox"
+        contentEditable
+        innerHTML={newText}
+        onChange={(e) => {
+          console.log("setting new text");
+          setNewText(e.target.value);
+        }}
+        onKeyPress={handleKeyPress(this.textContent)}
+      >
+        Write the next word!
+      </span> */}
       <input
-        placeholder="Write the next word!"
+        id="next-word-input"
+        onSubmit={handleSubmit}
         value={newText}
         onChange={(e) => setNewText(e.target.value)}
       ></input>
-      <button type="submit">SUBMIT</button>
+      {/* <button type="submit">SUBMIT</button> */}
     </form>
   );
 }

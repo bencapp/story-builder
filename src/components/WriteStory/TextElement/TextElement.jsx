@@ -5,7 +5,12 @@ import { Box } from "@mui/system";
 // alse if the other user wrote it
 function TextElement({ text, myText }) {
   return (
-    <Box sx={{ border: `2px ${myText ? "solid blue" : "dotted red"}` }}>
+    <Box
+      sx={{
+        border: `2px ${myText ? "solid blue" : "dotted red"}`,
+        padding: "2px",
+      }}
+    >
       {text}
     </Box>
   );

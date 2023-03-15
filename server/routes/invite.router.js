@@ -9,9 +9,10 @@ const router = express.Router();
 // GET ENDPOINT for getting all invitations sent to a specific user
 router.get("/", rejectUnauthenticated, (req, res) => {
   const queryText = `SELECT invite.id, invite.sender_user_id, invite.recipient_user_id, invite.story_id, 
-                    "user".username AS sender_user_username FROM invite 
-                    JOIN "user" on "user".id = invite.sender_user_id
-                    WHERE recipient_user_id = $1;`;
+                      "u".username AS sender_user_username , "u2".username AS recipient_user_username FROM invite 
+                      JOIN "user" AS "u" ON "u".id = invite.sender_user_id
+                      JOIN "user" AS "u2" ON "u2".id = invite.recipient_user_id
+                      WHERE recipient_user_id = $1;`;
   // query params is the user id who is receiving the invitation (current user)
   const queryParams = [req.user.id];
   pool
@@ -30,8 +31,9 @@ router.get("/", rejectUnauthenticated, (req, res) => {
 // GET endpoint for all invitations sent by a specific user
 router.get("/pending", rejectUnauthenticated, (req, res) => {
   const queryText = `SELECT invite.id, invite.sender_user_id, invite.recipient_user_id, invite.story_id, 
-                      "user".username AS recipient_user_username FROM invite 
-                      JOIN "user" on "user".id = invite.recipient_user_id
+                      "u".username AS sender_user_username , "u2".username AS recipient_user_username FROM invite 
+                      JOIN "user" AS "u" ON "u".id = invite.sender_user_id
+                      JOIN "user" AS "u2" ON "u2".id = invite.recipient_user_id
                       WHERE sender_user_id = $1;`;
   // query params is the user id who is receiving the invitation (current user)
   const queryParams = [req.user.id];

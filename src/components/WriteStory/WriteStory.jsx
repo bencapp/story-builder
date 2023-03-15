@@ -14,6 +14,7 @@ function WriteStory() {
   const currentUser = useSelector((store) => store.user);
 
   // partner user
+  // format is {id, username}
   const partnerUser = useSelector((store) => store.partnerUser);
 
   // socket room string
@@ -44,10 +45,8 @@ function WriteStory() {
           container
         >
           <Grid item xs={10}>
-            {JSON.stringify(partnerUser)}
             <b>Starting new story with {partnerUser.username}</b>
             <Story />
-            <TextForm />
           </Grid>
           <Grid
             sx={{

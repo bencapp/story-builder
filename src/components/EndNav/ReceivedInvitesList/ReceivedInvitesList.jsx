@@ -36,17 +36,24 @@ function ReceivedInvitesList() {
       );
 
       // if user is the one who sent the invite
-      // and set the accepted user as the accepted user
+      // set partner user to the invite recipient
       if (currentUser.id == invite.sender_user_id) {
         dispatch({
           type: "SET_PARTNER_USER",
-          payload: invite.recipient_user_id,
+          payload: {
+            id: invite.recipient_user_id,
+            username: invite.recipient_user_username,
+          },
         });
       } else {
-        // if
+        // if user is the one who accepted the invite,
+        // set partner user to the invite sender
         dispatch({
           type: "SET_PARTNER_USER",
-          payload: invite.sender_user_id,
+          payload: {
+            id: invite.sender_user_id,
+            username: invite.sender_user_username,
+          },
         });
       }
       // current user needs to join the room

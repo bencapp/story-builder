@@ -1,20 +1,58 @@
 import { Box } from "@mui/system";
+import { useSelector } from "react-redux";
 
 function Timer({ myTimer }) {
+  const currentUser = useSelector((store) => store.user);
+  const partnerUser = useSelector((store) => store.partnerUser);
+  const myTurn = useSelector((store) => store.myTurn);
+
   return (
-    <Box
-      sx={{
-        border: `3px solid ${myTimer ? "blue" : "red"}`,
-        width: "125px",
-        height: "50px",
-        textAlign: "center",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        fontSize: "35px",
-      }}
-    >
-      1:04
+    <Box sx={{ display: "flex", flexDirection: "column", alignItems: "start" }}>
+      <Box
+        sx={{
+          padding: "5px",
+          fontSize: "large",
+          display: "flex",
+          alignItems: "center",
+          gap: "10px",
+        }}
+      >
+        {(myTurn && myTimer) || (!myTurn && !myTimer) ? (
+          <Box
+            sx={{
+              width: "15px",
+              height: "15px",
+              borderRadius: "100%",
+              backgroundColor: "rgb(44, 232, 44)",
+            }}
+          ></Box>
+        ) : (
+          <Box
+            sx={{
+              width: "15px",
+              height: "15px",
+              borderRadius: "100%",
+              backgroundColor: "transparent",
+            }}
+          ></Box>
+        )}
+
+        {myTimer ? currentUser.username : partnerUser.username}
+      </Box>
+      <Box
+        sx={{
+          border: `3px solid ${myTimer ? "blue" : "red"}`,
+          width: "125px",
+          height: "50px",
+          textAlign: "center",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          fontSize: "35px",
+        }}
+      >
+        1:04
+      </Box>
     </Box>
   );
 }

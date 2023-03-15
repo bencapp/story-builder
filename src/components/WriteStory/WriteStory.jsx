@@ -60,7 +60,6 @@ function WriteStory() {
           }}
           container
         >
-          {JSON.stringify(myTurn)}
           <Grid item xs={10}>
             <b>Starting new story with {partnerUser.username}</b>
             <Story myTurn={myTurn} />

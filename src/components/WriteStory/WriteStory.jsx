@@ -17,12 +17,14 @@ function WriteStory() {
   // format is {id, username}
   const partnerUser = useSelector((store) => store.partnerUser);
 
+  // local state variable for whose turn it is to write
+  const [myTurn, setMyTurn] = useState();
+
   // socket room string
   //   const [room, setRoom] = useState();
 
   useEffect(() => {
-    // TODO: on page load, display a message telling a user that their invitation has been accepted. Add a button
-    // to begin story
+    // TODO: on page load, randomly select a user
   }, []);
 
   return (

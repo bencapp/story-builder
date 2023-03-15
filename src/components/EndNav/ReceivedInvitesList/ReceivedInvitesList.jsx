@@ -57,7 +57,7 @@ function ReceivedInvitesList() {
         });
       }
       // current user needs to join the room
-      socket.emit("join room", currentUser);
+      socket.emit("join room", invite);
 
       // set current story reducer to this story
       dispatch({ type: "SET_CURRENT_STORY_ID", payload: invite.story_id });
@@ -66,6 +66,10 @@ function ReceivedInvitesList() {
       if (location.pathname !== "/new-story") {
         history.push("/new-story");
       }
+
+      // fetch invites to update the DOM for the user whose invitation
+      // was accepted
+      dispatch({ type: "FETCH_PENDING_INVITES" });
     });
   }, [currentUser]);
 
@@ -73,8 +77,19 @@ function ReceivedInvitesList() {
   const handleAccept = (invite) => {
     // send socket message saying invite accepted
     console.log("accepting invite,", invite);
-    socket.emit("accept invite", invite, currentUser);
+    socket.emit("accept invite", invite);
     history.push("/new-story");
+
+    // create a new story and post it to the database
+    dispatch({
+      type: "POST_STORY",
+      payload: {
+        title: invite.title,
+        speed_type: invite.speed_type,
+        text_type: invite.text_type,
+      },
+    });
+
     // remove invite from the database
     dispatch({
       type: "DELETE_INVITE",

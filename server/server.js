@@ -79,19 +79,18 @@ io.on("connection", (socket) => {
 
   // when an invite is accepted, create a new room
   socket.on("accept invite", (invite) => {
-    console.log("server received accept invite, invite is", invite);
-    console.log("sending two users to a room:", invite);
-    //join the socket room, use the first user's id to define the room
+    console.log("sending two users to a room, invite is:", invite);
+    // join the socket room
+    // TODO: CREATE LOGIC TO GENERATE A NEW ROOM NAME WHENEVER THIS NEXT LINE TRIGGERS
     socket.join("test-room");
     console.log("User", invite.recipient_user_id, "joined the test room");
 
-    // TODO: CREATE LOGIC TO GENERATE A NEW ROOM NAME WHENEVER THIS NEXT LINE TRIGGERS
     io.emit("accept invite", invite);
   });
 
   // on room join: for user who sent the invite
   socket.on("join room", (user) => {
-    console.log("User", user.id, "joined the test room");
+    console.log("In join room, user", user.id, "joined the test room");
     socket.join("test-room");
   });
 

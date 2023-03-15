@@ -1,6 +1,6 @@
 const currentStory = (state = "", action) => {
   switch (action.type) {
-    case "SET_CURRENT_STORY_ID":
+    case "SET_CURRENT_STORY":
       return action.payload;
     default:
       return state;

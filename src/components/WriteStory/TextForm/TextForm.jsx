@@ -1,12 +1,14 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { socket } from "../../../socket";
 
 function TextForm() {
+  const dispatch = useDispatch();
   // current value in form
   const [newText, setNewText] = useState("");
 
   const currentUser = useSelector((store) => store.user);
+  const currentStory = useSelector((store) => store.currentStory);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -16,6 +18,15 @@ function TextForm() {
     if (regex.test(newText)) {
       console.log("sending new text:", newText);
       // add text to specified room
+      console.log("current story is", currentStory);
+      dispatch({
+        type: "POST_TEXT",
+        payload: {
+          storyID: currentStory.id,
+          userID: currentUser.id,
+          text: newText,
+        },
+      });
       // format is emit type, text, user, room
       socket.emit("add text", newText, currentUser, "test-room");
       setNewText("");

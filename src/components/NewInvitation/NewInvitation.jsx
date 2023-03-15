@@ -32,7 +32,7 @@ function NewInvitation() {
     });
 
     // also immediately push invite via socket
-    socket.emit("private invite", currentUser, invitedUser);
+    // socket.emit("private invite", currentUser, invitedUser);
 
     // finally, reroute user to the home page
     history.push("/home");

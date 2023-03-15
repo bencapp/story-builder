@@ -6,7 +6,7 @@ import { socket } from "../../../socket";
 import { Button } from "@mui/material";
 
 function ReceivedInvitesList() {
-  const invites = useSelector((store) => store.invites);
+  const invites = useSelector((store) => store.receivedInvites);
   const dispatch = useDispatch();
   const history = useHistory();
   const currentUser = useSelector((store) => store.user);
@@ -18,7 +18,8 @@ function ReceivedInvitesList() {
     // socket listener to update invites on invitation
     socket.on("private invite", (invite) => {
       console.log("receiving private invite, 'invite' is:", invite);
-      if (invite.invitedUserID === currentUser.id) {
+      // if the invite is for the current user, perform a fetch invites dispatch
+      if (invite.recipient_user_id === currentUser.id) {
         console.log("received invite to current user");
         dispatch({ type: "FETCH_INVITES" });
       }
@@ -27,19 +28,28 @@ function ReceivedInvitesList() {
     // socket listener for when one's invitation was accepted
     // TODO: allow user to navigate to new story instead of
     // being immediately redirected there
-    socket.on("accept invite", (sentUser, acceptedUser) => {
+    socket.on("accept invite", (invite) => {
       console.log("invite accepted, joining room and rerouting");
 
       // if user is the one who sent the invite
       // and set the accepted user as the accepted user
-      if (currentUser.id == sentUser.id) {
-        dispatch({ type: "SET_PARTNER_USER", payload: acceptedUser });
+      if (currentUser.id == invite.sender_user_id) {
+        dispatch({
+          type: "SET_PARTNER_USER",
+          payload: invite.recipient_user_id,
+        });
       } else {
         // if
-        dispatch({ type: "SET_PARTNER_USER", payload: sentUser });
+        dispatch({
+          type: "SET_PARTNER_USER",
+          payload: invite.sender_user_id,
+        });
       }
       // current user needs to join the room
       socket.emit("join room", currentUser);
+
+      // set current story reducer to this story
+      dispatch({ type: "SET_CURRENT_STORY_ID", payload: invite.story_id });
 
       // and redirect both users to the new story page
       if (location.pathname !== "/new-story") {
@@ -48,22 +58,20 @@ function ReceivedInvitesList() {
     });
   }, [currentUser]);
 
+  // when the current user accepts an invite
   const handleAccept = (invite) => {
     // send socket message saying invite accepted
-    socket.emit(
-      "accept invite",
-      { username: invite.username, id: invite.user_id },
-      currentUser
-    );
+    console.log("accepting invite,", invite);
+    socket.emit("accept invite", invite, currentUser);
     history.push("/new-story");
     // remove invite from the database
     dispatch({
       type: "DELETE_INVITE",
-      payload: invite.invite_id,
+      payload: invite.id,
     });
-    // create a new story
-    dispatch({ type: "POST_STORY" });
+
     // set current story to the new story
+    dispatch({ type: "SET_CURRENT_STORY_ID", payload: invite.story_id });
   };
 
   return (
@@ -73,8 +81,8 @@ function ReceivedInvitesList() {
         <section>
           {invites &&
             invites.map((invite) => (
-              <div key={invite.invite_id}>
-                <p>{invite.username}</p>
+              <div key={invite.id}>
+                <p>{invite.sender_user_username}</p>
                 <Button color="tertiary" onClick={() => handleAccept(invite)}>
                   Accept
                 </Button>

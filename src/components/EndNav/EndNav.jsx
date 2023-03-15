@@ -4,8 +4,8 @@ import { useEffect } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 
 import UsersList from "./UsersList/UsersList";
-import PendingInvitesList from "./PendingInvitesList/PendingInvitesList";
 import ReceivedInvitesList from "./ReceivedInvitesList/ReceivedInvitesList";
+import SentInvitesList from "./SentInvitesList/SentInvitesList";
 
 import { Box, Button } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
@@ -17,7 +17,7 @@ function EndNav() {
     <Box sx={{ backgroundColor: theme.palette.primary.main }} className="nav">
       <UsersList />
       <ReceivedInvitesList />
-      <PendingInvitesList />
+      <SentInvitesList />
     </Box>
   );
 }

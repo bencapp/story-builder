@@ -1,6 +1,6 @@
-const invites = (state = [], action) => {
+const receivedInvites = (state = [], action) => {
   switch (action.type) {
-    case "SET_INVITES":
+    case "SET_RECEIVED_INVITES":
       return action.payload;
     default:
       return state;
@@ -9,4 +9,4 @@ const invites = (state = [], action) => {
 
 // user will be on the redux state at:
 // state.user
-export default invites;
+export default receivedInvites;

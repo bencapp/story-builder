@@ -4,7 +4,7 @@ import { Box } from "@mui/system";
 
 import { socket } from "../../../socket";
 
-function PendingInvitesList() {
+function SentInvites() {
   const pendingInvites = useSelector((store) => store.pendingInvites);
   const currentUser = useSelector((store) => store.user);
   const dispatch = useDispatch();
@@ -14,7 +14,8 @@ function PendingInvitesList() {
 
     // socket listener to update invites on invitation
     socket.on("private invite", (invite) => {
-      if (invite.invitingUserID === currentUser.id) {
+      console.log("received private invite, invite is", invite);
+      if (invite.sender_user_id === currentUser.id) {
         dispatch({ type: "FETCH_PENDING_INVITES" });
       }
     });
@@ -27,12 +28,12 @@ function PendingInvitesList() {
       <h3>Pending Invites</h3>
       {pendingInvites &&
         pendingInvites.map((invite) => (
-          <div key={invite.invite_id}>
-            <p>{invite.username}</p>
+          <div key={invite.id}>
+            <p>{invite.recipient_user_username}</p>
           </div>
         ))}
     </Box>
   );
 }
 
-export default PendingInvitesList;
+export default SentInvites;

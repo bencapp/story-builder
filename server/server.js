@@ -67,25 +67,26 @@ io.on("connection", (socket) => {
     io.emit("chat message", msg);
   });
 
-  socket.on("private invite", (invitingUser, invitedUser) => {
-    console.log(
-      "receiving private invite from",
-      invitingUser,
-      "to",
-      invitedUser
-    );
-    io.emit("private invite", { invitingUser, invitedUser });
-  });
+  // socket.on("private invite", (invitingUser, invitedUser) => {
+  //   console.log(
+  //     "receiving private invite from",
+  //     invitingUser,
+  //     "to",
+  //     invitedUser
+  //   );
+  //   io.emit("private invite", { invitingUser, invitedUser });
+  // });
 
   // when an invite is accepted, create a new room
-  socket.on("accept invite", (invitingUser, acceptedUser) => {
-    console.log("sending two users to a room:", invitingUser, acceptedUser);
+  socket.on("accept invite", (invite) => {
+    console.log("server received accept invite, invite is", invite);
+    console.log("sending two users to a room:", invite);
     //join the socket room, use the first user's id to define the room
     socket.join("test-room");
-    console.log("User", acceptedUser.id, "joined the test room");
+    console.log("User", invite.recipient_user_id, "joined the test room");
 
     // TODO: CREATE LOGIC TO GENERATE A NEW ROOM NAME WHENEVER THIS NEXT LINE TRIGGERS
-    io.emit("accept invite", invitingUser, acceptedUser);
+    io.emit("accept invite", invite);
   });
 
   // on room join: for user who sent the invite

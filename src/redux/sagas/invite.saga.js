@@ -6,7 +6,7 @@ function* fetchInvites() {
   try {
     const response = yield axios.get("/api/invite");
     console.log("got invites, response is", response);
-    yield put({ type: "SET_INVITES", payload: response.data });
+    yield put({ type: "SET_RECEIVED_INVITES", payload: response.data });
   } catch (error) {
     console.log("Invite GET request failed", error);
   }

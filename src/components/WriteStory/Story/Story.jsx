@@ -1,4 +1,5 @@
 import { Box } from "@mui/system";
+import { Button } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { socket } from "../../../socket";
@@ -10,6 +11,7 @@ function Story() {
   // full story, store as an array
   const [story, setStory] = useState([]);
   const currentUser = useSelector((store) => store.user);
+  const outOfTime = useSelector((store) => store.outOfTime);
 
   const dispatch = useDispatch();
 
@@ -34,7 +36,13 @@ function Story() {
           myText={textObject.user.id == currentUser.id}
         />
       ))}
-      <TextForm />
+      {!outOfTime ? (
+        <TextForm />
+      ) : (
+        <Box>
+          Out of time! Post story to app?<Button>POST</Button>
+        </Box>
+      )}
     </Box>
   );
 }

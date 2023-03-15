@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 
-import Timer from "./Timer/Timer";
+import TimerContainer from "./TimerContainer/TimerContainer";
 import Story from "./Story/Story";
 import TextForm from "./TextForm/TextForm";
 
@@ -61,7 +61,10 @@ function WriteStory() {
           container
         >
           <Grid item xs={10}>
-            <b>Starting new story with {partnerUser.username}</b>
+            <Box sx={{ marginBottom: "10px" }}>
+              Starting new story with {partnerUser.username}
+            </Box>
+
             <Story myTurn={myTurn} />
           </Grid>
           <Grid
@@ -76,8 +79,8 @@ function WriteStory() {
             item
             xs={2}
           >
-            <Timer />
-            <Timer myTimer={true} />
+            <TimerContainer />
+            <TimerContainer myTimer={true} />
           </Grid>
         </Grid>
       )}

@@ -78,26 +78,33 @@ io.on("connection", (socket) => {
   // });
 
   // when an invite is accepted, create a new room
-  socket.on("accept invite", (invite) => {
-    console.log("sending two users to a room, invite is:", invite);
+  socket.on("accept invite", (invite, currentStoryID) => {
+    console.log(
+      "sending two users to a room, invite is:",
+      invite,
+      "story id is:",
+      currentStoryID
+    );
     // join the socket room
     // TODO: CREATE LOGIC TO GENERATE A NEW ROOM NAME WHENEVER THIS NEXT LINE TRIGGERS
-    socket.join("test-room");
+
+    // room name can be based on story ID
+    socket.join(`room-story-id-${currentStoryID}`);
     console.log("User", invite.recipient_user_id, "joined the test room");
 
-    io.emit("accept invite", invite);
+    io.emit("accept invite", invite, currentStoryID);
   });
 
   // on room join: for user who sent the invite
-  socket.on("join room", (user) => {
-    console.log("In join room, user", user.id, "joined the test room");
-    socket.join("test-room");
+  socket.on("join room", (storyID) => {
+    console.log("In join room, joining room:", `room-story-id-${storyID}`);
+    socket.join(`room-story-id-${storyID}`);
   });
 
-  // socket.on("add text", (text, user, room) => {
-  //   console.log("received add text:", text, user, room);
-  //   io.to(room).emit("add text", text, user);
-  // });
+  socket.on("add text", (text, user, room) => {
+    console.log("received add text:", text, user, room);
+    io.to(room).emit("add text", text, user);
+  });
 });
 
 // Serve static files

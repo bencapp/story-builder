@@ -13,9 +13,9 @@ function Story() {
 
   useEffect(() => {
     // update story when text is added
-    socket.on("add text", (text, user_id) => {
-      console.log("received text from user", user_id, "text is", text);
-      setStory((story) => [...story, { text, user_id }]);
+    socket.on("add text", (text, user) => {
+      console.log("received text from user", user, "text is", text);
+      setStory((story) => [...story, { text, user }]);
     });
   }, []);
 
@@ -27,7 +27,7 @@ function Story() {
         <TextElement
           key={i}
           text={textObject.text}
-          myText={textObject.user_id == currentUser.id}
+          myText={textObject.user.id == currentUser.id}
         />
       ))}
       <TextForm />

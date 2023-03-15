@@ -11,6 +11,7 @@ function TextForm() {
 
   const currentUser = useSelector((store) => store.user);
   const currentStoryID = useSelector((store) => store.currentStoryID);
+  const firstPlayer = useSelector((store) => store.firstPlayer);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -30,7 +31,12 @@ function TextForm() {
         },
       });
       // format is emit type, text, user, room
-      socket.emit("add text", newText, currentUser, "test-room");
+      socket.emit(
+        "add text",
+        newText,
+        currentUser,
+        `room-story-id-${currentStoryID}`
+      );
       setNewText("");
     } else {
       console.log("invalid entry");

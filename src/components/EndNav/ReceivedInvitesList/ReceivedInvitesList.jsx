@@ -10,6 +10,7 @@ function ReceivedInvitesList() {
   const dispatch = useDispatch();
   const history = useHistory();
   const currentUser = useSelector((store) => store.user);
+  const currentStoryID = useSelector((store) => store.currentStoryID);
 
   useEffect(() => {
     dispatch({ type: "FETCH_ALL_USERS" });
@@ -29,10 +30,12 @@ function ReceivedInvitesList() {
     // BY ANOTHER USER
     // TODO: allow user to navigate to new story instead of
     // being immediately redirected there
-    socket.on("accept invite", (invite) => {
+    socket.on("accept invite", (invite, storyID) => {
       console.log(
         "invite accepted, joining room and rerouting. invite is",
-        invite
+        invite,
+        "storyID is",
+        storyID
       );
 
       // if user is the one who sent the invite
@@ -57,10 +60,7 @@ function ReceivedInvitesList() {
         });
       }
       // current user needs to join the room
-      socket.emit("join room", invite);
-
-      // set current story reducer to this story
-      dispatch({ type: "SET_CURRENT_STORY_ID", payload: invite.story_id });
+      socket.emit("join room", storyID);
 
       // and redirect both users to the new story page
       if (location.pathname !== "/new-story") {
@@ -70,6 +70,9 @@ function ReceivedInvitesList() {
       // fetch invites to update the DOM for the user whose invitation
       // was accepted
       dispatch({ type: "FETCH_PENDING_INVITES" });
+
+      // set current story to the new story
+      dispatch({ type: "SET_CURRENT_STORY_ID", payload: storyID });
     });
   }, [currentUser]);
 
@@ -77,27 +80,32 @@ function ReceivedInvitesList() {
   const handleAccept = (invite) => {
     // send socket message saying invite accepted
     console.log("accepting invite,", invite);
-    socket.emit("accept invite", invite);
-    history.push("/new-story");
 
     // create a new story and post it to the database
     dispatch({
       type: "POST_STORY",
       payload: {
-        title: invite.title,
-        speed_type: invite.speed_type,
-        text_type: invite.text_type,
+        story: {
+          title: invite.title,
+          speed_type: invite.speed_type,
+          text_type: invite.text_type,
+        },
+        // send the invite to the postStory saga too so that it can
+        // emit "accept invite" to the other user after the story has
+        // been posted to the database.
+        // This is necessary because the 'accept invite' socket endpoint
+        // requires the story ID so that the user can join the correct room
+        invite: invite,
       },
     });
+
+    history.push("/new-story");
 
     // remove invite from the database
     dispatch({
       type: "DELETE_INVITE",
       payload: invite.id,
     });
-
-    // set current story to the new story
-    dispatch({ type: "SET_CURRENT_STORY_ID", payload: invite.story_id });
   };
 
   return (

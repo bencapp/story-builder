@@ -14,11 +14,21 @@ router.post("/", rejectUnauthenticated, (req, res) => {
   pool
     .query(queryText, queryParams)
     .then((response) => {
-      // then, send the id of the story just added back to the client
+      // then, select the id of the story just added
       const storyIDQueryText = `SELECT currval('story_id_seq')`;
-      pool
-        .query(storyIDQueryText)
-        .then((response) => res.send(response.rows[0].currval));
+      pool.query(storyIDQueryText).then((response) => {
+        // choose either 0 or 1 at random
+        const firstPlayerInt = Math.round(Math.random());
+        console.log(
+          "chose a random number for first player, int is",
+          firstPlayerInt
+        );
+        const firstPlayer = firstPlayerInt === 0 ? "recipient" : "sender";
+        res.send({
+          currentStoryID: response.rows[0].currval,
+          firstPlayer: firstPlayer,
+        });
+      });
     })
     .catch((error) => {
       console.log("Failed to execute SQL query:", queryText, " : ", error);

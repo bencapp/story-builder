@@ -8,7 +8,7 @@ const router = express.Router();
 
 // POST endpoint for adding text elements
 router.post("/", rejectUnauthenticated, (req, res) => {
-  console.log("in post text");
+  console.log("in post text, req.body is", req.body);
   const queryText = `INSERT INTO text ("story_id", "user_id", "text", "timestamp")
                     VALUES ($1, $2, $3, current_timestamp)`;
   const queryParams = [req.body.story_id, req.body.user_id, req.body.text];

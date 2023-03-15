@@ -11,9 +11,22 @@ function TextForm() {
 
   const currentUser = useSelector((store) => store.user);
   const currentStoryID = useSelector((store) => store.currentStoryID);
+  const myTurn = useSelector((store) => store.myTurn);
+
+  // local state for displaying 'not your turn' message
+  const [notYourTurnDisplay, setNotYourTurnDisplay] = useState();
 
   const handleSubmit = (event) => {
     event.preventDefault();
+
+    if (!myTurn) {
+      setNotYourTurnDisplay(true);
+      setTimeout(() => {
+        setNotYourTurnDisplay(false);
+      }, 1000);
+      return;
+    }
+
     console.log("in handleSubmit, newText is", newText);
     // check if text is a valid entry. for base mode, only single words are valid
     const regex = new RegExp("^[A-Za-z'\".!?;:]+$");
@@ -43,14 +56,16 @@ function TextForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form id="new-text-form" onSubmit={handleSubmit}>
       <input
         id="next-word-input"
+        className={notYourTurnDisplay ? "invalid" : "valid"}
         onSubmit={handleSubmit}
         value={newText}
         onChange={(e) => setNewText(e.target.value)}
         placeholder="Next Word"
       ></input>
+      {notYourTurnDisplay && <div id="not-your-turn-text">Not your turn!</div>}
       {/* <button type="submit">SUBMIT</button> */}
     </form>
   );

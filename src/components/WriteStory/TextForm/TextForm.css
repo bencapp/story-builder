@@ -1,9 +1,16 @@
 #next-word-input {
   height: 34px;
-  width: 100px;
+  width: 125px;
   background-color: #e9e2d8;
   border: 1px solid black;
   font-size: large;
+}
+
+/* change color of text field if user tries to type word not on their turn */
+.invalid,
+.invalid:focus {
+  border: 1px solid rgb(255, 59, 33) !important;
+  background-color: rgb(226, 94, 70) !important;
 }
 
 #next-word-input:focus {
@@ -11,4 +18,14 @@
   border: 1px solid blue;
   box-shadow: none;
   background-color: #faf3ea;
+}
+
+#not-your-turn-text {
+  font-size: small;
+}
+
+#new-text-form {
+  display: flex;
+  align-items: end;
+  gap: 5px;
 }

@@ -17,7 +17,7 @@ function WriteStory() {
   // partner user
   // format is {id, username}
   const partnerUser = useSelector((store) => store.partnerUser);
-  const firstPlayer = useSelector((store) => store.firstPlayer);
+  const firstPlayerID = useSelector((store) => store.firstPlayerID);
 
   // local state variable for whose turn it is to write
   const myTurn = useSelector((store) => store.myTurn);
@@ -25,13 +25,24 @@ function WriteStory() {
   //   const [room, setRoom] = useState();
 
   useEffect(() => {
+    // check if firstPlayerID has been set. if not, set it to partner user
+    // (firstPlayerID is set in story POST, which happens on the invite recipient's client)
+    if (!firstPlayerID) {
+      console.log(
+        "setting first player ID to opponent, partnerUser.id is",
+        partnerUser.id
+      );
+      const partnerUserID = partnerUser.id ? partnerUser.id : null;
+      dispatch({ type: "SET_FIRST_PLAYER_ID", payload: partnerUserID });
+    }
+
     // On page load, set myTurn based on value of firstPlayer
     // if my partner is the first player, I am not
     console.log(
       "partner user is",
       partnerUser.inviteSide,
       "firstPlayer is",
-      firstPlayer
+      firstPlayerID
     );
     // for now, set recipient to the first player
 
@@ -64,8 +75,8 @@ function WriteStory() {
             <Box sx={{ marginBottom: "10px" }}>
               Starting new story with {partnerUser.username}
             </Box>
-
-            <Story myTurn={myTurn} />
+            {/* wait for story post to complete before starting */}
+            {!firstPlayerID ? <h3>Loading...</h3> : <Story myTurn={myTurn} />}
           </Grid>
           <Grid
             sx={{

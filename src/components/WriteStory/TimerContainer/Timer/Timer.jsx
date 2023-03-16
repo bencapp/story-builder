@@ -12,21 +12,21 @@ function Timer({ myTimer }) {
 
   useEffect(() => {
     // for starting player, begin clock
-    if ((myTurn && myTimer) || (!myTurn && !myTimer)) {
-      let myInterval = setInterval(() => {
-        if (seconds > 0) {
-          setSeconds(seconds - 1);
-        }
-        // if seconds is a 0
-        else {
-          clearInterval(myInterval);
-          dispatch({ type: "SET_OUT_OF_TIME", payload: true });
-        }
-      }, 1000);
-      return () => {
-        clearInterval(myInterval);
-      };
-    }
+    // if ((myTurn && myTimer) || (!myTurn && !myTimer)) {
+    // let myInterval = setInterval(() => {
+    //   if (seconds > 0) {
+    //     setSeconds(seconds - 1);
+    //   }
+    //   // if seconds is a 0
+    //   else {
+    //     clearInterval(myInterval);
+    //     dispatch({ type: "SET_OUT_OF_TIME", payload: true });
+    //   }
+    // }, 1000);
+    // return () => {
+    //   clearInterval(myInterval);
+    // };
+    // };
   });
 
   return (

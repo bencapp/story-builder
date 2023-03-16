@@ -85,9 +85,8 @@ io.on("connection", (socket) => {
       "story id is:",
       currentStoryID
     );
-    // join the socket room
-    // TODO: CREATE LOGIC TO GENERATE A NEW ROOM NAME WHENEVER THIS NEXT LINE TRIGGERS
 
+    // join the socket room
     // room name can be based on story ID
     socket.join(`room-story-id-${currentStoryID}`);
     console.log("User", invite.recipient_user_id, "joined the test room");
@@ -101,9 +100,66 @@ io.on("connection", (socket) => {
     socket.join(`room-story-id-${storyID}`);
   });
 
-  socket.on("add text", (text, user, room) => {
-    console.log("received add text:", text, user, room);
-    io.to(room).emit("add text", text, user);
+  // variable storing whose turn it is
+  // user1 is the first player on the client side, identified
+  // by firstPlayerID
+
+  socket.on("start clock", (user1ID, user2ID, storyID, firstPlayerID) => {
+    const room = `room-story-id-${storyID}`;
+    console.log("starting clock in room", room);
+
+    // start interval only if the user is user1
+    // otherwise, we will have two clocks going
+    console.log(
+      "about to start timer, user1ID is",
+      user1ID,
+      "firstPlayerID is",
+      firstPlayerID
+    );
+
+    // the id of the user whose turn it is
+    let userTurnID;
+
+    // create socket listener for both players
+    socket.on("add text", (text, user, room) => {
+      console.log("received add text:", text, user, room);
+      userTurnID = user.id;
+      console.log("toggled userTurn, it is", userTurnID + "'s turn");
+      // io.to(room).emit("add text", text, user);
+    });
+
+    if (user1ID == firstPlayerID) {
+      // set initial turn toggle value
+      userTurnID = user1ID;
+      // timer countdown functionality
+      // declare starting time for each user. TODO: modulate
+      // based on story parameters
+      // 30,000 milliseconds = 30 seconds
+      let user1Milliseconds = 10000;
+      let user2Milliseconds = 10000;
+
+      let myInterval = setInterval(() => {
+        // decrease time for the user whose turn it is
+        console.log("in interval, it is", userTurnID + "'s turn");
+        if (userTurnID == user1ID) {
+          if (user1Milliseconds > 0) {
+            user1Milliseconds -= 100;
+            io.to(room).emit("update time", user1ID, user1Milliseconds);
+          } else {
+            clearInterval(myInterval);
+          }
+        }
+        // if it is user2's turn
+        else {
+          if (user2Milliseconds > 0) {
+            user2Milliseconds -= 100;
+            io.to(room).emit("update time", user2ID, user2Milliseconds);
+          } else {
+            clearInterval(myInterval);
+          }
+        }
+      }, 100);
+    }
   });
 });
 

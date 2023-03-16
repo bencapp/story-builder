@@ -10,12 +10,14 @@ const router = express.Router();
 router.post("/", rejectUnauthenticated, (req, res) => {
   console.log("in post text, req.body is", req.body);
   const queryText = `INSERT INTO text ("story_id", "user_id", "text", "timestamp")
-                    VALUES ($1, $2, $3, current_timestamp)`;
+                     VALUES ($1, $2, $3, current_timestamp)`;
   const queryParams = [req.body.story_id, req.body.user_id, req.body.text];
   pool
     .query(queryText, queryParams)
     .then(() => {
-      req.io.to("test-room").emit("add text", req.body.text, req.body.user_id);
+      req.io
+        .to(`room-story-id-${req.body.story_id}`)
+        .emit("add text", req.body.text, req.body.user_id);
       res.sendStatus(204);
     })
     .catch((error) => {

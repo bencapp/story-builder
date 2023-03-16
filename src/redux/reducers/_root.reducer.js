@@ -7,7 +7,7 @@ import pendingInvites from "./pendingInvites.reducer";
 import invitedUser from "./invitedUser.reducer";
 import partnerUser from "./partnerUser.reducer";
 import currentStoryID from "./currentStoryID.reducer";
-import firstPlayer from "./firstPlayer.reducer";
+import firstPlayerID from "./firstPlayerID.reducer";
 import myTurn from "./myTurn.reducer";
 import outOfTime from "./outOfTime.reducer";
 
@@ -26,7 +26,7 @@ const rootReducer = combineReducers({
   invitedUser,
   partnerUser,
   currentStoryID,
-  firstPlayer,
+  firstPlayerID,
   myTurn,
   outOfTime,
 });

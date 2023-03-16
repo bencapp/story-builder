@@ -43,6 +43,7 @@ function TextForm() {
         },
       });
       // format is emit type, text, user, room
+      // THIS EMIT IS NOT BEING READ
       socket.emit(
         "add text",
         newText,

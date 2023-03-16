@@ -1,8 +1,8 @@
 // this reducer is just for storing which user will go first
 // options are either 'recipient' or 'sender'
-const firstPlayer = (state = "", action) => {
+const firstPlayerID = (state = "", action) => {
   switch (action.type) {
-    case "SET_FIRST_PLAYER":
+    case "SET_FIRST_PLAYER_ID":
       return action.payload;
     default:
       return state;
@@ -11,4 +11,4 @@ const firstPlayer = (state = "", action) => {
 
 // user will be on the redux state at:
 // state.user
-export default firstPlayer;
+export default firstPlayerID;

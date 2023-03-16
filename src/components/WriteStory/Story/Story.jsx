@@ -10,6 +10,7 @@ import TextForm from "../TextForm/TextForm";
 function Story() {
   // full story, store as an array
   const [story, setStory] = useState([]);
+
   const currentUser = useSelector((store) => store.user);
   const outOfTime = useSelector((store) => store.outOfTime);
   const partnerUser = useSelector((store) => store.partnerUser);
@@ -38,16 +39,6 @@ function Story() {
       setStory((story) => [...story, { text, user }]);
       // change whose turn it is
       dispatch({ type: "TOGGLE_MY_TURN" });
-    });
-
-    // on time change, update the corresponding clock
-    // if current user is not the user to update, userID will be null
-    socket.on("update time", (userID, userMilliseconds) => {
-      if (userID == currentUser.id) {
-        console.log("updated my time, time is", userMilliseconds);
-      } else {
-        console.log("updated partner time, time is", userMilliseconds);
-      }
     });
   }, []);
 

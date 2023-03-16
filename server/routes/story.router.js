@@ -23,10 +23,17 @@ const router = express.Router();
 //   }
 // },
 router.post("/", rejectUnauthenticated, async (req, res) => {
+  // choose a random player to go first
+  const user1ID = req.body.invite.sender_user_id;
+  const user2ID = req.body.invite.recipient_user_id;
+
+  const firstPlayerInt = Math.round(Math.random());
+  const firstPlayerID = firstPlayerInt === 0 ? user1ID : user2ID;
+
   // first, insert into the story table
-  const storyQueryText = `INSERT INTO "story" ("title", "speed_type", "length_type")
-    VALUES ($1, 'default', 'default')`;
-  const storyQueryParams = [req.body.story.title];
+  const storyQueryText = `INSERT INTO "story" ("title", "speed_type", "length_type", "current_user_turn_id")
+    VALUES ($1, 'default', 'default', $2)`;
+  const storyQueryParams = [req.body.story.title, firstPlayerID];
 
   console.log("Posting story");
 
@@ -46,14 +53,8 @@ router.post("/", rejectUnauthenticated, async (req, res) => {
     // define the relationship
     const userStoryQueryText = `INSERT INTO "user_story" ("user_id", "story_id")
                                 VALUES ($1, $2)`;
-    const user1ID = req.body.invite.sender_user_id;
-    const user2ID = req.body.invite.recipient_user_id;
     await connection.query(userStoryQueryText, [user1ID, currentStoryID]);
     await connection.query(userStoryQueryText, [user2ID, currentStoryID]);
-
-    // finally, choose a random player to go first
-    const firstPlayerInt = Math.round(Math.random());
-    const firstPlayerID = firstPlayerInt === 0 ? user1ID : user2ID;
 
     res.send({
       currentStoryID,
@@ -90,6 +91,18 @@ router.post("/", rejectUnauthenticated, async (req, res) => {
   //     console.log("Failed to execute SQL query:", queryText, " : ", error);
   //     res.sendStatus(500);
   //   });
+});
+
+router.get("/turn/:storyID", rejectUnauthenticated, (req, res) => {
+  const queryText = `SELECT current_user_turn_id FROM story WHERE id = $1`;
+  const queryParams = [req.params.storyID];
+  pool
+    .query(queryText, queryParams)
+    .then((result) => res.send(result.rows))
+    .catch((error) => {
+      console.log("Failed to execute SQL query:", queryText, " : ", error);
+      res.sendStatus(500);
+    });
 });
 
 module.exports = router;

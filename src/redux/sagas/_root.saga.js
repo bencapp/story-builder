@@ -5,6 +5,7 @@ import userSaga from "./user.saga";
 import inviteSaga from "./invite.saga";
 import storySaga from "./story.saga";
 import textSaga from "./text.saga";
+import turnSaga from "./turn.saga";
 
 // rootSaga is the primary saga.
 // It bundles up all of the other sagas so our project can use them.
@@ -21,5 +22,6 @@ export default function* rootSaga() {
     inviteSaga(),
     storySaga(),
     textSaga(),
+    turnSaga(),
   ]);
 }

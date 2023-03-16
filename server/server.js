@@ -109,22 +109,17 @@ io.on("connection", (socket) => {
   // user1 is the first player on the client side, identified
   // by firstPlayerID
 
-  socket.on("start clock", (user1ID, user2ID, storyID, firstPlayerID) => {
+  socket.on("start clock", (user1ID, user2ID, storyID) => {
     const room = `room-story-id-${storyID}`;
     console.log("starting clock in room", room);
 
     // start interval only if the user is user1
     // otherwise, we will have two clocks going
-    console.log(
-      "about to start timer, user1ID is",
-      user1ID,
-      "firstPlayerID is",
-      firstPlayerID
-    );
 
     // create socket listener for both players
-    socket.on("add text", (text, partnerUser, room) => {
-      console.log("received add text:", text, partnerUser, room);
+    socket.on("add text", (text, currentUser, partnerUser, room) => {
+      console.log("received add text:", text, currentUser, room);
+      console.log("in add text, partnerUser is", partnerUser);
       // set turn toggle to the user who did NOT just add text
       const toggleTurnQueryText = `UPDATE story SET current_user_turn_id = $1 WHERE id = $2`;
       const toggleTurnQueryParams = [partnerUser.id, storyID];
@@ -148,13 +143,20 @@ io.on("connection", (socket) => {
       user2ID
     );
 
-    if (user1ID == firstPlayerID) {
-      // set initial turn toggle value
-      const setInitialTurnQueryText = `UPDATE story SET current_user_turn_id = $1 WHERE id = $2`;
-      const setInitialTurnQueryParams = [user1ID, storyID];
-      pool
-        .query(setInitialTurnQueryText, setInitialTurnQueryParams)
-        .then(() => {
+    // get starting player ID from the database
+    const getInitialTurnQueryText = `SELECT current_user_turn_id FROM story WHERE id = $1`;
+    const getInitialTurnQueryParams = [storyID];
+    pool
+      .query(getInitialTurnQueryText, getInitialTurnQueryParams)
+      .then((result) => {
+        const startingPlayerID = result.rows[0].current_user_turn_id;
+        console.log(
+          "got starting player, startingPlayerID is",
+          startingPlayerID
+        );
+
+        // only start interval once
+        if (user1ID == startingPlayerID) {
           // timer countdown functionality
           // declare starting time for each user. TODO: modulate
           // based on story parameters
@@ -191,26 +193,18 @@ io.on("connection", (socket) => {
                     clearInterval(myInterval);
                   }
                 }
-              })
-              .catch((error) => {
-                console.log(
-                  "Failed to execute SQL query:",
-                  getUserTurnQueryText,
-                  " : ",
-                  error
-                );
               });
           }, 100);
-        })
-        .catch((error) => {
-          console.log(
-            "Failed to execute SQL query:",
-            setInitialTurnQueryText,
-            " : ",
-            error
-          );
-        });
-    }
+        }
+      })
+      .catch((error) => {
+        console.log(
+          "Failed to execute SQL query:",
+          setInitialTurnQueryText,
+          " : ",
+          error
+        );
+      });
   });
 });
 

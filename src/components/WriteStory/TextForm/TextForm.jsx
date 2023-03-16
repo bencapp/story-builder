@@ -48,6 +48,7 @@ function TextForm() {
       socket.emit(
         "add text",
         newText,
+        currentUser,
         partnerUser,
         `room-story-id-${currentStoryID}`
       );

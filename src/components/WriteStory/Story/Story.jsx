@@ -7,12 +7,12 @@ import { socket } from "../../../socket";
 import TextElement from "../TextElement/TextElement";
 import TextForm from "../TextForm/TextForm";
 
-function Story() {
+function Story({ outOfTime }) {
   // full story, store as an array
   const [story, setStory] = useState([]);
 
   const currentUser = useSelector((store) => store.user);
-  const outOfTime = useSelector((store) => store.outOfTime);
+  // const outOfTime = useSelector((store) => store.outOfTime);
   const partnerUser = useSelector((store) => store.partnerUser);
   const currentStoryID = useSelector((store) => store.currentStoryID);
   const firstPlayerID = useSelector((store) => store.firstPlayerID);

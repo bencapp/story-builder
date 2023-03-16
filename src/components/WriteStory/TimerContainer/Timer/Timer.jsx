@@ -3,7 +3,7 @@ import { Box } from "@mui/system";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-function Timer({ myTimer }) {
+function Timer({ myTimer, time }) {
   const [seconds, setSeconds] = useState(30);
   const myTurn = useSelector((store) => store.myTurn);
   const outOfTime = useSelector((store) => store.outOfTime);
@@ -42,7 +42,12 @@ function Timer({ myTimer }) {
         fontSize: "35px",
       }}
     >
-      0:{seconds >= 10 ? seconds : "0" + seconds}
+      0:
+      {time !== undefined
+        ? time >= 10000
+          ? Math.round(time / 1000)
+          : "0" + Math.round(time / 1000)
+        : 30}
     </Box>
   );
 }

@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 
 import Timer from "./Timer/Timer";
 
-function TimerContainer({ myTimer }) {
+function TimerContainer({ myTimer, time }) {
   const currentUser = useSelector((store) => store.user);
   const partnerUser = useSelector((store) => store.partnerUser);
   const myTurn = useSelector((store) => store.myTurn);
@@ -38,7 +38,7 @@ function TimerContainer({ myTimer }) {
         ></Box>
         {myTimer ? currentUser.username : partnerUser.username}
       </Box>
-      <Timer myTimer={myTimer} />
+      <Timer myTimer={myTimer} time={time}/>
     </Box>
   );
 }

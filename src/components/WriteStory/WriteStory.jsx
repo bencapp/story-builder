@@ -9,6 +9,8 @@ import theme from "../Theme/Theme";
 
 import { Grid, Box } from "@mui/material";
 
+import { socket } from "../../socket";
+
 function WriteStory() {
   // current user
   const currentUser = useSelector((store) => store.user);
@@ -23,6 +25,9 @@ function WriteStory() {
   // time remaining for each player, in milliseconds
   const [myTime, setMyTime] = useState();
   const [partnerTime, setPartnerTime] = useState();
+
+  // local state for whether anyone's time is out
+  const [outOfTime, setOutOfTime] = useState(false);
 
   // local state variable for whose turn it is to write
   const myTurn = useSelector((store) => store.myTurn);
@@ -45,6 +50,10 @@ function WriteStory() {
         setMyTime(userMilliseconds);
       } else {
         setPartnerTime(userMilliseconds);
+      }
+      // when a player runs out of time, set local state variable
+      if (userMilliseconds === 0) {
+        setOutOfTime(true);
       }
     });
   }, []);
@@ -74,7 +83,7 @@ function WriteStory() {
             </Box>
             {/* wait for story post to complete before starting */}
             {/* {!firstPlayerID ? <h3>Loading...</h3> : <Story myTurn={myTurn} />} */}
-            <Story myTurn={myTurn} />
+            <Story myTurn={myTurn} outOfTime={outOfTime} />
           </Grid>
           <Grid
             sx={{
@@ -88,8 +97,8 @@ function WriteStory() {
             item
             xs={2}
           >
-            <TimerContainer />
-            <TimerContainer myTimer={true} />
+            <TimerContainer time={partnerTime} />
+            <TimerContainer myTimer={true} time={myTime} />
           </Grid>
         </Grid>
       )}

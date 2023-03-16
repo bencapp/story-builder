@@ -39,6 +39,11 @@ app.use(sessionMiddleware);
 app.use(passport.initialize());
 app.use(passport.session());
 
+const {
+  rejectUnauthenticated,
+} = require("./modules/authentication-middleware");
+const pool = require("./modules/pool");
+
 // assign io object to the invite router. That way, we can call the
 // socket functions within express endpoints.
 // middleware
@@ -117,48 +122,94 @@ io.on("connection", (socket) => {
       firstPlayerID
     );
 
-    // the id of the user whose turn it is
-    let userTurnID;
-
     // create socket listener for both players
-    socket.on("add text", (text, user, room) => {
-      console.log("received add text:", text, user, room);
-      userTurnID = user.id;
-      console.log("toggled userTurn, it is", userTurnID + "'s turn");
-      // io.to(room).emit("add text", text, user);
+    socket.on("add text", (text, partnerUser, room) => {
+      console.log("received add text:", text, partnerUser, room);
+      // set turn toggle to the user who did NOT just add text
+      const toggleTurnQueryText = `UPDATE story SET current_user_turn_id = $1 WHERE id = $2`;
+      const toggleTurnQueryParams = [partnerUser.id, storyID];
+      pool
+        .query(toggleTurnQueryText, toggleTurnQueryParams)
+        .then()
+        .catch((error) => {
+          console.log(
+            "Failed to execute SQL query:",
+            toggleTurnQueryText,
+            " : ",
+            error
+          );
+        });
     });
+
+    console.log(
+      "about to start interval, user1ID is",
+      user1ID,
+      "user2ID is",
+      user2ID
+    );
 
     if (user1ID == firstPlayerID) {
       // set initial turn toggle value
-      userTurnID = user1ID;
-      // timer countdown functionality
-      // declare starting time for each user. TODO: modulate
-      // based on story parameters
-      // 30,000 milliseconds = 30 seconds
-      let user1Milliseconds = 10000;
-      let user2Milliseconds = 10000;
+      const setInitialTurnQueryText = `UPDATE story SET current_user_turn_id = $1 WHERE id = $2`;
+      const setInitialTurnQueryParams = [user1ID, storyID];
+      pool
+        .query(setInitialTurnQueryText, setInitialTurnQueryParams)
+        .then(() => {
+          // timer countdown functionality
+          // declare starting time for each user. TODO: modulate
+          // based on story parameters
+          // 30,000 milliseconds = 30 seconds
+          let user1Milliseconds = 10000;
+          let user2Milliseconds = 10000;
 
-      let myInterval = setInterval(() => {
-        // decrease time for the user whose turn it is
-        console.log("in interval, it is", userTurnID + "'s turn");
-        if (userTurnID == user1ID) {
-          if (user1Milliseconds > 0) {
-            user1Milliseconds -= 100;
-            io.to(room).emit("update time", user1ID, user1Milliseconds);
-          } else {
-            clearInterval(myInterval);
-          }
-        }
-        // if it is user2's turn
-        else {
-          if (user2Milliseconds > 0) {
-            user2Milliseconds -= 100;
-            io.to(room).emit("update time", user2ID, user2Milliseconds);
-          } else {
-            clearInterval(myInterval);
-          }
-        }
-      }, 100);
+          let myInterval = setInterval(() => {
+            let userTurnID;
+            // get current user turn
+            const getUserTurnQueryText = `SELECT current_user_turn_id FROM story WHERE id = $1`;
+            const getUserTurnQueryParams = [storyID];
+            pool
+              .query(getUserTurnQueryText, getUserTurnQueryParams)
+              .then((result) => {
+                userTurnID = result.rows[0].current_user_turn_id;
+                console.log("got user turn, it is", userTurnID + "'s turn");
+                // decrease time for the user whose turn it is
+                console.log("in interval, it is", userTurnID + "'s turn");
+                if (userTurnID == user1ID) {
+                  if (user1Milliseconds > 0) {
+                    user1Milliseconds -= 100;
+                    io.to(room).emit("update time", user1ID, user1Milliseconds);
+                  } else {
+                    clearInterval(myInterval);
+                  }
+                }
+                // if it is user2's turn
+                else {
+                  if (user2Milliseconds > 0) {
+                    user2Milliseconds -= 100;
+                    io.to(room).emit("update time", user2ID, user2Milliseconds);
+                  } else {
+                    clearInterval(myInterval);
+                  }
+                }
+              })
+              .catch((error) => {
+                console.log(
+                  "Failed to execute SQL query:",
+                  getUserTurnQueryText,
+                  " : ",
+                  error
+                );
+              });
+          }, 100);
+        })
+        .catch((error) => {
+          console.log(
+            "Failed to execute SQL query:",
+            setInitialTurnQueryText,
+            " : ",
+            error
+          );
+        });
     }
   });
 });

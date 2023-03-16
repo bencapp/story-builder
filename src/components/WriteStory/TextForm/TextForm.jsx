@@ -12,6 +12,7 @@ function TextForm() {
   const currentUser = useSelector((store) => store.user);
   const currentStoryID = useSelector((store) => store.currentStoryID);
   const myTurn = useSelector((store) => store.myTurn);
+  const partnerUser = useSelector((store) => store.partnerUser);
 
   // local state for displaying 'not your turn' message
   const [notYourTurnDisplay, setNotYourTurnDisplay] = useState();
@@ -47,7 +48,7 @@ function TextForm() {
       socket.emit(
         "add text",
         newText,
-        currentUser,
+        partnerUser,
         `room-story-id-${currentStoryID}`
       );
       setNewText("");

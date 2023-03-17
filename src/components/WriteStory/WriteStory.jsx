@@ -56,7 +56,7 @@ function WriteStory() {
         setOutOfTime(true);
       }
     });
-  }, []);
+  }, [currentStoryID]);
 
   return (
     <>

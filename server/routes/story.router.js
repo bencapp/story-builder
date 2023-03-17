@@ -82,4 +82,19 @@ router.get("/turn/:storyID", rejectUnauthenticated, (req, res) => {
     });
 });
 
+// PUT endpoint for making a story public
+router.put("/public/:storyID", rejectUnauthenticated, (req, res) => {
+  const queryText = `UPDATE story SET public = true WHERE id = $1`;
+  const queryParams = [req.params.storyID];
+  pool
+    .query(queryText, queryParams)
+    .then(() => {
+      res.sendStatus(204);
+    })
+    .catch((error) => {
+      console.log("Failed to execute SQL query:", queryText, " : ", error);
+      res.sendStatus(500);
+    });
+});
+
 module.exports = router;

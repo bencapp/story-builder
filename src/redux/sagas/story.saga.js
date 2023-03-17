@@ -27,8 +27,17 @@ function* postStory(action) {
   }
 }
 
+function* makeStoryPublic(action) {
+  try {
+    yield axios.put(`/api/story/public/${action.payload}`);
+  } catch (error) {
+    console.log("Story PUT request failed", error);
+  }
+}
+
 function* storySaga() {
   yield takeEvery("POST_STORY", postStory);
+  yield takeEvery("MAKE_STORY_PUBLIC", makeStoryPublic);
 }
 
 export default storySaga;

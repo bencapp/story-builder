@@ -40,9 +40,11 @@ function Story({ outOfTime }) {
       // change whose turn it is
       dispatch({ type: "TOGGLE_MY_TURN" });
     });
-  }, []);
+  }, [currentStoryID]);
 
-  const handleUpdatePublic = () => {};
+  const handleSetPublic = () => {
+    dispatch({ type: "MAKE_STORY_PUBLIC", payload: currentStoryID });
+  };
 
   return (
     <Box
@@ -59,8 +61,8 @@ function Story({ outOfTime }) {
         <TextForm />
       ) : (
         <Box>
-          Out of time! Click to make the story public.
-          <Button onClick={handleUpdatePublic}></Button>
+          Out of time! Click submit to make the story public.
+          <Button onClick={handleSetPublic}>SUBMIT</Button>
         </Box>
       )}
     </Box>

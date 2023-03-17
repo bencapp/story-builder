@@ -157,6 +157,8 @@ io.on("connection", (socket) => {
               .then((result) => {
                 userTurnID = result.rows[0].current_user_turn_id;
 
+                console.log("counting, it is user", userTurnID + "'s turn");
+
                 // decrease time for the user whose turn it is
                 if (userTurnID == user1ID) {
                   if (user1Milliseconds > 0) {

@@ -13,6 +13,7 @@ function Story({ outOfTime }) {
 
   // local state for whether partner has made the story public
   const [displayStoryPublicized, setDisplayStoryPublicized] = useState(false);
+  const [displaySelfPublicized, setDisplaySelfPublicized] = useState(false);
 
   const currentUser = useSelector((store) => store.user);
   // const outOfTime = useSelector((store) => store.outOfTime);
@@ -49,6 +50,8 @@ function Story({ outOfTime }) {
     socket.on("make story public", (senderUserID) => {
       if (senderUserID !== currentUser.id) {
         setDisplayStoryPublicized(true);
+      } else {
+        setDisplaySelfPublicized(true);
       }
       setTimeout(() => {
         window.location.reload(false);
@@ -74,13 +77,15 @@ function Story({ outOfTime }) {
       ))}
       {!outOfTime ? (
         <TextForm />
-      ) : !displayStoryPublicized ? (
+      ) : displayStoryPublicized ? (
+        <Box>Your collaborator has made the story public. Rerouting...</Box>
+      ) : displaySelfPublicized ? (
+        <Box>You made the story public! Rerouting...</Box>
+      ) : (
         <Box>
           Out of time! Click submit to make the story public.
           <Button onClick={handleSetPublic}>SUBMIT</Button>
         </Box>
-      ) : (
-        <Box>Your collaborator has made the story public. Rerouting...</Box>
       )}
     </Box>
   );

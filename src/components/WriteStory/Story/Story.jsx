@@ -50,6 +50,9 @@ function Story({ outOfTime }) {
       if (senderUserID !== currentUser.id) {
         setDisplayStoryPublicized(true);
       }
+      setTimeout(() => {
+        window.location.reload(false);
+      }, 1500);
     });
   }, [currentStoryID]);
 

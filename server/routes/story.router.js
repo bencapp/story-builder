@@ -67,32 +67,9 @@ router.post("/", rejectUnauthenticated, async (req, res) => {
   } finally {
     connection.release();
   }
-  // OLD VERSION OF STORY POST USING .then()
-  // pool
-  //   .query(queryText, queryParams)
-  //   .then((response) => {
-  //     // then, select the id of the story just added
-  //     const storyIDQueryText = `SELECT currval('story_id_seq')`;
-  //     pool.query(storyIDQueryText).then((response) => {
-  //       // choose either 0 or 1 at random
-  //       const firstPlayerInt = Math.round(Math.random());
-  //       console.log(
-  //         "chose a random number for first player, int is",
-  //         firstPlayerInt
-  //       );
-  //       const firstPlayer = firstPlayerInt === 0 ? "recipient" : "sender";
-  //       res.send({
-  //         currentStoryID: response.rows[0].currval,
-  //         firstPlayer: firstPlayer,
-  //       });
-  //     });
-  //   })
-  //   .catch((error) => {
-  //     console.log("Failed to execute SQL query:", queryText, " : ", error);
-  //     res.sendStatus(500);
-  //   });
 });
 
+// GET endpoint for checking whose turn it is in a story
 router.get("/turn/:storyID", rejectUnauthenticated, (req, res) => {
   const queryText = `SELECT current_user_turn_id FROM story WHERE id = $1`;
   const queryParams = [req.params.storyID];

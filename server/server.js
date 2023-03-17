@@ -98,9 +98,6 @@ io.on("connection", (socket) => {
     const room = `room-story-id-${storyID}`;
     console.log("starting clock in room", room);
 
-    // start interval only if the user is user1
-    // otherwise, we will have two clocks going
-
     // create socket listener for both players
     socket.on("add text", (text, currentUser, partnerUser, room) => {
       console.log("received add text:", text, currentUser, room);
@@ -140,14 +137,15 @@ io.on("connection", (socket) => {
           startingPlayerID
         );
 
-        // only start interval once
+        // start interval only if the user is user1
+        // otherwise, we will have two clocks going
         if (user1ID == startingPlayerID) {
           // timer countdown functionality
           // declare starting time for each user. TODO: modulate
           // based on story parameters
           // 30,000 milliseconds = 30 seconds
-          let user1Milliseconds = 12000;
-          let user2Milliseconds = 12000;
+          let user1Milliseconds = 30000;
+          let user2Milliseconds = 30000;
 
           let myInterval = setInterval(() => {
             let userTurnID;
@@ -158,9 +156,8 @@ io.on("connection", (socket) => {
               .query(getUserTurnQueryText, getUserTurnQueryParams)
               .then((result) => {
                 userTurnID = result.rows[0].current_user_turn_id;
-                console.log("got user turn, it is", userTurnID + "'s turn");
+
                 // decrease time for the user whose turn it is
-                console.log("in interval, it is", userTurnID + "'s turn");
                 if (userTurnID == user1ID) {
                   if (user1Milliseconds > 0) {
                     user1Milliseconds -= 100;
@@ -185,7 +182,7 @@ io.on("connection", (socket) => {
       .catch((error) => {
         console.log(
           "Failed to execute SQL query:",
-          setInitialTurnQueryText,
+          getInitialTurnQueryText,
           " : ",
           error
         );

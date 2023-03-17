@@ -42,6 +42,8 @@ function Story({ outOfTime }) {
     });
   }, []);
 
+  const handleUpdatePublic = () => {};
+
   return (
     <Box
       sx={{ fontSize: "25px", display: "flex", flexWrap: "wrap", gap: "5px" }}
@@ -57,7 +59,8 @@ function Story({ outOfTime }) {
         <TextForm />
       ) : (
         <Box>
-          Out of time! Post story to app?<Button>POST</Button>
+          Out of time! Click to make the story public.
+          <Button onClick={handleUpdatePublic}></Button>
         </Box>
       )}
     </Box>

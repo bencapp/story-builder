@@ -1,9 +1,18 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import { useEffect } from "react";
 
-function UserPage() {
+function MainFeed() {
   // this component doesn't do much to start, just renders some user reducer info to the DOM
   const user = useSelector((store) => store.user);
+
+  const allStories = useSelector((store) => store.allStories);
+
+  useEffect(() => {
+    // on load, get all stories from the database.
+    // all stories is an array stored in the allStories reducer
+    dispatch({ type: "FETCH_ALL_STORIES" });
+  }, []);
 
   return (
     <div className="container">
@@ -17,4 +26,4 @@ function UserPage() {
 }
 
 // this allows us to use <App /> in index.js
-export default UserPage;
+export default MainFeed;

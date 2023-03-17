@@ -17,13 +17,13 @@ import Nav from "../Nav/Nav";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 
 import AboutPage from "../AboutPage/AboutPage";
-import UserPage from "../UserPage/UserPage";
 import LandingPage from "../LandingPage/LandingPage";
 import LoginPage from "../LoginPage/LoginPage";
 import WriteStory from "../WriteStory/WriteStory";
 import RegisterPage from "../RegisterPage/RegisterPage";
 import EndNav from "../EndNav/EndNav";
 import NewInvitation from "../NewInvitation/NewInvitation";
+import MainFeed from "../MainFeed/MainFeed";
 
 import "./App.css";
 
@@ -71,7 +71,7 @@ function App() {
               exact
               path="/user"
             >
-              <UserPage />
+              <MainFeed />
             </ProtectedRoute>
 
             <ProtectedRoute

@@ -65,7 +65,9 @@ function WriteStory() {
       </Box>
 
       {!partnerUser ? (
-        <p>Invite pending.</p>
+        <p>
+          There's no story being written! Invite someone to start one with you.
+        </p>
       ) : (
         <Grid
           sx={{

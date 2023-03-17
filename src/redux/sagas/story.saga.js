@@ -35,6 +35,8 @@ function* makeStoryPublic(action) {
   }
 }
 
+function* 
+
 function* storySaga() {
   yield takeEvery("POST_STORY", postStory);
   yield takeEvery("MAKE_STORY_PUBLIC", makeStoryPublic);

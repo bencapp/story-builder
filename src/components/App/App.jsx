@@ -39,16 +39,11 @@ function App() {
 
   return (
     <Router>
-      <Grid
-        sx={{ backgroundColor: theme.palette.tertiary.main }}
-        container
-        direction="row"
-        id="app-container"
-      >
-        <Grid item xs={2}>
+      <Grid container direction="row" id="app-container">
+        <Grid item xs={2} sx={{ display: "flex" }}>
           <Nav />
         </Grid>
-        <Grid item xs={8}>
+        <Grid item xs={8} sx={{ backgroundColor: theme.palette.tertiary.main }}>
           <Switch>
             {/* Visiting localhost:3000 will redirect to localhost:3000/home */}
             <Redirect exact from="/" to="/home" />

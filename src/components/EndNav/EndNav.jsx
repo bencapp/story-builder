@@ -14,7 +14,13 @@ function EndNav() {
   const theme = useTheme();
 
   return (
-    <Box sx={{ backgroundColor: theme.palette.primary.main }} className="nav">
+    <Box
+      sx={{
+        backgroundColor: theme.palette.primary.main,
+        // width: "100%",
+      }}
+      className="nav"
+    >
       <UsersList />
       <ReceivedInvitesList />
       <SentInvitesList />

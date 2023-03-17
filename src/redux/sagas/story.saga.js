@@ -35,11 +35,19 @@ function* makeStoryPublic(action) {
   }
 }
 
-function* 
+function* fetchAllStories() {
+  try {
+    const response = yield axios.get("/api/story");
+    yield put({ type: "SET_ALL_STORIES", payload: response.data });
+  } catch (error) {
+    console.log("Story GET request failed", error);
+  }
+}
 
 function* storySaga() {
   yield takeEvery("POST_STORY", postStory);
   yield takeEvery("MAKE_STORY_PUBLIC", makeStoryPublic);
+  yield takeEvery("FETCH_ALL_STORIES", fetchAllStories);
 }
 
 export default storySaga;

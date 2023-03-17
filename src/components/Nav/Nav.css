@@ -2,6 +2,8 @@
   margin: 0 0 30px;
   /* overflow: hidden; */
   height: 100%;
+  width: 16.7%;
+  position: fixed;
 }
 
 .nav-contents {

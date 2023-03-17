@@ -39,9 +39,6 @@ app.use(sessionMiddleware);
 app.use(passport.initialize());
 app.use(passport.session());
 
-const {
-  rejectUnauthenticated,
-} = require("./modules/authentication-middleware");
 const pool = require("./modules/pool");
 
 // assign io object to the invite router. That way, we can call the
@@ -72,16 +69,6 @@ io.on("connection", (socket) => {
     io.emit("chat message", msg);
   });
 
-  // socket.on("private invite", (invitingUser, invitedUser) => {
-  //   console.log(
-  //     "receiving private invite from",
-  //     invitingUser,
-  //     "to",
-  //     invitedUser
-  //   );
-  //   io.emit("private invite", { invitingUser, invitedUser });
-  // });
-
   // when an invite is accepted, create a new room
   socket.on("accept invite", (invite, currentStoryID) => {
     console.log(
@@ -105,10 +92,8 @@ io.on("connection", (socket) => {
     socket.join(`room-story-id-${storyID}`);
   });
 
-  // variable storing whose turn it is
-  // user1 is the first player on the client side, identified
-  // by firstPlayerID
-
+  // when a story instance is created
+  // this lisener has
   socket.on("start clock", (user1ID, user2ID, storyID) => {
     const room = `room-story-id-${storyID}`;
     console.log("starting clock in room", room);
@@ -161,8 +146,8 @@ io.on("connection", (socket) => {
           // declare starting time for each user. TODO: modulate
           // based on story parameters
           // 30,000 milliseconds = 30 seconds
-          let user1Milliseconds = 30000;
-          let user2Milliseconds = 30000;
+          let user1Milliseconds = 12000;
+          let user2Milliseconds = 12000;
 
           let myInterval = setInterval(() => {
             let userTurnID;

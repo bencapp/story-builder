@@ -92,6 +92,12 @@ io.on("connection", (socket) => {
     socket.join(`room-story-id-${storyID}`);
   });
 
+  // on submit story, tell the partner user and refresh the page
+  // refresh is necessary to avoid current bugs
+  socket.on("make story public", (storyID, senderUserID) => {
+    io.to(`room-story-id-${storyID}`).emit("make story public", senderUserID);
+  });
+
   // when a story instance is created
   // this lisener has
   socket.on("start clock", (user1ID, user2ID, storyID) => {

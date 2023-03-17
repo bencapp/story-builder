@@ -11,6 +11,9 @@ function Story({ outOfTime }) {
   // full story, store as an array
   const [story, setStory] = useState([]);
 
+  // local state for whether partner has made the story public
+  const [displayStoryPublicized, setDisplayStoryPublicized] = useState(false);
+
   const currentUser = useSelector((store) => store.user);
   // const outOfTime = useSelector((store) => store.outOfTime);
   const partnerUser = useSelector((store) => store.partnerUser);
@@ -40,10 +43,19 @@ function Story({ outOfTime }) {
       // change whose turn it is
       dispatch({ type: "TOGGLE_MY_TURN" });
     });
+
+    // when story is made public by a partner user, notify
+    // the other user and refresh the page for both users
+    socket.on("make story public", (senderUserID) => {
+      if (senderUserID !== currentUser.id) {
+        setDisplayStoryPublicized(true);
+      }
+    });
   }, [currentStoryID]);
 
   const handleSetPublic = () => {
     dispatch({ type: "MAKE_STORY_PUBLIC", payload: currentStoryID });
+    socket.emit("make story public", currentStoryID, currentUser.id);
   };
 
   return (
@@ -59,11 +71,13 @@ function Story({ outOfTime }) {
       ))}
       {!outOfTime ? (
         <TextForm />
-      ) : (
+      ) : !displayStoryPublicized ? (
         <Box>
           Out of time! Click submit to make the story public.
           <Button onClick={handleSetPublic}>SUBMIT</Button>
         </Box>
+      ) : (
+        <Box>Your collaborator has made the story public. Rerouting...</Box>
       )}
     </Box>
   );

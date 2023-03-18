@@ -99,10 +99,10 @@ router.put("/public/:storyID", rejectUnauthenticated, (req, res) => {
 
 // GET endpoint for ALL STORIES
 router.get("/", rejectUnauthenticated, (req, res) => {
-  const queryText = `SELECT story.id, story.title, story.speed_type, story.length_type,
-                      JSON_AGG(text.text) AS text_array, 
-                      JSON_AGG(text.timestamp) AS timestamp_array FROM story 
-                      JOIN "text" ON story.id = text.story_id
+  const queryText = `SELECT story.title, story.speed_type, story.length_type, 
+                      JSON_AGG(json_build_object('text', "text".text, 'timestamp', "text".timestamp, 'user_id', "text".user_id, 'username', "user".username)) AS texts FROM story
+                      JOIN "text" ON story.id = "text".story_id
+                      JOIN "user" ON "text".user_id = "user".id
                       WHERE story.public = true
                       GROUP BY story.id;`;
   pool

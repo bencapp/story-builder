@@ -30,7 +30,9 @@ function StoryListItem({ story }) {
         }}
       >
         <Box>{story.title}</Box>
-        <Box>username1, username2</Box>
+        <Box>
+          {story.texts[0].username}, {story.texts[1].username}
+        </Box>
       </Box>
       <Grid
         sx={{ position: "relative", zIndex: 10, height: "100px" }}
@@ -41,7 +43,7 @@ function StoryListItem({ story }) {
           <UpvoteDownvote />
         </Grid>
         <Grid sx={{ padding: "7px" }} item xs={7}>
-          <StoryText text={story.text_array} />
+          <StoryText text={story.texts} />
         </Grid>
         <Grid item xs={2}>
           <StoryTypeList />

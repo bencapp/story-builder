@@ -14,6 +14,7 @@ function Story({ outOfTime }) {
   // local state for whether partner has made the story public
   const [displayStoryPublicized, setDisplayStoryPublicized] = useState(false);
   const [displaySelfPublicized, setDisplaySelfPublicized] = useState(false);
+  const [displayCantPost, setDisplayCantPost] = useState(false);
 
   const currentUser = useSelector((store) => store.user);
   // const outOfTime = useSelector((store) => store.outOfTime);
@@ -60,8 +61,15 @@ function Story({ outOfTime }) {
   }, [currentStoryID]);
 
   const handleSetPublic = () => {
-    dispatch({ type: "MAKE_STORY_PUBLIC", payload: currentStoryID });
-    socket.emit("make story public", currentStoryID, currentUser.id);
+    if (story.length < 2) {
+      setDisplayCantPost(true);
+      setTimeout(() => {
+        window.location.reload(false);
+      }, 1500);
+    } else {
+      dispatch({ type: "MAKE_STORY_PUBLIC", payload: currentStoryID });
+      socket.emit("make story public", currentStoryID, currentUser.id);
+    }
   };
 
   return (
@@ -77,6 +85,11 @@ function Story({ outOfTime }) {
       ))}
       {!outOfTime ? (
         <TextForm />
+      ) : displayCantPost ? (
+        <Box>
+          This story is too short to post! Both players need to write at least
+          one word. Invite your partner to a new game! Rerouting...
+        </Box>
       ) : displayStoryPublicized ? (
         <Box>Your collaborator has made the story public. Rerouting...</Box>
       ) : displaySelfPublicized ? (

@@ -150,8 +150,8 @@ io.on("connection", (socket) => {
           // declare starting time for each user. TODO: modulate
           // based on story parameters
           // 30,000 milliseconds = 30 seconds
-          let user1Milliseconds = 10000;
-          let user2Milliseconds = 10000;
+          let user1Milliseconds = 30000;
+          let user2Milliseconds = 30000;
 
           let myInterval = setInterval(() => {
             let userTurnID;

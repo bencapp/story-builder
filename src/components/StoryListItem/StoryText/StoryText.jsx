@@ -9,7 +9,6 @@ function StoryText({ text }) {
         fontSize: "large",
       }}
     >
-      {/* {JSON.stringify(text)} */}
       {text.map((text, i) => (
         <span key={i}>{text.text} </span>
       ))}

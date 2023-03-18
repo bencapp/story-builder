@@ -44,10 +44,20 @@ function* fetchAllStories() {
   }
 }
 
+function* fetchStoryByID(action) {
+  try {
+    const response = yield axios.get(`/api/story/${action.payload}`);
+    yield put({ type: "SET_STORY_TO_VIEW", payload: response.data[0] });
+  } catch (error) {
+    console.log("Story GET request failed", error);
+  }
+}
+
 function* storySaga() {
   yield takeEvery("POST_STORY", postStory);
   yield takeEvery("MAKE_STORY_PUBLIC", makeStoryPublic);
   yield takeEvery("FETCH_ALL_STORIES", fetchAllStories);
+  yield takeEvery("FETCH_STORY_BY_ID", fetchStoryByID);
 }
 
 export default storySaga;

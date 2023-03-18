@@ -17,13 +17,13 @@ import Nav from "../Nav/Nav";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 
 import AboutPage from "../AboutPage/AboutPage";
-import LandingPage from "../LandingPage/LandingPage";
 import LoginPage from "../LoginPage/LoginPage";
+import MainFeed from "../MainFeed/MainFeed";
+import StoryView from "../StoryView/StoryView";
 import WriteStory from "../WriteStory/WriteStory";
 import RegisterPage from "../RegisterPage/RegisterPage";
 import EndNav from "../EndNav/EndNav";
 import NewInvitation from "../NewInvitation/NewInvitation";
-import MainFeed from "../MainFeed/MainFeed";
 
 import "./App.css";
 
@@ -57,18 +57,22 @@ function App() {
               <AboutPage />
             </Route>
 
+            <Route
+              // everyone can see the home page
+              exact
+              path="/home"
+            >
+              <MainFeed />
+            </Route>
+
+            <Route exact path="/story/:id">
+              <StoryView />
+            </Route>
+
             {/* For protected routes, the view could show one of several things on the same route.
             Visiting localhost:3000/user will show the UserPage if the user is logged in.
             If the user is not logged in, the ProtectedRoute will show the LoginPage (component).
             Even though it seems like they are different pages, the user is always on localhost:3000/user */}
-            <ProtectedRoute
-              // logged in shows UserPage else shows LoginPage
-              exact
-              path="/user"
-            >
-              <MainFeed />
-            </ProtectedRoute>
-
             <ProtectedRoute
               // logged in shows InfoPage else shows LoginPage
               exact
@@ -88,8 +92,8 @@ function App() {
             <Route exact path="/login">
               {user.id ? (
                 // If the user is already logged in,
-                // redirect to the /user page
-                <Redirect to="/user" />
+                // redirect to the /home page
+                <Redirect to="/home" />
               ) : (
                 // Otherwise, show the login page
                 <LoginPage />
@@ -99,8 +103,8 @@ function App() {
             <Route exact path="/registration">
               {user.id ? (
                 // If the user is already logged in,
-                // redirect them to the /user page
-                <Redirect to="/user" />
+                // redirect them to the /home page
+                <Redirect to="/home" />
               ) : (
                 // Otherwise, show the registration page
                 <RegisterPage />
@@ -111,10 +115,10 @@ function App() {
               {user.id ? (
                 // If the user is already logged in,
                 // redirect them to the /user page
-                <Redirect to="/user" />
+                <Redirect to="/home" />
               ) : (
                 // Otherwise, show the Landing page
-                <LandingPage />
+                <MainFeed />
               )}
             </Route>
 
@@ -125,8 +129,7 @@ function App() {
           </Switch>
         </Grid>
         <Grid item xs={2}>
-          {/* Only render endnav if there is a user */}
-          {Object.keys(user).length > 0 && <EndNav />}
+          <EndNav />
         </Grid>
       </Grid>
     </Router>

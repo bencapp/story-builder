@@ -13,6 +13,8 @@ import { useTheme } from "@mui/material/styles";
 function EndNav() {
   const theme = useTheme();
 
+  const user = useSelector((store) => store.user);
+
   return (
     <Box
       sx={{
@@ -21,9 +23,14 @@ function EndNav() {
       }}
       className="nav"
     >
-      <UsersList />
-      <ReceivedInvitesList />
-      <SentInvitesList />
+      {/* Only render endnav components if there is a user */}
+      {Object.keys(user).length > 0 && (
+        <>
+          <UsersList />
+          <ReceivedInvitesList />
+          <SentInvitesList />
+        </>
+      )}
     </Box>
   );
 }

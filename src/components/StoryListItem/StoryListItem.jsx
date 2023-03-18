@@ -1,6 +1,7 @@
 import { Box } from "@mui/system";
 import { Button, Grid } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
+import { useHistory } from "react-router-dom";
 
 import UpvoteDownvote from "./UpvoteDownvote/UpvoteDownvote";
 import StoryText from "./StoryText/StoryText";
@@ -8,6 +9,7 @@ import StoryTypeList from "./StoryTypeList/StoryTypeList";
 
 function StoryListItem({ story }) {
   const theme = useTheme();
+  const history = useHistory();
   return (
     <Box
       sx={{
@@ -31,7 +33,7 @@ function StoryListItem({ story }) {
       >
         <Box>{story.title}</Box>
         <Box>
-          {story.texts[0].username}, {story.texts[1].username}
+          Contributors: {story.texts[0].username}, {story.texts[1].username}
         </Box>
       </Box>
       <Grid
@@ -49,7 +51,9 @@ function StoryListItem({ story }) {
           <StoryTypeList />
         </Grid>
         <Grid sx={{ display: "flex", alignItems: "center" }} item xs={2}>
-          <Button>VIEW FULL STORY</Button>
+          <Button onClick={() => history.push(`/story/${story.id}`)}>
+            VIEW FULL STORY
+          </Button>
         </Grid>
       </Grid>
     </Box>

@@ -7,9 +7,8 @@ import StoryListItem from "../StoryListItem/StoryListItem";
 
 function MainFeed() {
   const dispatch = useDispatch();
-  // this component doesn't do much to start, just renders some user reducer info to the DOM
-  const user = useSelector((store) => store.user);
 
+  const user = useSelector((store) => store.user);
   const allStories = useSelector((store) => store.allStories);
 
   useEffect(() => {
@@ -20,10 +19,10 @@ function MainFeed() {
 
   return (
     <Box sx={{ margin: "15px" }}>
-      <h2>Welcome, {user.username}!</h2>
+      {user.username ? <h2>Welcome, {user.username}!</h2> : <h2>Welcome!</h2>}
       <p>
-        This is your user home page. Here you can view your feed of all the new
-        stories on the app.
+        This is the home page. Here you can view all the new stories on the app.{" "}
+        {!user.username && <span>To start writing, login or register.</span>}
       </p>
       <Box sx={{ display: "flex", flexDirection: "column", gap: "5px" }}>
         {allStories.map((story) => (
@@ -34,5 +33,4 @@ function MainFeed() {
   );
 }
 
-// this allows us to use <App /> in index.js
 export default MainFeed;

@@ -49,7 +49,7 @@ function Nav() {
               <Button
                 color="tertiary"
                 onClick={() => {
-                  history.push("/user");
+                  history.push("/home");
                 }}
               >
                 My Feed

@@ -56,8 +56,12 @@ function StoryView() {
               alignContent: "flex-start",
             }}
           >
-            {story.texts.map((text, i) => (
-              <TextToDisplay key={i} text={text} />
+            {story.texts.map((text, i, textsArray) => (
+              <TextToDisplay
+                key={i}
+                text={text}
+                previousText={textsArray[i - 1]}
+              />
             ))}
           </Box>
         </>

@@ -31,8 +31,8 @@ router.post("/", rejectUnauthenticated, async (req, res) => {
   const firstPlayerID = firstPlayerInt === 0 ? user1ID : user2ID;
 
   // first, insert into the story table
-  const storyQueryText = `INSERT INTO "story" ("title", "speed_type", "length_type", "current_user_turn_id")
-    VALUES ($1, 'default', 'default', $2)`;
+  const storyQueryText = `INSERT INTO "story" ("title", "speed_type", "length_type", "current_user_turn_id", "start_time")
+    VALUES ($1, 'default', 'default', $2, current_timestamp)`;
   const storyQueryParams = [req.body.story.title, firstPlayerID];
 
   console.log("Posting story");
@@ -118,7 +118,7 @@ router.get("/", (req, res) => {
 // GET endpoint for accessing a single story by its id
 // anyone can access this endpoint without needing to log in
 router.get("/:id", (req, res) => {
-  const queryText = `SELECT story.id, story.title, story.speed_type, story.length_type, 
+  const queryText = `SELECT story.id, story.title, story.speed_type, story.length_type, story.start_time,
                       JSON_AGG(json_build_object('text', "text".text, 'timestamp', "text".timestamp, 'user_id', "text".user_id, 'username', "user".username)) 
                       AS texts FROM story
                       JOIN "text" ON story.id = "text".story_id

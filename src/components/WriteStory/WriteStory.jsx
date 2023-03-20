@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 import TimerContainer from "./TimerContainer/TimerContainer";
 import Story from "./Story/Story";
-import TextForm from "./TextForm/TextForm";
+import StartBox from "./StartBox/StartBox";
 
 import theme from "../Theme/Theme";
 
@@ -28,6 +28,9 @@ function WriteStory() {
 
   // local state for whether anyone's time is out
   const [outOfTime, setOutOfTime] = useState(false);
+
+  // local state for whether both players are ready
+  const [bothPlayersReady, setBothPlayersReady] = useState(false);
 
   // local state variable for whose turn it is to write
   const myTurn = useSelector((store) => store.myTurn);
@@ -68,6 +71,22 @@ function WriteStory() {
         <p>
           There's no story being written! Invite someone to start one with you.
         </p>
+      ) : !bothPlayersReady ? (
+        <Box
+          sx={{
+            backgroundColor: theme.palette.primary.main,
+            margin: "20px auto",
+            padding: "20px",
+            width: "89%",
+            height: "79%",
+            display: "flex",
+            placeContent: "center",
+          }}
+        >
+          <Box sx={{ marginTop: "20%" }}>
+            <StartBox />
+          </Box>
+        </Box>
       ) : (
         <Grid
           sx={{
@@ -79,14 +98,14 @@ function WriteStory() {
           }}
           container
         >
+          {/* This grid component displays the story */}
           <Grid item xs={10}>
             <Box sx={{ marginBottom: "10px" }}>
               Starting new story with {partnerUser.username}
             </Box>
-            {/* wait for story post to complete before starting */}
-            {/* {!firstPlayerID ? <h3>Loading...</h3> : <Story myTurn={myTurn} />} */}
             <Story myTurn={myTurn} outOfTime={outOfTime} />
           </Grid>
+          {/* This grid component displays the timers*/}
           <Grid
             sx={{
               display: "flex",

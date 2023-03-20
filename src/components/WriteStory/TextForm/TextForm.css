@@ -20,7 +20,7 @@
   background-color: #faf3ea;
 }
 
-#not-your-turn-text {
+.invalid-text {
   font-size: small;
 }
 

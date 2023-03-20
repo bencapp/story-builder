@@ -15,7 +15,8 @@ function TextForm() {
   const partnerUser = useSelector((store) => store.partnerUser);
 
   // local state for displaying 'not your turn' message
-  const [notYourTurnDisplay, setNotYourTurnDisplay] = useState();
+  const [notYourTurnDisplay, setNotYourTurnDisplay] = useState(false);
+  const [invalidDisplay, setInvalidDisplay] = useState(false);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -54,7 +55,10 @@ function TextForm() {
       );
       setNewText("");
     } else {
-      console.log("invalid entry");
+      setInvalidDisplay(true);
+      setTimeout(() => {
+        setInvalidDisplay(false);
+      }, 1000);
     }
   };
 
@@ -62,13 +66,19 @@ function TextForm() {
     <form id="new-text-form" onSubmit={handleSubmit}>
       <input
         id="next-word-input"
-        className={notYourTurnDisplay ? "invalid" : "valid"}
+        className={notYourTurnDisplay || invalidDisplay ? "invalid" : "valid"}
         onSubmit={handleSubmit}
         value={newText}
         onChange={(e) => setNewText(e.target.value)}
         placeholder="Next Word"
       ></input>
-      {notYourTurnDisplay && <div id="not-your-turn-text">Not your turn!</div>}
+      {notYourTurnDisplay ? (
+        <div className="invalid-text">Not your turn!</div>
+      ) : invalidDisplay ? (
+        <div className="invalid-text">Invalid entry!</div>
+      ) : (
+        <></>
+      )}
       {/* <button type="submit">SUBMIT</button> */}
     </form>
   );

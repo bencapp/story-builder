@@ -30,10 +30,10 @@ function NewInvitation() {
   const [invitedUser, setInvitedUser] = useState(initialInvitedUser);
 
   // local state for story text type
-  const [storyTextType, setStoryTextType] = useState("word by word");
+  const [storyTextType, setStoryTextType] = useState("Word by Word");
 
   // story speed type
-  const [storySpeedType, setStorySpeedType] = useState("writer's room");
+  const [storySpeedType, setStorySpeedType] = useState("Writer's Room");
 
   // object for amounts of time (in seconds) for each setting
   const timeControls = {
@@ -117,8 +117,8 @@ function NewInvitation() {
           value={storyTextType}
           onChange={(e) => setStoryTextType(e.target.value)}
         >
-          <MenuItem value={"word by word"}>Word by Word</MenuItem>
-          <MenuItem value={"sentence by sentence"}>
+          <MenuItem value={"Word by Word"}>Word by Word</MenuItem>
+          <MenuItem value={"Sentence by Sentence"}>
             Sentence by Sentence
           </MenuItem>
         </Select>
@@ -128,21 +128,21 @@ function NewInvitation() {
           value={storySpeedType}
           onChange={(e) => setStorySpeedType(e.target.value)}
         >
-          <MenuItem value={"hypertype"}>
+          <MenuItem value={"Hypertype"}>
             Hypertype:{" "}
-            {storyTextType == "word by word"
+            {storyTextType == "Word by Word"
               ? timeControls.wordByWord.hypertype
               : timeControls.sentenceBySentence.hypertype}
           </MenuItem>
-          <MenuItem value={"writer's room"}>
+          <MenuItem value={"Writer's Room"}>
             Writer's Room:{" "}
-            {storyTextType == "word by word"
+            {storyTextType == "Word by Word"
               ? timeControls.wordByWord.writersRoom
               : timeControls.sentenceBySentence.writersRoom}
           </MenuItem>
-          <MenuItem value={"quill and parchment"}>
+          <MenuItem value={"Quill and Parchment"}>
             Quill and Parchment:{" "}
-            {storyTextType == "word by word"
+            {storyTextType == "Word by Word"
               ? timeControls.wordByWord.quillAndParchment
               : timeControls.sentenceBySentence.quillAndParchment}
           </MenuItem>

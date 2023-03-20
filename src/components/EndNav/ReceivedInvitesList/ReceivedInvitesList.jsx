@@ -5,6 +5,8 @@ import { socket } from "../../../socket";
 
 import { Button } from "@mui/material";
 
+import ReceivedInviteElement from "./ReceivedInviteElement/ReceivedInviteElement";
+
 function ReceivedInvitesList() {
   const invites = useSelector((store) => store.receivedInvites);
   const dispatch = useDispatch();
@@ -63,10 +65,9 @@ function ReceivedInvitesList() {
       <div id="invites-list">
         <h3>Invitations</h3>
         <section>
-          {JSON.stringify(invites)}
           {invites &&
             invites.map((invite) => (
-              <ReceivedInvitesList key={invite.id} invite={invite} />
+              <ReceivedInviteElement key={invite.id} invite={invite} />
             ))}
         </section>
       </div>

@@ -14,6 +14,13 @@ const theme = createTheme({
     tertiary: {
       main: "#E9E2D8", // light tan, more yellow
     },
+    typeBackground: {
+      hypertype: "#6feb45",
+      writersRoom: "#8cf0f0",
+      quillAndParchment: "#c086ff",
+      wordByWord: "#ff6b65",
+      sentenceBySentence: "#ffa831",
+    },
     outline: {
       main: "#000000",
     },

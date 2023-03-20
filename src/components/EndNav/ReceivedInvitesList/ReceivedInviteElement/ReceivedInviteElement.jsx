@@ -3,6 +3,9 @@ import { useHistory } from "react-router-dom";
 import { useTheme } from "@emotion/react";
 import { socket } from "../../../../socket";
 import { Box } from "@mui/system";
+import { Button } from "@mui/material";
+
+import StoryTypeTag from "../../../StoryTypeTag/StoryTypeTag";
 
 function ReceivedInviteElement({ invite }) {
   const dispatch = useDispatch();
@@ -55,9 +58,13 @@ function ReceivedInviteElement({ invite }) {
         height: "100px",
       }}
     >
-      <p>{invite.sender_user_username}</p>
+      <Box>{invite.sender_user_username}</Box>
+
+      <StoryTypeTag type={invite.text_type} />
+      <StoryTypeTag type={invite.speed_type} />
+
       <Button color="tertiary" onClick={() => handleAccept(invite)}>
-        Acceptfdas
+        Accept
       </Button>
     </Box>
   );

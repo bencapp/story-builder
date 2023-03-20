@@ -8,7 +8,7 @@ const router = express.Router();
 
 // GET ENDPOINT for getting all invitations sent to a specific user
 router.get("/", rejectUnauthenticated, (req, res) => {
-  const queryText = `SELECT invite.id, invite.sender_user_id, invite.recipient_user_id, invite.title, 
+  const queryText = `SELECT invite.id, invite.sender_user_id, invite.recipient_user_id, invite.title, invite.speed_type, invite.text_type,
                       "u".username AS sender_user_username , "u2".username AS recipient_user_username FROM invite 
                       JOIN "user" AS "u" ON "u".id = invite.sender_user_id
                       JOIN "user" AS "u2" ON "u2".id = invite.recipient_user_id
@@ -18,8 +18,7 @@ router.get("/", rejectUnauthenticated, (req, res) => {
   pool
     .query(queryText, queryParams)
     .then((response) => {
-      // now make another GET request to make sure that we send the recipient user name too
-      const queryJoinText = res.send(response.rows);
+      res.send(response.rows);
     })
     .catch((error) => {
       console.log("Failed to execute SQL query:", queryText, " : ", error);

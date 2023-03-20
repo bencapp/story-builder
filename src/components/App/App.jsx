@@ -24,6 +24,7 @@ import WriteStory from "../WriteStory/WriteStory";
 import RegisterPage from "../RegisterPage/RegisterPage";
 import EndNav from "../EndNav/EndNav";
 import NewInvitation from "../NewInvitation/NewInvitation";
+import MyStoriesFeed from "../MyStoriesFeed/MyStoriesFeed";
 
 import "./App.css";
 
@@ -87,6 +88,14 @@ function App() {
               path="/new-invitation"
             >
               <NewInvitation />
+            </ProtectedRoute>
+
+            <ProtectedRoute
+              // logged in shows InfoPage else shows LoginPage
+              exact
+              path="/user-stories"
+            >
+              <MyStoriesFeed />
             </ProtectedRoute>
 
             <Route exact path="/login">

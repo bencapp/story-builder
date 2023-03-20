@@ -135,6 +135,36 @@ router.get("/story/:id", (req, res) => {
     });
 });
 
+// GET endpoint for all stories that a specific user contributed to
+// does not need to reject unauthenticated – ideally other users should be able to see stories that
+// specific users contributed to
+router.get("/user-story/:userID", (req, res) => {
+  const queryText = `SELECT story.id, story.title, story.speed_type, story.length_type, 
+                      JSON_AGG(json_build_object('text', "text".text, 'timestamp', "text".timestamp, 'user_id', "text".user_id, 'username', "user".username)) AS texts FROM story
+                      JOIN "text" ON story.id = "text".story_id
+                      JOIN "user" ON "text".user_id = "user".id
+                      WHERE story.public = true
+                      GROUP BY story.id;`;
+  pool
+    .query(queryText)
+    .then((result) => {
+      // filter stories by userID
+      const userID = req.params.userID;
+      const stories = result.rows;
+
+      const storiesByUser = stories.filter(
+        (story) =>
+          story.texts[0].user_id == userID || story.texts[1].user_id == userID
+      );
+
+      res.send(storiesByUser);
+    })
+    .catch((error) => {
+      console.log("Failed to execute SQL query:", queryText, " : ", error);
+      res.sendStatus(500);
+    });
+});
+
 // PUT endpoint for setting the start time of a story
 router.put("/start-time/:storyID", rejectUnauthenticated, (req, res) => {
   const queryText = `UPDATE story SET start_time = current_timestamp WHERE id = $1`;

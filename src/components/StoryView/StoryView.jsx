@@ -18,7 +18,6 @@ function StoryView() {
 
   return (
     <Box
-      container
       sx={{
         backgroundColor: theme.palette.secondary.main,
         margin: "60px auto",
@@ -50,8 +49,11 @@ function StoryView() {
             sx={{
               width: "100%",
               height: "100%",
-              fontSize: "larger",
+              fontSize: "30px",
               padding: "15px",
+              display: "flex",
+              flexWrap: "wrap",
+              alignContent: "flex-start",
             }}
           >
             {story.texts.map((text, i) => (

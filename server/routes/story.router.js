@@ -119,7 +119,8 @@ router.get("/", (req, res) => {
 // anyone can access this endpoint without needing to log in
 router.get("/:id", (req, res) => {
   const queryText = `SELECT story.id, story.title, story.speed_type, story.length_type, 
-                      JSON_AGG(json_build_object('text', "text".text, 'timestamp', "text".timestamp, 'user_id', "text".user_id, 'username', "user".username)) AS texts FROM story
+                      JSON_AGG(json_build_object('text', "text".text, 'timestamp', "text".timestamp, 'user_id', "text".user_id, 'username', "user".username)) 
+                      AS texts FROM story
                       JOIN "text" ON story.id = "text".story_id
                       JOIN "user" ON "text".user_id = "user".id
                       WHERE story.public = true AND story.id = $1

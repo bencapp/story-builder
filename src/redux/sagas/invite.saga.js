@@ -35,7 +35,7 @@ function* deleteInvite(action) {
     // action.payload should be the id of the user who accepted the invitation
     console.log("in delete saga, action is", action);
     yield axios.delete(`/api/invite/${action.payload}`);
-    yield put({ type: "FETCH_INVITES" });
+    yield put({ type: "FETCH_PENDING_INVITES" });
   } catch (error) {
     console.log("Invite DELETE request failed", error);
   }

@@ -1,12 +1,54 @@
 import { Box } from "@mui/system";
 import { Button } from "@mui/material";
 import { useTheme } from "@emotion/react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
 
-function StartBox() {
+import { socket } from "../../../socket";
+
+function StartBox({ startStory }) {
   const theme = useTheme();
+  const dispatch = useDispatch();
   const partnerUser = useSelector((store) => store.partnerUser);
   const myTurn = useSelector((store) => store.myTurn);
+
+  const currentStoryID = useSelector((store) => store.currentStoryID);
+
+  // local state for whether both players are ready
+  const [bothPlayersReady, setBothPlayersReady] = useState(false);
+
+  // local state for countdown
+  const [countdown, setCountdown] = useState(3);
+
+  // local state for interval
+  const [myInterval, setMyInterval] = useState();
+
+  useEffect(() => {
+    // both users receive this
+    socket.on("ready to start story", () => {
+      console.log("received ready to start story");
+      setBothPlayersReady(true);
+
+      setMyInterval(
+        setInterval(() => {
+          console.log("counting down:", countdown);
+          setCountdown((countdown) => countdown - 1);
+          if (countdown <= 0) {
+            console.log("clearing interval");
+            clearInterval(myInterval);
+            startStory();
+          }
+        }, 1000)
+      );
+      return () => clearInterval(myInterval);
+    });
+  }, []);
+
+  const handleAtZero = () => {
+    startStory();
+    clearInterval(myInterval);
+    dispatch({ type: "SET_STORY_START_TIME", payload: currentStoryID });
+  };
 
   return (
     <Box
@@ -21,10 +63,21 @@ function StartBox() {
       }}
     >
       <Box>Starting story with {partnerUser.username}</Box>
-      <Box>You go {myTurn ? "first" : "second"}!</Box>
+
       {/* If waiting */}
-      <Box>Waiting on partner...</Box>
-      <Button>START</Button>
+      {!bothPlayersReady ? (
+        <>
+          <Box>Waiting on partner...</Box>
+        </>
+      ) : (
+        <>
+          <Box>Partner ready!</Box>
+          <Box>
+            You go {myTurn ? "first" : "second"}! Starting in {countdown}
+          </Box>
+        </>
+      )}
+      {countdown == 0 && handleAtZero()}
     </Box>
   );
 }

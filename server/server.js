@@ -92,14 +92,14 @@ io.on("connection", (socket) => {
     socket.join(`room-story-id-${storyID}`);
   });
 
-  // on submit story, tell the partner user and refresh the page
-  // refresh is necessary to avoid current bugs
-  socket.on("make story public", (storyID, senderUserID) => {
-    io.to(`room-story-id-${storyID}`).emit("make story public", senderUserID);
+  // on start story. user who created the invite tells the accepting user
+  // that they are ready to start story
+  socket.on("ready to start story", (invite, storyID) => {
+    console.log("in ready to start story, invite is", invite);
+    io.to(`room-story-id-${storyID}`).emit("ready to start story");
   });
 
   // when a story instance is created
-  // this lisener has
   socket.on("start clock", (user1ID, user2ID, storyID) => {
     const room = `room-story-id-${storyID}`;
     console.log("starting clock in room", room);
@@ -195,6 +195,12 @@ io.on("connection", (socket) => {
           error
         );
       });
+  });
+
+  // on submit story, tell the partner user and refresh the page
+  // refresh is necessary to avoid current bugs
+  socket.on("make story public", (storyID, senderUserID) => {
+    io.to(`room-story-id-${storyID}`).emit("make story public", senderUserID);
   });
 });
 

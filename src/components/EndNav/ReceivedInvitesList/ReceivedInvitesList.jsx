@@ -31,51 +31,30 @@ function ReceivedInvitesList() {
     // TODO: allow user to navigate to new story instead of
     // being immediately redirected there
     socket.on("accept invite", (invite, storyID) => {
-      console.log(
-        "invite accepted, joining room and rerouting. invite is",
-        invite,
-        "storyID is",
-        storyID
-      );
+      // if the current user was the one to send the invite
+      if (invite.sender_user_id == currentUser.id) {
+        console.log(
+          "invite accepted, joining room and rerouting. invite is",
+          invite,
+          "storyID is",
+          storyID
+        );
 
-      // if user is the one who sent the invite
-      // set partner user to the invite recipient
-      // inviteSide property is for determining first player later
-      if (currentUser.id == invite.sender_user_id) {
+        // current user needs to join the room
+        socket.emit("join room", storyID);
+
+        // fetch invites to update the DOM for the user whose invitation
+        // was accepted
+        dispatch({ type: "FETCH_PENDING_INVITES" });
+
+        // set current story to the new story
+        dispatch({ type: "SET_CURRENT_STORY_ID", payload: storyID });
+
         dispatch({
-          type: "SET_PARTNER_USER",
-          payload: {
-            id: invite.recipient_user_id,
-            username: invite.recipient_user_username,
-            inviteSide: "recipient",
-          },
-        });
-      } else {
-        // if user is the one who accepted the invite,
-        // set partner user to the invite sender
-        dispatch({
-          type: "SET_PARTNER_USER",
-          payload: {
-            id: invite.sender_user_id,
-            username: invite.sender_user_username,
-            inviteSide: "sender",
-          },
+          type: "SET_INVITE_ACCEPTED",
+          payload: { invite: invite, storyID: storyID },
         });
       }
-      // current user needs to join the room
-      socket.emit("join room", storyID);
-
-      // and redirect both users to the new story page
-      if (location.pathname !== "/new-story") {
-        history.push("/new-story");
-      }
-
-      // fetch invites to update the DOM for the user whose invitation
-      // was accepted
-      dispatch({ type: "FETCH_PENDING_INVITES" });
-
-      // set current story to the new story
-      dispatch({ type: "SET_CURRENT_STORY_ID", payload: storyID });
     });
   }, [currentUser]);
 
@@ -102,13 +81,20 @@ function ReceivedInvitesList() {
       },
     });
 
-    history.push("/new-story");
-
-    // remove invite from the database
+    // set the partner user to the user who sent the invite
     dispatch({
-      type: "DELETE_INVITE",
-      payload: invite.id,
+      type: "SET_PARTNER_USER",
+      payload: {
+        id: invite.sender_user_id,
+        username: invite.sender_user_username,
+        inviteSide: "sender",
+      },
     });
+
+    // current user needs to join the room
+    socket.emit("join room", currentStoryID);
+
+    history.push("/new-story");
   };
 
   return (

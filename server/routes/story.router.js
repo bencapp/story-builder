@@ -31,8 +31,8 @@ router.post("/", rejectUnauthenticated, async (req, res) => {
   const firstPlayerID = firstPlayerInt === 0 ? user1ID : user2ID;
 
   // first, insert into the story table
-  const storyQueryText = `INSERT INTO "story" ("title", "speed_type", "length_type", "current_user_turn_id", "start_time")
-    VALUES ($1, 'default', 'default', $2, current_timestamp)`;
+  const storyQueryText = `INSERT INTO "story" ("title", "speed_type", "length_type", "current_user_turn_id")
+    VALUES ($1, 'default', 'default', $2)`;
   const storyQueryParams = [req.body.story.title, firstPlayerID];
 
   console.log("Posting story");
@@ -117,7 +117,7 @@ router.get("/", (req, res) => {
 
 // GET endpoint for accessing a single story by its id
 // anyone can access this endpoint without needing to log in
-router.get("/:id", (req, res) => {
+router.get("/story/:id", (req, res) => {
   const queryText = `SELECT story.id, story.title, story.speed_type, story.length_type, story.start_time,
                       JSON_AGG(json_build_object('text', "text".text, 'timestamp', "text".timestamp, 'user_id', "text".user_id, 'username', "user".username)) 
                       AS texts FROM story
@@ -129,6 +129,21 @@ router.get("/:id", (req, res) => {
   pool
     .query(queryText, queryParams)
     .then((result) => res.send(result.rows))
+    .catch((error) => {
+      console.log("Failed to execute SQL query:", queryText, " : ", error);
+      res.sendStatus(500);
+    });
+});
+
+// PUT endpoint for setting the start time of a story
+router.put("/start-time/:storyID", rejectUnauthenticated, (req, res) => {
+  const queryText = `UPDATE story SET start_time = current_timestamp WHERE id = $1`;
+  const queryParams = [req.params.storyID];
+  pool
+    .query(queryText, queryParams)
+    .then(() => {
+      res.sendStatus(204);
+    })
     .catch((error) => {
       console.log("Failed to execute SQL query:", queryText, " : ", error);
       res.sendStatus(500);

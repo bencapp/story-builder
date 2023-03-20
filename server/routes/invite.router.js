@@ -94,7 +94,13 @@ router.post("/", rejectUnauthenticated, (req, res) => {
  * DELETE route
  */
 router.delete("/:id", rejectUnauthenticated, (req, res) => {
-  const queryText = `DELETE FROM invite WHERE id = $1 AND recipient_user_id = $2`;
+  console.log(
+    "In invite DELETE, req.params.id is",
+    req.params.id,
+    "req.user.id is",
+    req.user.id
+  );
+  const queryText = `DELETE FROM invite WHERE id = $1 AND sender_user_id = $2`;
   const queryParams = [req.params.id, req.user.id];
   pool
     .query(queryText, queryParams)

@@ -29,8 +29,8 @@ function WriteStory() {
   // local state for whether anyone's time is out
   const [outOfTime, setOutOfTime] = useState(false);
 
-  // local state for whether both players are ready
-  const [bothPlayersReady, setBothPlayersReady] = useState(false);
+  // local state for whether story has begun
+  const [storyStarted, setStoryStarted] = useState(false);
 
   // local state variable for whose turn it is to write
   const myTurn = useSelector((store) => store.myTurn);
@@ -61,6 +61,10 @@ function WriteStory() {
     });
   }, [currentStoryID]);
 
+  const startStory = () => {
+    setStoryStarted(true);
+  };
+
   return (
     <>
       <Box sx={{ marginLeft: "20px" }}>
@@ -71,7 +75,7 @@ function WriteStory() {
         <p>
           There's no story being written! Invite someone to start one with you.
         </p>
-      ) : !bothPlayersReady ? (
+      ) : !storyStarted ? (
         <Box
           sx={{
             backgroundColor: theme.palette.primary.main,
@@ -84,7 +88,7 @@ function WriteStory() {
           }}
         >
           <Box sx={{ marginTop: "20%" }}>
-            <StartBox />
+            <StartBox startStory={startStory} />
           </Box>
         </Box>
       ) : (

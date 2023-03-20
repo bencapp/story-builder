@@ -46,10 +46,18 @@ function* fetchAllStories() {
 
 function* fetchStoryByID(action) {
   try {
-    const response = yield axios.get(`/api/story/${action.payload}`);
+    const response = yield axios.get(`/api/story/story/${action.payload}`);
     yield put({ type: "SET_STORY_TO_VIEW", payload: response.data[0] });
   } catch (error) {
     console.log("Story GET request failed", error);
+  }
+}
+
+function* setStoryStartTime(action) {
+  try {
+    yield axios.put(`/api/story/start-time/${action.payload}`);
+  } catch (error) {
+    console.log("Story PUT request failed", error);
   }
 }
 
@@ -58,6 +66,7 @@ function* storySaga() {
   yield takeEvery("MAKE_STORY_PUBLIC", makeStoryPublic);
   yield takeEvery("FETCH_ALL_STORIES", fetchAllStories);
   yield takeEvery("FETCH_STORY_BY_ID", fetchStoryByID);
+  yield takeEvery("SET_STORY_START_TIME", setStoryStartTime);
 }
 
 export default storySaga;

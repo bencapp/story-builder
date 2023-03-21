@@ -23,8 +23,6 @@ function NewInvitation() {
   const currentUser = useSelector((store) => store.user);
   const allUsers = useSelector((store) => store.allUsers);
 
-  // local state for title
-  const [newTitle, setNewTitle] = useState("");
 
   // local state for user being invited
   const [invitedUser, setInvitedUser] = useState(initialInvitedUser);
@@ -58,7 +56,6 @@ function NewInvitation() {
       type: "POST_INVITE",
       payload: {
         invitedUser: invitedUser,
-        storyTitle: newTitle,
         text_type: storyTextType,
         speed_type: storySpeedType,
       },
@@ -101,16 +98,6 @@ function NewInvitation() {
           </Select>
           to a new story
         </Box>
-        <InputLabel>Story Title (you can change this later):</InputLabel>
-        <TextField
-          sx={{ marginBottom: "10px" }}
-          color="outline"
-          type="text"
-          label="Title"
-          required
-          value={newTitle}
-          onChange={(event) => setNewTitle(event.target.value)}
-        />
 
         <InputLabel>Story Type</InputLabel>
         <Select

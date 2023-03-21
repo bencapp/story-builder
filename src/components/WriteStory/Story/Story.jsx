@@ -80,53 +80,43 @@ function Story({ outOfTime, outOfTimeUserID }) {
             myText={textObject.user == currentUser.id}
           />
         ))}
+        {!outOfTime && <TextForm />}
       </Box>
-
       {/* If we are not out of time, display the text form */}
-      {
-        !outOfTime ? (
-          <TextForm />
-        ) : // if the story is too short, display that it is too short to post and reroute
-        story.length < 2 ? (
-          <>
-            <Box sx={{ fontsize: "15px" }}>
-              This story is too short to post! Both players need to write at
-              least one word. Invite your partner to a new game!
-            </Box>
-            <Button onClick={handleGoHome}>HOME PAGE</Button>
-          </>
-        ) : // if story was deleted, display the relevant message
-        storyDeleted[0] ? (
-          <TitleFormCompletedMessage
-            actingUserID={storyDeleted[1]}
-            type={"deleted"}
-            title={title}
-          />
-        ) : // if the story was posted, display the relevant message
-        storyPublished[0] ? (
-          <TitleFormCompletedMessage
-            actingUserID={storyPublished[1]}
-            type={"published"}
-            title={title}
-          />
-        ) : // When time runs out, display either the title story form or a message
-        // that your partner is titling the story
-        outOfTimeUserID == currentUser.id ? (
-          <Box sx={{ fontSize: "20px" }}>
-            You ran out of time! Your partner is choosing a title for the
-            story...
+      {/* // if the story is too short, display that it is too short to post and reroute */}
+      {outOfTime && story.length < 2 ? (
+        <>
+          <Box sx={{ fontsize: "15px" }}>
+            This story is too short to post! Both players need to write at least
+            one word. Invite your partner to a new game!
           </Box>
-        ) : (
-          <TitleStoryForm />
-        )
-        // ) : displayCantPost ? (
-        //
-        // ) : displayStoryPublicized ? (
-        //   <Box>Your collaborator has made the story public. Rerouting...</Box>
-        // ) : displaySelfPublicized ? (
-        //   <Box>You made the story public! Rerouting...</Box>
-        // ) : // if we are out of time
-      }
+          <Button onClick={handleGoHome}>HOME PAGE</Button>
+        </>
+      ) : // if story was deleted, display the relevant message
+      outOfTime && storyDeleted[0] ? (
+        <TitleFormCompletedMessage
+          actingUserID={storyDeleted[1]}
+          type={"deleted"}
+          title={title}
+        />
+      ) : // if the story was posted, display the relevant message
+      outOfTime && storyPublished[0] ? (
+        <TitleFormCompletedMessage
+          actingUserID={storyPublished[1]}
+          type={"published"}
+          title={title}
+        />
+      ) : // When time runs out, display either the title story form or a message
+      // that your partner is titling the story
+      outOfTime && outOfTimeUserID == currentUser.id ? (
+        <Box sx={{ fontSize: "20px", marginTop: "10px" }}>
+          You ran out of time! Your partner is choosing a title for the story...
+        </Box>
+      ) : outOfTime ? (
+        <TitleStoryForm />
+      ) : (
+        <Box></Box>
+      )}
     </Box>
   );
 }

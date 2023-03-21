@@ -57,17 +57,15 @@ router.post("/", rejectUnauthenticated, (req, res) => {
   console.log("receiving POST, req.body is", req.body);
   const sender_user_id = req.user.id;
   const recipient_user_id = req.body.invitedUser.id;
-  const story_title = req.body.storyTitle;
   const text_type = req.body.text_type;
   const speed_type = req.body.speed_type;
   // perform an insert into the invite table
   // using the story id
-  const inviteQueryText = `INSERT INTO "invite" ("sender_user_id", "recipient_user_id", "title", "speed_type", "text_type")
-                              VALUES ($1, $2, $3, $4, $5)`;
+  const inviteQueryText = `INSERT INTO "invite" ("sender_user_id", "recipient_user_id", "speed_type", "text_type")
+                              VALUES ($1, $2, $3, $4)`;
   const inviteQueryParams = [
     sender_user_id,
     recipient_user_id,
-    story_title,
     speed_type,
     text_type,
   ];
@@ -84,7 +82,6 @@ router.post("/", rejectUnauthenticated, (req, res) => {
           id: newInviteID,
           sender_user_id: sender_user_id,
           recipient_user_id: recipient_user_id,
-          story_title: story_title,
           speed_type: speed_type,
           text_type: text_type,
         };

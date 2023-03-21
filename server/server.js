@@ -199,8 +199,17 @@ io.on("connection", (socket) => {
 
   // on submit story, tell the partner user and refresh the page
   // refresh is necessary to avoid current bugs
-  socket.on("make story public", (storyID, senderUserID) => {
-    io.to(`room-story-id-${storyID}`).emit("make story public", senderUserID);
+  socket.on("make story public", (storyID, senderUserID, newTitle) => {
+    io.to(`room-story-id-${storyID}`).emit(
+      "make story public",
+      senderUserID,
+      newTitle
+    );
+  });
+
+  // on delete story, tell the partner that it was deleted
+  socket.on("deleted story", (storyID, senderUserID) => {
+    io.to(`room-story-id-${storyID}`).emit("deleted story", senderUserID);
   });
 });
 

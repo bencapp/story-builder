@@ -58,6 +58,7 @@ function WriteStory() {
       // when a player runs out of time, set local state variable
       if (userMilliseconds === 0) {
         setOutOfTime(true);
+
         if (userID == currentUser.id) {
           setOutOfTimeUserID(userID);
         } else {

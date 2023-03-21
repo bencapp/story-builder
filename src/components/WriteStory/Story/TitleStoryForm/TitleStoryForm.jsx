@@ -1,10 +1,16 @@
 import { InputLabel, TextField, Box, Button } from "@mui/material";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+
+import { socket } from "../../../../socket";
 
 function TitleStoryForm() {
   const [newTitle, setNewTitle] = useState("");
   const [showActionCompleted, setShowActionCompleted] = useState(false);
+
+  // local state for whether partner has made the story public
+  const [displayStoryPublicized, setDisplayStoryPublicized] = useState(false);
+  const [displaySelfPublicized, setDisplaySelfPublicized] = useState(false);
   const dispatch = useDispatch();
 
   const currentStoryID = useSelector((store) => store.currentStoryID);
@@ -19,6 +25,9 @@ function TitleStoryForm() {
     });
 
     // make story public
+    socket.emit("make story public", currentStoryID, currentUser.id, newTitle);
+
+    dispatch({ type: "MAKE_STORY_PUBLIC", payload: currentStoryID });
   };
 
   const handleCancel = () => {
@@ -26,6 +35,8 @@ function TitleStoryForm() {
       type: "DELETE_STORY",
       payload: { storyID: currentStoryID, userID: currentUser.id },
     });
+
+    socket.emit("deleted story", currentStoryID, currentUser.id);
   };
 
   return (

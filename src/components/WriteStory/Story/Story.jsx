@@ -20,7 +20,6 @@ function Story({ outOfTime, outOfTimeUserID }) {
   const partnerUser = useSelector((store) => store.partnerUser);
   const currentStoryID = useSelector((store) => store.currentStoryID);
   const firstPlayerID = useSelector((store) => store.firstPlayerID);
-  const myTurn = useSelector((store) => store.myTurn);
 
   const [storyPublished, setStoryPublished] = useState([false, ""]);
   const [storyDeleted, setStoryDeleted] = useState([false, ""]);
@@ -69,7 +68,14 @@ function Story({ outOfTime, outOfTimeUserID }) {
   };
 
   return (
-    <Box>
+    <Box
+      sx={{
+        border: "1px solid black",
+        padding: "15px",
+        borderRadius: "5px",
+        height: "94%",
+      }}
+    >
       <Box
         sx={{ fontSize: "25px", display: "flex", flexWrap: "wrap", gap: "5px" }}
       >
@@ -86,7 +92,7 @@ function Story({ outOfTime, outOfTimeUserID }) {
       {/* // if the story is too short, display that it is too short to post and reroute */}
       {outOfTime && story.length < 2 ? (
         <>
-          <Box sx={{ fontsize: "15px" }}>
+          <Box sx={{ fontsize: "15px", marginBottom: "15px" }}>
             This story is too short to post! Both players need to write at least
             one word. Invite your partner to a new game!
           </Box>

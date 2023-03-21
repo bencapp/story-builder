@@ -15,7 +15,7 @@ const theme = createTheme({
       main: "#E9E2D8", // light tan, more yellow
     },
     warning: {
-      main: "#ff2525",
+      main: "#ff7f7f",
     },
     success: {
       main: "#48f477",

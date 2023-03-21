@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import TimerContainer from "./TimerContainer/TimerContainer";
 import Story from "./Story/Story";
 import StartBox from "./StartBox/StartBox";
+import StoryTypeTag from "../StoryTypeTag/StoryTypeTag";
 
 import theme from "../Theme/Theme";
 
@@ -19,7 +20,6 @@ function WriteStory() {
   // partner user
   // format is {id, username}
   const partnerUser = useSelector((store) => store.partnerUser);
-  const firstPlayerID = useSelector((store) => store.firstPlayerID);
   const currentStoryID = useSelector((store) => store.currentStoryID);
 
   // time remaining for each player, in milliseconds
@@ -38,6 +38,9 @@ function WriteStory() {
   // local state variable for whose turn it is to write
   const myTurn = useSelector((store) => store.myTurn);
 
+  // story types
+  const currentStoryTypes = useSelector((store) => store.currentStoryTypes);
+
   useEffect(() => {
     dispatch({
       type: "FETCH_TURN",
@@ -46,6 +49,9 @@ function WriteStory() {
         currentUserID: currentUser.id,
       },
     });
+
+    // on load, get the story types with the current story ID
+    dispatch({ type: "FETCH_STORY_TYPES", payload: currentStoryID });
 
     // on time change, update the corresponding clock
     // if current user is not the user to update, userID will be null
@@ -77,7 +83,6 @@ function WriteStory() {
       <Box sx={{ marginLeft: "20px" }}>
         <h3>Create a New Story</h3>
       </Box>
-
       {!partnerUser ? (
         <p>
           There's no story being written! Invite someone to start one with you.
@@ -106,21 +111,25 @@ function WriteStory() {
             padding: "20px",
             width: "95%",
             height: "85%",
+            borderRadius: "5px",
           }}
           container
         >
           {/* This grid component displays the story */}
 
-          <Grid item xs={10}>
-            <Box sx={{ marginBottom: "10px" }}>
+          <Grid item xs={9}>
+            {/* <Box sx={{ marginBottom: "10px" }}>
               Starting new story with <b>{partnerUser.username}</b>
-            </Box>
+            </Box> */}
             <Story
               myTurn={myTurn}
               outOfTime={outOfTime}
               outOfTimeUserID={outOfTimeUserID}
             />
+
+            {/* box for displaying the story tags */}
           </Grid>
+          <Grid item xs={1}></Grid>
 
           {/* This grid component displays the timers*/}
           <Grid
@@ -135,6 +144,19 @@ function WriteStory() {
             item
             xs={2}
           >
+            <Box
+              sx={{
+                position: "absolute",
+                marginTop: "-83px",
+                display: "flex",
+                flexDirection: "column",
+                gap: "5px",
+                alignSelf: "end",
+              }}
+            >
+              <StoryTypeTag type={currentStoryTypes.speed_type} />
+              <StoryTypeTag type={currentStoryTypes.length_type} />
+            </Box>
             <TimerContainer time={partnerTime} />
             <TimerContainer myTimer={true} time={myTime} />
           </Grid>

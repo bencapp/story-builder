@@ -5,7 +5,7 @@ import { useState } from "react";
 import {
   Button,
   Paper,
-  TextField,
+  FormControl,
   Select,
   MenuItem,
   Box,
@@ -22,7 +22,6 @@ function NewInvitation() {
   const initialInvitedUser = useSelector((store) => store.invitedUser);
   const currentUser = useSelector((store) => store.user);
   const allUsers = useSelector((store) => store.allUsers);
-
 
   // local state for user being invited
   const [invitedUser, setInvitedUser] = useState(initialInvitedUser);
@@ -77,29 +76,39 @@ function NewInvitation() {
         width: "350px",
         margin: "auto",
         marginTop: "100px",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        paddingBottom: "20px",
+        padding: "20px",
       }}
     >
-      <form onSubmit={handleSubmit}>
-        <Box>
-          Invite
-          <Select
-            value={invitedUser}
-            onChange={(e) => setInvitedUser(e.target.value)}
-          >
-            {allUsers.map((user) => (
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "5px",
+          width: "70%",
+          margin: "auto",
+        }}
+      >
+        <Box
+          sx={{ textAlign: "center", fontWeight: "bold", marginBottom: "10px" }}
+        >
+          Invite a user to a new story
+        </Box>
+        <Box>User</Box>
+        <Select
+          value={invitedUser}
+          onChange={(e) => setInvitedUser(e.target.value)}
+          displayEmpty
+        >
+          {allUsers
+            .filter((user) => user.id != currentUser.id)
+            .map((user) => (
               <MenuItem value={user} key={user.id}>
                 {user.username}
               </MenuItem>
             ))}
-          </Select>
-          to a new story
-        </Box>
+        </Select>
 
-        <InputLabel>Story Type</InputLabel>
+        <Box>Story Type</Box>
         <Select
           value={storyTextType}
           onChange={(e) => setStoryTextType(e.target.value)}
@@ -110,7 +119,7 @@ function NewInvitation() {
           </MenuItem>
         </Select>
 
-        <InputLabel>Story Speed</InputLabel>
+        <Box>Story Speed</Box>
         <Select
           value={storySpeedType}
           onChange={(e) => setStorySpeedType(e.target.value)}
@@ -135,9 +144,22 @@ function NewInvitation() {
           </MenuItem>
         </Select>
 
-        <Button type="submit">CREATE INVITE</Button>
-        <Button onClick={handleCancel}>CANCEL</Button>
-      </form>
+        <Box
+          sx={{
+            alignSelf: "center",
+            display: "flex",
+            gap: "5px",
+            marginTop: "15px",
+          }}
+        >
+          <Button color="warning" onClick={handleCancel}>
+            CANCEL
+          </Button>
+          <Button color="success" onClick={handleSubmit}>
+            CREATE INVITE
+          </Button>
+        </Box>
+      </Box>
     </Paper>
   );
 }

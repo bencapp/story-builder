@@ -54,7 +54,7 @@ function SentInviteElement({ invite }) {
       <Box
         sx={{
           backgroundColor: theme.palette.secondary.main,
-          fontSize: "1.5vw",
+          fontSize: "15px",
           padding: "4px 8px",
           borderRadius: "2px",
           textAlign: "center",
@@ -64,7 +64,7 @@ function SentInviteElement({ invite }) {
           height: "auto",
         }}
       >
-        <Box sx={{ fontWeight: "bold" }}>{invite.sender_user_username}</Box>
+        <Box sx={{ fontWeight: "bold" }}>{invite.recipient_user_username}</Box>
       </Box>
     </Tooltip>
   );

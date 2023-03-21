@@ -18,7 +18,7 @@ function StartBox({ startStory }) {
   const [bothPlayersReady, setBothPlayersReady] = useState(false);
 
   // local state for countdown
-  const [countdown, setCountdown] = useState(3);
+  const [countdown, setCountdown] = useState(5);
 
   // local state for interval
   const [myInterval, setMyInterval] = useState();
@@ -54,15 +54,24 @@ function StartBox({ startStory }) {
     <Box
       sx={{
         width: "300px",
-        height: "200px",
-        backgroundColor: theme.palette.secondary.main,
+        height: "auto",
+        backgroundColor: bothPlayersReady
+          ? theme.palette.success.main
+          : theme.palette.secondary.main,
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        justifyContent: "space-evenly",
+        justifyContent: "center",
+        fontSize: "1.3em",
+        borderRadius: "10px",
+        padding: "10px",
+        gap: "10px",
+        border: "1px solid black",
       }}
     >
-      <Box>Starting story with {partnerUser.username}</Box>
+      <Box>
+        Starting story with <b>{partnerUser.username}</b>
+      </Box>
 
       {/* If waiting */}
       {!bothPlayersReady ? (
@@ -73,7 +82,7 @@ function StartBox({ startStory }) {
         <>
           <Box>Partner ready!</Box>
           <Box>
-            You go {myTurn ? "first" : "second"}! Starting in {countdown}
+            You go <b>{myTurn ? "first" : "second"}!</b> Starting in {countdown}
           </Box>
         </>
       )}

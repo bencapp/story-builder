@@ -9,31 +9,30 @@ const router = express.Router();
 // POST STORY ENDPOINT
 // req.body is
 // {
-//   story: {
-//     title: invite.title,
-//     speed_type: invite.speed_type,
-//     text_type: invite.text_type,
-//   },
-//   invite: {
 //     id,
 //     sender_user_id,
 //     recipient_user_id,
 //     title
 //     sender_user_username
 //   }
-// },
+
 router.post("/", rejectUnauthenticated, async (req, res) => {
+  console.log("in story post, req.body is", req.body);
   // choose a random player to go first
-  const user1ID = req.body.invite.sender_user_id;
-  const user2ID = req.body.invite.recipient_user_id;
+  const user1ID = req.body.sender_user_id;
+  const user2ID = req.body.recipient_user_id;
 
   const firstPlayerInt = Math.round(Math.random());
   const firstPlayerID = firstPlayerInt === 0 ? user1ID : user2ID;
 
   // first, insert into the story table
   const storyQueryText = `INSERT INTO "story" ("title", "speed_type", "length_type", "current_user_turn_id")
-    VALUES ($1, 'default', 'default', $2)`;
-  const storyQueryParams = [req.body.story.title, firstPlayerID];
+    VALUES ('default', $1, $2, $3)`;
+  const storyQueryParams = [
+    req.body.speed_type,
+    req.body.text_type,
+    firstPlayerID,
+  ];
 
   console.log("Posting story");
 
@@ -221,6 +220,20 @@ router.put("/title/:storyID", rejectUnauthenticated, (req, res) => {
     .query(queryText, queryParams)
     .then(() => {
       res.sendStatus(204);
+    })
+    .catch((error) => {
+      console.log("Failed to execute SQL query:", queryText, " : ", error);
+      res.sendStatus(500);
+    });
+});
+
+router.get("/types/:storyID", (req, res) => {
+  const queryText = `SELECT speed_type, length_type FROM story WHERE id = $1`;
+  const queryParams = [req.params.storyID];
+  pool
+    .query(queryText, queryParams)
+    .then((result) => {
+      res.send(result.rows);
     })
     .catch((error) => {
       console.log("Failed to execute SQL query:", queryText, " : ", error);

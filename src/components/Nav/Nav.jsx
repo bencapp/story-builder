@@ -14,9 +14,23 @@ function Nav() {
   const theme = useTheme();
   return (
     <Box sx={{ backgroundColor: theme.palette.primary.main }} className="nav">
-      <div className="nav-contents">
-        <h2>StoryBuilder</h2>
-        {user && <h3>{user.username}</h3>}
+      <Box
+        className="nav-contents"
+        sx={{
+          height: "50%",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "space-evenly",
+          padding: "10px",
+        }}
+      >
+        <Box sx={{ fontSize: "2.5vw" }}>StoryBuilder</Box>
+        {user && (
+          <Box sx={{ alignSelf: "center" }}>
+            Welcome, <b>{user.username}</b>
+          </Box>
+        )}
 
         <>
           {/* If no user is logged in, show these links */}
@@ -76,7 +90,7 @@ function Nav() {
             ABOUT
           </Button>
         </>
-      </div>
+      </Box>
     </Box>
   );
 }

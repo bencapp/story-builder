@@ -3,7 +3,7 @@ import { useTheme } from "@emotion/react";
 import { Button } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { socket } from "../../../socket";
+import { socket } from "../../socket";
 
 function InviteAcceptedPopup() {
   const theme = useTheme();
@@ -50,12 +50,33 @@ function InviteAcceptedPopup() {
     <Box
       sx={{
         backgroundColor: theme.palette.secondary.main,
-        width: "100px",
-        height: "100px",
+        width: "auto",
+        height: "30px",
+        borderRadius: "5px",
+        marginLeft: "55%",
+        marginTop: "15px",
+        fontSize: "15px",
+        position: "absolute",
+        zIndex: "15",
+        border: "1px solid black",
+        padding: "5px",
       }}
     >
-      {inviteAccepted.invite.recipient_user_username} accepted your invite!
-      <Button onClick={handleGoToStory}>GO TO STORY</Button>
+      <b>{inviteAccepted.invite.recipient_user_username}</b> just accepted your
+      invite!
+      <Button
+        color="success"
+        sx={{
+          fontSize: "10px",
+          fontWeight: "bold",
+          border: "1px solid black",
+          color: "black",
+          marginLeft: "5px",
+        }}
+        onClick={handleGoToStory}
+      >
+        GO TO STORY
+      </Button>
     </Box>
   );
 }

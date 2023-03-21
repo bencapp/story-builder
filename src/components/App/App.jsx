@@ -25,6 +25,7 @@ import RegisterPage from "../RegisterPage/RegisterPage";
 import EndNav from "../EndNav/EndNav";
 import NewInvitation from "../NewInvitation/NewInvitation";
 import MyStoriesFeed from "../MyStoriesFeed/MyStoriesFeed";
+import InviteAcceptedPopup from "../InviteAcceptedPopup/InviteAcceptedPopup";
 
 import "./App.css";
 
@@ -32,6 +33,8 @@ function App() {
   const dispatch = useDispatch();
 
   const user = useSelector((store) => store.user);
+  const inviteAccepted = useSelector((store) => store.inviteAccepted);
+
   const theme = useTheme();
 
   useEffect(() => {
@@ -45,6 +48,8 @@ function App() {
           <Nav />
         </Grid>
         <Grid item xs={8} sx={{ backgroundColor: theme.palette.tertiary.main }}>
+          {/* If the invite accepted reducer has a value, render the invite accepted popup */}
+          {Object.keys(inviteAccepted).length > 0 && <InviteAcceptedPopup />}
           <Switch>
             {/* Visiting localhost:3000 will redirect to localhost:3000/home */}
             <Redirect exact from="/" to="/home" />

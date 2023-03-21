@@ -21,7 +21,7 @@ function* postStory(action) {
     // send both the invite and the current story ID so that
     // other user can join the same room
     // socket rooms are defined by the ID of the story being written
-    yield socket.emit("accept invite", action.payload.invite, storyID);
+    yield socket.emit("accept invite", action.payload, storyID);
   } catch (error) {
     console.log("Story POST request failed", error);
   }
@@ -91,6 +91,16 @@ function* setStoryTitle(action) {
   }
 }
 
+function* fetchStoryTypes(action) {
+  try {
+    console.log("in fetch story types, action.payload is", action.payload);
+    const response = yield axios.get(`/api/story/types/${action.payload}`);
+    yield put({ type: "SET_CURRENT_STORY_TYPES", payload: response.data[0] });
+  } catch (error) {
+    console.log("Story GET request failed", error);
+  }
+}
+
 function* storySaga() {
   yield takeEvery("POST_STORY", postStory);
   yield takeEvery("MAKE_STORY_PUBLIC", makeStoryPublic);
@@ -100,6 +110,7 @@ function* storySaga() {
   yield takeEvery("SET_STORY_START_TIME", setStoryStartTime);
   yield takeEvery("DELETE_STORY", deleteStory);
   yield takeEvery("SET_STORY_TITLE", setStoryTitle);
+  yield takeEvery("FETCH_STORY_TYPES", fetchStoryTypes);
 }
 
 export default storySaga;

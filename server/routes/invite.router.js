@@ -18,6 +18,10 @@ router.get("/", rejectUnauthenticated, (req, res) => {
   pool
     .query(queryText, queryParams)
     .then((response) => {
+      console.log(
+        "sending all invites to a user, response.rows is",
+        response.rows
+      );
       res.send(response.rows);
     })
     .catch((error) => {
@@ -28,7 +32,7 @@ router.get("/", rejectUnauthenticated, (req, res) => {
 
 // GET endpoint for all invitations sent by a specific user
 router.get("/pending", rejectUnauthenticated, (req, res) => {
-  const queryText = `SELECT invite.id, invite.sender_user_id, invite.recipient_user_id, invite.title, 
+  const queryText = `SELECT invite.id, invite.sender_user_id, invite.recipient_user_id, invite.title, invite.speed_type, invite.text_type,
                       "u".username AS sender_user_username , "u2".username AS recipient_user_username FROM invite 
                       JOIN "user" AS "u" ON "u".id = invite.sender_user_id
                       JOIN "user" AS "u2" ON "u2".id = invite.recipient_user_id
@@ -111,11 +115,16 @@ router.delete("/:id", rejectUnauthenticated, (req, res) => {
     "req.user.id is",
     req.user.id
   );
-  const queryText = `DELETE FROM invite WHERE id = $1 AND sender_user_id = $2`;
+  const queryText = `DELETE FROM invite 
+                      WHERE id = $1 AND sender_user_id = $2 
+                      OR recipient_user_id = $2`;
   const queryParams = [req.params.id, req.user.id];
   pool
     .query(queryText, queryParams)
-    .then(() => res.sendStatus(204))
+    .then(() => {
+      req.io.emit("delete invite");
+      res.sendStatus(204);
+    })
     .catch((error) => {
       console.log("Failed to execute SQL query:", queryText, " : ", error);
       res.sendStatus(500);

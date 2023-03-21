@@ -20,14 +20,6 @@ function TextToDisplay({ text, previousText }) {
     setSecondsToWrite((time.getTime() - lastTime.getTime()) / 1000);
   }, []);
 
-  const handleMouseEnter = () => {
-    setHovering(true);
-  };
-
-  const handleMouseLeave = () => {
-    setHovering(false);
-  };
-
   return (
     <Tooltip
       title={
@@ -49,8 +41,7 @@ function TextToDisplay({ text, previousText }) {
           border: hovering ? `1px solid red` : "none",
           height: "1em",
         }}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
+        å
       >
         {text.text}
         {/* This is the dialog box that will display on hover */}

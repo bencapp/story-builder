@@ -4,6 +4,8 @@ import { Box } from "@mui/system";
 
 import { socket } from "../../../socket";
 
+import SentInviteElement from "../SentInviteElement/SentInviteElement";
+
 function SentInvites() {
   const pendingInvites = useSelector((store) => store.pendingInvites);
   const currentUser = useSelector((store) => store.user);
@@ -28,9 +30,7 @@ function SentInvites() {
       <h3>Pending Invites</h3>
       {pendingInvites &&
         pendingInvites.map((invite) => (
-          <div key={invite.id}>
-            <p>{invite.recipient_user_username}</p>
-          </div>
+          <SentInviteElement key={invite.id} invite={invite} />
         ))}
     </Box>
   );

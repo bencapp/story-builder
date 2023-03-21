@@ -12,7 +12,6 @@ function ReceivedInvitesList() {
   const dispatch = useDispatch();
   const history = useHistory();
   const currentUser = useSelector((store) => store.user);
-  const currentStoryID = useSelector((store) => store.currentStoryID);
 
   useEffect(() => {
     dispatch({ type: "FETCH_ALL_USERS" });
@@ -58,18 +57,21 @@ function ReceivedInvitesList() {
         });
       }
     });
+
+    // when someone deletes an invite, fetch invites
+    socket.on("delete invite", () => {
+      dispatch({ type: "FETCH_INVITES" });
+    });
   }, [currentUser]);
 
   return (
     <div>
       <div id="invites-list">
         <h3>Invitations</h3>
-        <section>
-          {invites &&
-            invites.map((invite) => (
-              <ReceivedInviteElement key={invite.id} invite={invite} />
-            ))}
-        </section>
+        {invites &&
+          invites.map((invite) => (
+            <ReceivedInviteElement key={invite.id} invite={invite} />
+          ))}
       </div>
     </div>
   );

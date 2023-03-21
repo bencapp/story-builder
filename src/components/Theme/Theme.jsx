@@ -14,6 +14,15 @@ const theme = createTheme({
     tertiary: {
       main: "#E9E2D8", // light tan, more yellow
     },
+    warning: {
+      main: "#ff2525",
+    },
+    success: {
+      main: "#48f477",
+    },
+    invite: {
+      main: "#fe8e6d",
+    },
     typeBackground: {
       hypertype: "#6feb45",
       writersRoom: "#8cf0f0",

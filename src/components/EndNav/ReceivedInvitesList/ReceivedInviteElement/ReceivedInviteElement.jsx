@@ -1,9 +1,9 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { useTheme } from "@emotion/react";
 import { socket } from "../../../../socket";
 import { Box } from "@mui/system";
-import { Button } from "@mui/material";
+import { Button, Tooltip } from "@mui/material";
 
 import StoryTypeTag from "../../../StoryTypeTag/StoryTypeTag";
 
@@ -11,6 +11,9 @@ function ReceivedInviteElement({ invite }) {
   const dispatch = useDispatch();
   const history = useHistory();
   const theme = useTheme();
+
+  const currentStoryID = useSelector((store) => store.currentStoryID);
+
   // when the current user accepts an invite
   const handleAccept = (invite) => {
     // send socket message saying invite accepted
@@ -49,24 +52,76 @@ function ReceivedInviteElement({ invite }) {
 
     history.push("/new-story");
   };
+
+  const handleDecline = (invite) => {
+    console.log("deleting invite,", invite);
+
+    dispatch({ type: "DELETE_INVITE", payload: invite.id });
+  };
+
   return (
-    <Box
-      sx={{
-        backgroundColor: theme.palette.secondary.dark,
-        zIndex: "10",
-        width: "100px",
-        height: "100px",
-      }}
+    <Tooltip
+      title={
+        <Box
+          sx={{
+            fontSize: "medium",
+            color: "black",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: "3px",
+          }}
+        >
+          <StoryTypeTag type={invite.text_type} />
+          <StoryTypeTag type={invite.speed_type} />
+          <Box sx={{ display: "flex" }}>
+            <Button
+              sx={{
+                width: "10px",
+                fontSize: "10px",
+                fontWeight: "bold",
+                border: "1px solid black",
+                color: "black",
+              }}
+              color="warning"
+              onClick={() => handleDecline(invite)}
+            >
+              Decline
+            </Button>
+            <Button
+              sx={{
+                width: "10px",
+                fontSize: "10px",
+                fontWeight: "bold",
+                border: "1px solid black",
+              }}
+              color="success"
+              onClick={() => handleAccept(invite)}
+            >
+              Accept
+            </Button>
+          </Box>
+        </Box>
+      }
+      placement="right"
+      arrow
     >
-      <Box>{invite.sender_user_username}</Box>
-
-      <StoryTypeTag type={invite.text_type} />
-      <StoryTypeTag type={invite.speed_type} />
-
-      <Button color="tertiary" onClick={() => handleAccept(invite)}>
-        Accept
-      </Button>
-    </Box>
+      <Box
+        sx={{
+          backgroundColor: theme.palette.secondary.main,
+          fontSize: "1.5vw",
+          padding: "4px 8px",
+          borderRadius: "2px",
+          textAlign: "center",
+          display: "inline-block",
+          border: "1px solid black",
+          width: "70%",
+          height: "auto",
+        }}
+      >
+        <Box sx={{ fontWeight: "bold" }}>{invite.sender_user_username}</Box>
+      </Box>
+    </Tooltip>
   );
 }
 

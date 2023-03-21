@@ -36,6 +36,7 @@ function* deleteInvite(action) {
     console.log("in delete saga, action is", action);
     yield axios.delete(`/api/invite/${action.payload}`);
     yield put({ type: "FETCH_PENDING_INVITES" });
+    yield put({ type: "FETCH_INVITES" });
   } catch (error) {
     console.log("Invite DELETE request failed", error);
   }

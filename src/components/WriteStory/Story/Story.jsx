@@ -6,8 +6,9 @@ import { socket } from "../../../socket";
 
 import TextElement from "../TextElement/TextElement";
 import TextForm from "../TextForm/TextForm";
+import TitleStoryForm from "./TitleStoryForm/TitleStoryForm";
 
-function Story({ outOfTime }) {
+function Story({ outOfTime, outOfTimeUserID }) {
   // full story, store as an array
   const [story, setStory] = useState([]);
 
@@ -94,11 +95,11 @@ function Story({ outOfTime }) {
         <Box>Your collaborator has made the story public. Rerouting...</Box>
       ) : displaySelfPublicized ? (
         <Box>You made the story public! Rerouting...</Box>
+      ) : // if we are out of time
+      outOfTimeUserID == currentUser.id ? (
+        <Box>You ran out of time! Your partner is titling the story...</Box>
       ) : (
-        <Box>
-          Out of time! Click submit to make the story public.
-          <Button onClick={handleSetPublic}>SUBMIT</Button>
-        </Box>
+        <TitleStoryForm />
       )}
     </Box>
   );

@@ -41,7 +41,6 @@ function TextToDisplay({ text, previousText }) {
           border: hovering ? `1px solid red` : "none",
           height: "1em",
         }}
-        å
       >
         {text.text}
         {/* This is the dialog box that will display on hover */}

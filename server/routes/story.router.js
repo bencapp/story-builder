@@ -180,4 +180,52 @@ router.put("/start-time/:storyID", rejectUnauthenticated, (req, res) => {
     });
 });
 
+// DELETE endpoint for removing a story that was just written
+router.delete("/:storyID", rejectUnauthenticated, (req, res) => {
+  console.log(
+    "in story delete, req.params.storyID is",
+    req.params.storyID,
+    "req.user.id is",
+    req.user.id
+  );
+  // only the user whose turn it is should be able to delete the story
+  const queryText = `DELETE FROM story 
+                      USING user_story WHERE story.id = user_story.story_id AND
+                      story.id = $1 AND user_story.user_id = $2;`;
+  const queryParams = [req.params.storyID, req.user.id];
+  pool
+    .query(queryText, queryParams)
+    .then(() => {
+      res.sendStatus(204);
+    })
+    .catch((error) => {
+      console.log("Failed to execute SQL query:", queryText, " : ", error);
+      res.sendStatus(500);
+    });
+});
+
+// PUT endpoint for setting the title of a story
+router.put("/title/:storyID", rejectUnauthenticated, (req, res) => {
+  console.log(
+    "in story put, req.params.storyID is",
+    req.params.storyID,
+    "req.body is",
+    req.body
+  );
+  const queryText = `UPDATE story SET title = $1 
+                      FROM user_story WHERE story.id = user_story.story_id 
+                      AND story.id = $2
+                      AND user_story.user_id = $3`;
+  const queryParams = [req.body.title, req.params.storyID, req.user.id];
+  pool
+    .query(queryText, queryParams)
+    .then(() => {
+      res.sendStatus(204);
+    })
+    .catch((error) => {
+      console.log("Failed to execute SQL query:", queryText, " : ", error);
+      res.sendStatus(500);
+    });
+});
+
 module.exports = router;

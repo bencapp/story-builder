@@ -71,6 +71,26 @@ function* setStoryStartTime(action) {
   }
 }
 
+function* deleteStory(action) {
+  try {
+    console.log("in delete story, action.payload is", action.payload);
+    yield axios.delete(`/api/story/${action.payload.storyID}`);
+  } catch (error) {
+    console.log("Story DELETE request failed", error);
+  }
+}
+
+function* setStoryTitle(action) {
+  try {
+    console.log("in set story title, action.payload is", action.payload);
+    yield axios.put(`/api/story/title/${action.payload.storyID}`, {
+      title: action.payload.title,
+    });
+  } catch (error) {
+    console.log("Story PUT request failed", error);
+  }
+}
+
 function* storySaga() {
   yield takeEvery("POST_STORY", postStory);
   yield takeEvery("MAKE_STORY_PUBLIC", makeStoryPublic);
@@ -78,6 +98,8 @@ function* storySaga() {
   yield takeEvery("FETCH_STORY_BY_ID", fetchStoryByID);
   yield takeEvery("FETCH_STORIES_BY_USER", fetchStoriesByUser);
   yield takeEvery("SET_STORY_START_TIME", setStoryStartTime);
+  yield takeEvery("DELETE_STORY", deleteStory);
+  yield takeEvery("SET_STORY_TITLE", setStoryTitle);
 }
 
 export default storySaga;

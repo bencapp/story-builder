@@ -29,13 +29,14 @@ function WriteStory() {
   // local state for whether anyone's time is out
   const [outOfTime, setOutOfTime] = useState(false);
 
+  // local state for who ran out of time
+  const [outOfTimeUserID, setOutOfTimeUserID] = useState();
+
   // local state for whether story has begun
   const [storyStarted, setStoryStarted] = useState(false);
 
   // local state variable for whose turn it is to write
   const myTurn = useSelector((store) => store.myTurn);
-  // socket room string
-  //   const [room, setRoom] = useState();
 
   useEffect(() => {
     dispatch({
@@ -57,6 +58,11 @@ function WriteStory() {
       // when a player runs out of time, set local state variable
       if (userMilliseconds === 0) {
         setOutOfTime(true);
+        if (userID == currentUser.id) {
+          setOutOfTimeUserID(userID);
+        } else {
+          setOutOfTimeUserID(partnerUser.id);
+        }
       }
     });
   }, [currentStoryID]);
@@ -103,12 +109,18 @@ function WriteStory() {
           container
         >
           {/* This grid component displays the story */}
+
           <Grid item xs={10}>
             <Box sx={{ marginBottom: "10px" }}>
-              Starting new story with {partnerUser.username}
+              Starting new story with <b>{partnerUser.username}</b>
             </Box>
-            <Story myTurn={myTurn} outOfTime={outOfTime} />
+            <Story
+              myTurn={myTurn}
+              outOfTime={outOfTime}
+              outOfTimeUserID={outOfTimeUserID}
+            />
           </Grid>
+
           {/* This grid component displays the timers*/}
           <Grid
             sx={{

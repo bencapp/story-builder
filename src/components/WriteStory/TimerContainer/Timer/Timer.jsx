@@ -1,6 +1,14 @@
 import { Box } from "@mui/system";
 
 function Timer({ myTimer, time }) {
+  // time prop is delivered in milliseconds
+
+  // function millisToMinutesAndSeconds(millis) {
+  //   var minutes = Math.floor(millis / 60000);
+  //   var seconds = ((millis % 60000) / 1000).toFixed(0);
+  //   return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
+  // }
+
   return (
     <Box
       sx={{
@@ -14,12 +22,12 @@ function Timer({ myTimer, time }) {
         fontSize: "35px",
       }}
     >
-      0:
-      {time !== undefined
-        ? time >= 10000
-          ? Math.floor(time / 1000)
-          : "0" + Math.floor(time / 1000)
-        : 30}
+      {time !== undefined ? Math.floor(time / 60000) : 0}:
+      {time !== undefined && Math.floor((time % 60000) / 1000) >= 10
+        ? Math.floor((time % 60000) / 1000)
+        : time !== undefined
+        ? "0" + Math.floor((time % 60000) / 1000)
+        : "00"}
     </Box>
   );
 }

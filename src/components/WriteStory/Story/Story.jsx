@@ -26,6 +26,8 @@ function Story({ outOfTime, outOfTimeUserID }) {
 
   const [title, setTitle] = useState("");
 
+  const currentStoryTypes = useSelector((store) => store.currentStoryTypes);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -33,12 +35,13 @@ function Story({ outOfTime, outOfTimeUserID }) {
     // only emit a start clock for the first player so that
     // only one clock is running for the room
     console.log("starting story, firstPlayerID is", firstPlayerID);
+    console.log("starting story, currentStoryTypes is", currentStoryTypes);
     socket.emit(
       "start clock",
       currentUser.id,
       partnerUser.id,
       currentStoryID,
-      firstPlayerID
+      currentStoryTypes
     );
 
     // update story when text is added

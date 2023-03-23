@@ -14,7 +14,7 @@ const router = express.Router();
 //     recipient_user_id,
 //     title
 //     sender_user_username
-//   }
+// }
 
 router.post("/", rejectUnauthenticated, async (req, res) => {
   console.log("in story post, req.body is", req.body);

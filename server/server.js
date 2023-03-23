@@ -100,9 +100,48 @@ io.on("connection", (socket) => {
   });
 
   // when a story instance is created
-  socket.on("start clock", (user1ID, user2ID, storyID) => {
+  socket.on("start clock", (user1ID, user2ID, storyID, storyTypes) => {
     const room = `room-story-id-${storyID}`;
     console.log("starting clock in room", room);
+    console.log("storyTypes is", storyTypes);
+
+    // set starting seconds
+    let startingMilliseconds;
+    if (storyTypes.length_type == "Word by Word") {
+      switch (storyTypes.speed_type) {
+        case "Hypertype":
+          startingMilliseconds = 15000;
+          break;
+        case "Writer's Room":
+          startingMilliseconds = 30000;
+          break;
+        // if "Quill and Parchment"
+        default:
+          startingMilliseconds = 90000;
+          break;
+      }
+    }
+    // otherwise, type will be "Sentence by Sentence"
+    else {
+      switch (storyTypes.speed_type) {
+        case "Hypertype":
+          startingMilliseconds = 90000;
+          break;
+        case "Writer's Room":
+          startingMilliseconds = 150000;
+          break;
+        // if "Quill and Parchment"
+        default:
+          startingMilliseconds = 300000;
+          break;
+      }
+    }
+
+    // emit starting milliseconds for both players
+    io.to(`room-story-id-${storyID}`).emit(
+      "starting milliseconds",
+      startingMilliseconds
+    );
 
     // create socket listener for both players
     socket.on("add text", (text, currentUser, partnerUser, room) => {
@@ -150,8 +189,8 @@ io.on("connection", (socket) => {
           // declare starting time for each user. TODO: modulate
           // based on story parameters
           // 30,000 milliseconds = 30 seconds
-          let user1Milliseconds = 30000;
-          let user2Milliseconds = 30000;
+          let user1Milliseconds = startingMilliseconds;
+          let user2Milliseconds = startingMilliseconds;
 
           let myInterval = setInterval(() => {
             let userTurnID;

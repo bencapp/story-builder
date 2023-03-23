@@ -53,6 +53,12 @@ function WriteStory() {
     // on load, get the story types with the current story ID
     dispatch({ type: "FETCH_STORY_TYPES", payload: currentStoryID });
 
+    // on load, server should send starting time in milliseconds based on current story types
+    socket.on("starting milliseconds", (startingMilliseconds) => {
+      setMyTime(startingMilliseconds);
+      setPartnerTime(startingMilliseconds);
+    });
+
     // on time change, update the corresponding clock
     // if current user is not the user to update, userID will be null
     socket.on("update time", (userID, userMilliseconds) => {

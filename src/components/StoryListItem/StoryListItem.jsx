@@ -7,9 +7,10 @@ import UpvoteDownvote from "./UpvoteDownvote/UpvoteDownvote";
 import StoryText from "./StoryText/StoryText";
 import StoryTypeList from "./StoryTypeList/StoryTypeList";
 
-function StoryListItem({ story }) {
+function StoryListItem({ story, userVote }) {
   const theme = useTheme();
   const history = useHistory();
+
   return (
     <Box
       sx={{
@@ -42,7 +43,7 @@ function StoryListItem({ story }) {
         direction="row"
       >
         <Grid item xs={1}>
-          <UpvoteDownvote story={story} />
+          <UpvoteDownvote story={story} userVote={userVote} />
         </Grid>
         <Grid sx={{ padding: "7px" }} item xs={7}>
           <StoryText text={story.texts} />

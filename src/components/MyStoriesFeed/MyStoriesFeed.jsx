@@ -10,6 +10,7 @@ function MyStoriesFeed() {
 
   const user = useSelector((store) => store.user);
   const allStories = useSelector((store) => store.allStories);
+  const userVotes = useSelector((store) => store.userVotes);
 
   useEffect(() => {
     // on load, get all stories from the database.
@@ -31,7 +32,15 @@ function MyStoriesFeed() {
       </p>
       <Box sx={{ display: "flex", flexDirection: "column", gap: "5px" }}>
         {allStories.map((story) => (
-          <StoryListItem key={story.id} story={story} />
+          <StoryListItem
+            key={story.id}
+            story={story}
+            userVote={
+              userVotes?.length > 0 &&
+              userVotes.filter((userVote) => userVote.story_id == story.id)[0]
+                ?.vote
+            }
+          />
         ))}
       </Box>
     </Box>

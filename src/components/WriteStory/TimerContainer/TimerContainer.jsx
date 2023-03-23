@@ -1,5 +1,6 @@
 import { Box } from "@mui/system";
 import { useSelector } from "react-redux";
+import { useTheme } from "@emotion/react";
 
 import Timer from "./Timer/Timer";
 
@@ -7,6 +8,8 @@ function TimerContainer({ myTimer, time }) {
   const currentUser = useSelector((store) => store.user);
   const partnerUser = useSelector((store) => store.partnerUser);
   const myTurn = useSelector((store) => store.myTurn);
+
+  const theme = useTheme();
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", alignItems: "start" }}>
@@ -26,7 +29,7 @@ function TimerContainer({ myTimer, time }) {
                   width: "15px",
                   height: "15px",
                   borderRadius: "100%",
-                  backgroundColor: "rgb(44, 232, 44)",
+                  backgroundColor: theme.palette.success.main,
                 }
               : {
                   width: "15px",
@@ -38,7 +41,7 @@ function TimerContainer({ myTimer, time }) {
         ></Box>
         {myTimer ? currentUser.username : partnerUser.username}
       </Box>
-      <Timer myTimer={myTimer} time={time}/>
+      <Timer myTimer={myTimer} time={time} />
     </Box>
   );
 }

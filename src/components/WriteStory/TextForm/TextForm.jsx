@@ -18,6 +18,10 @@ function TextForm() {
   const [notYourTurnDisplay, setNotYourTurnDisplay] = useState(false);
   const [invalidDisplay, setInvalidDisplay] = useState(false);
 
+  const currentStoryLengthType = useSelector(
+    (store) => store.currentStoryTypes.length_type
+  );
+
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -31,7 +35,20 @@ function TextForm() {
 
     console.log("in handleSubmit, newText is", newText);
     // check if text is a valid entry. for base mode, only single words are valid
-    const regex = new RegExp("^[A-Za-z'\".!?;:]+$");
+    let regex = "";
+
+    if (currentStoryLengthType == "Word by Word") {
+      console.log("checking: type is word by word");
+      // regex for single words being valid
+      regex = new RegExp("^[A-Za-z'\".!?;:]+$");
+    } else {
+      console.log("checking: type is sentence by sentence");
+      // regex for full sentences being valid. sentences must end with a period, and
+      // can't be longer than 25 words
+      regex = new RegExp(`^(([a-zA-Z'\".;:\\s]+)[.?!])$`);
+    }
+
+    console.log("regex is", regex);
     if (regex.test(newText)) {
       console.log("sending new text:", newText);
       // add text to specified room

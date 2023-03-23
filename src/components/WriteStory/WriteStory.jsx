@@ -144,20 +144,17 @@ function WriteStory() {
             item
             xs={2}
           >
+            <TimerContainer time={partnerTime} />
             <Box
               sx={{
-                position: "absolute",
-                marginTop: "-83px",
                 display: "flex",
                 flexDirection: "column",
                 gap: "5px",
-                alignSelf: "end",
               }}
             >
               <StoryTypeTag type={currentStoryTypes.speed_type} />
               <StoryTypeTag type={currentStoryTypes.length_type} />
             </Box>
-            <TimerContainer time={partnerTime} />
             <TimerContainer myTimer={true} time={myTime} />
           </Grid>
         </Grid>

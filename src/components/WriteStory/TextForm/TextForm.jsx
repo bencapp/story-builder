@@ -33,16 +33,13 @@ function TextForm() {
       return;
     }
 
-    console.log("in handleSubmit, newText is", newText);
     // check if text is a valid entry. for base mode, only single words are valid
     let regex = "";
 
     if (currentStoryLengthType == "Word by Word") {
-      console.log("checking: type is word by word");
       // regex for single words being valid
       regex = new RegExp("^[A-Za-z'\".!?;:]+$");
     } else {
-      console.log("checking: type is sentence by sentence");
       // regex for full sentences being valid. sentences must end with a period, and
       // can't be longer than 25 words
       regex = new RegExp(`^(([a-zA-Z'\".;:\\s]+)[.?!])$`);

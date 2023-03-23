@@ -6,6 +6,7 @@ import inviteSaga from "./invite.saga";
 import storySaga from "./story.saga";
 import textSaga from "./text.saga";
 import turnSaga from "./turn.saga";
+import voteSaga from "./vote.saga";
 
 // rootSaga is the primary saga.
 // It bundles up all of the other sagas so our project can use them.
@@ -23,5 +24,6 @@ export default function* rootSaga() {
     storySaga(),
     textSaga(),
     turnSaga(),
+    voteSaga(),
   ]);
 }

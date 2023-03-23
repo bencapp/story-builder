@@ -13,6 +13,7 @@ import allStories from "./allStories.reducer";
 import storyToView from "./storyToView.reducer";
 import inviteAccepted from "./inviteAccepted.reducer";
 import currentStoryTypes from "./currentStoryTypes.reducer";
+import userVotes from "./userVotes.reducer";
 
 // rootReducer is the primary reducer for our entire project
 // It bundles up all of the other reducers so our project can use them.
@@ -35,6 +36,7 @@ const rootReducer = combineReducers({
   storyToView,
   inviteAccepted,
   currentStoryTypes,
+  userVotes,
 });
 
 export default rootReducer;

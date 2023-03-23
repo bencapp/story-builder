@@ -99,7 +99,7 @@ router.put("/public/:storyID", rejectUnauthenticated, (req, res) => {
 // GET endpoint for ALL STORIES
 // anyone can access this endpoint without needing to log in
 router.get("/", (req, res) => {
-  const queryText = `SELECT story.id, story.title, story.speed_type, story.length_type, 
+  const queryText = `SELECT story.id, story.title, story.speed_type, story.length_type, story.votes, 
                       JSON_AGG(json_build_object('text', "text".text, 'timestamp', "text".timestamp, 'user_id', "text".user_id, 'username', "user".username)) AS texts FROM story
                       JOIN "text" ON story.id = "text".story_id
                       JOIN "user" ON "text".user_id = "user".id
@@ -107,7 +107,9 @@ router.get("/", (req, res) => {
                       GROUP BY story.id;`;
   pool
     .query(queryText)
-    .then((result) => res.send(result.rows))
+    .then((result) => {
+      res.send(result.rows);
+    })
     .catch((error) => {
       console.log("Failed to execute SQL query:", queryText, " : ", error);
       res.sendStatus(500);
@@ -117,7 +119,7 @@ router.get("/", (req, res) => {
 // GET endpoint for accessing a single story by its id
 // anyone can access this endpoint without needing to log in
 router.get("/story/:id", (req, res) => {
-  const queryText = `SELECT story.id, story.title, story.speed_type, story.length_type, story.start_time,
+  const queryText = `SELECT story.id, story.title, story.speed_type, story.length_type, story.start_time, story.votes,
                       JSON_AGG(json_build_object('text', "text".text, 'timestamp', "text".timestamp, 'user_id', "text".user_id, 'username', "user".username)) 
                       AS texts FROM story
                       JOIN "text" ON story.id = "text".story_id
@@ -138,7 +140,7 @@ router.get("/story/:id", (req, res) => {
 // does not need to reject unauthenticated – ideally other users should be able to see stories that
 // specific users contributed to
 router.get("/user-story/:userID", (req, res) => {
-  const queryText = `SELECT story.id, story.title, story.speed_type, story.length_type, 
+  const queryText = `SELECT story.id, story.title, story.speed_type, story.length_type, story.votes,
                       JSON_AGG(json_build_object('text', "text".text, 'timestamp', "text".timestamp, 'user_id', "text".user_id, 'username', "user".username)) AS texts FROM story
                       JOIN "text" ON story.id = "text".story_id
                       JOIN "user" ON "text".user_id = "user".id

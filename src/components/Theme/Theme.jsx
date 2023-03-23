@@ -23,6 +23,9 @@ const theme = createTheme({
     invite: {
       main: "#fe8e6d",
     },
+    voted: {
+      main: "#009cff",
+    },
     typeBackground: {
       hypertype: "#6feb45",
       writersRoom: "#8cf0f0",

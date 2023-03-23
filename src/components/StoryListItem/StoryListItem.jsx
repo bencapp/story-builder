@@ -42,7 +42,7 @@ function StoryListItem({ story }) {
         direction="row"
       >
         <Grid item xs={1}>
-          <UpvoteDownvote />
+          <UpvoteDownvote story={story} />
         </Grid>
         <Grid sx={{ padding: "7px" }} item xs={7}>
           <StoryText text={story.texts} />

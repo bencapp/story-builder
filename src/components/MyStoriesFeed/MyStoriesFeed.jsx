@@ -15,6 +15,11 @@ function MyStoriesFeed() {
     // on load, get all stories from the database.
     // all stories is an array stored in the allStories reducer
     dispatch({ type: "FETCH_STORIES_BY_USER", payload: user.id });
+
+    // also get whether the current user has voted on the stories
+    dispatch({
+      type: "FETCH_USER_VOTES",
+    });
   }, []);
 
   return (

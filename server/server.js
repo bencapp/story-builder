@@ -12,6 +12,7 @@ const userRouter = require("./routes/user.router");
 const inviteRouter = require("./routes/invite.router");
 const storyRouter = require("./routes/story.router");
 const textRouter = require("./routes/text.router");
+const voteRouter = require("./routes/vote.router");
 
 // SOCKET.IO INSTALLATION
 const http = require("http");
@@ -54,6 +55,7 @@ app.use("/api/user", userRouter);
 app.use("/api/invite", inviteRouter);
 app.use("/api/story", storyRouter);
 app.use("/api/text", textRouter);
+app.use("/api/vote", voteRouter);
 
 // SOCKET.IO SETUP
 io.on("connection", (socket) => {

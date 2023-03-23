@@ -16,38 +16,50 @@ function UpvoteDownvote({ story, userVote }) {
   const handleUpvote = () => {
     // update story votes based on vote
     // if user has already upvoted, do nothing
-
+    console.log("about to upvote, current userVote is", userVote);
     // if there is no vote yet for the current user, add a vote row to the user_story_votes table
-    if (userVote) {
-      dispatch({ type: "ADD_USER_VOTE", payload: 1 });
+    if (!userVote) {
+      dispatch({
+        type: "ADD_USER_VOTE",
+        payload: { storyID: story.id, vote: 1 },
+      });
     } else {
       // if there is a vote and it is not already 1, change the vote to 1
       if (userVote != 1) {
-        dispatch({ type: "SET_USER_VOTE", payload: 1 });
+        dispatch({
+          type: "SET_USER_VOTE",
+          payload: { storyID: story.id, vote: 1 },
+        });
       } else {
         // if there is a vote and it is already 1, remove the vote row from the user_story_votes table
-        dispatch({ type: "REMOVE_USER_VOTE" });
+        dispatch({ type: "DELETE_USER_VOTE", payload: story.id });
       }
     }
-
-    // if user has already voted the story, remove vote instead of adding it
-    // if user switches from upvote to downvote, change story votes by -2
-    // if user switches from downvote to upvote, change story votes by +2
   };
 
   const handleDownvote = () => {
+    console.log("about to downvote, current userVote is", userVote);
+
     // if there is no vote yet for the current user, add a vote row to the user_story_votes table
-    if (userVote) {
-      dispatch({ type: "ADD_USER_VOTE", payload: -1 });
+    if (!userVote) {
+      dispatch({
+        type: "ADD_USER_VOTE",
+        payload: { storyID: story.id, vote: -1 },
+      });
     } else {
       // if there is a vote and it is not already -1, change the vote to -1
-      if (userVote != 1) {
-        dispatch({ type: "SET_USER_VOTE", payload: -1 });
+      if (userVote != -1) {
+        dispatch({
+          type: "SET_USER_VOTE",
+          payload: { storyID: story.id, vote: -1 },
+        });
       } else {
-        // if there is a vote and it is already -1, remove the vote row from the user_story_votes table
-        dispatch({ type: "REMOVE_USER_VOTE" });
+        // if there is a vote and it is already -1, DELETE the vote row from the user_story_votes table
+        dispatch({ type: "DELETE_USER_VOTE", payload: story.id });
       }
     }
+    // then retrieve the stories again
+    dispatch({ type: "FETCH_ALL_STORIES" });
   };
 
   return (
@@ -66,7 +78,7 @@ function UpvoteDownvote({ story, userVote }) {
         color={userVote == 1 ? "voted" : "black"}
         onClick={handleUpvote}
       />
-      <Box>{story.vote_count}</Box>
+      <Box>{story.vote_count ? story.vote_count : "0"}</Box>
       <ArrowDownwardIcon
         color={userVote == -1 ? "voted" : "black"}
         onClick={handleDownvote}

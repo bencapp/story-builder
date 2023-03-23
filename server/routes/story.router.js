@@ -116,7 +116,7 @@ router.get("/", (req, res) => {
         const finalResult = result.rows.map((story) => {
           storyVoteCount = voteCountResult.rows.filter(
             (voteRow) => voteRow.id == story.id
-          )[0].vote_count;
+          )[0]?.vote_count;
           console.log("story vote count is", storyVoteCount);
           return { ...story, vote_count: storyVoteCount };
         });
@@ -154,11 +154,10 @@ router.get("/user-story/:userID", (req, res) => {
         const resultWithVotes = result.rows.map((story) => {
           storyVoteCount = voteCountResult.rows.filter(
             (voteRow) => voteRow.id == story.id
-          )[0].vote_count;
+          )[0]?.vote_count;
           console.log("story vote count is", storyVoteCount);
           return { ...story, vote_count: storyVoteCount };
         });
-        // now filter stories by user
 
         // filter stories by userID
         const userID = req.params.userID;

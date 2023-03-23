@@ -26,7 +26,6 @@ function MainFeed() {
 
   return (
     <Box sx={{ margin: "15px" }}>
-      {JSON.stringify(userVotes)}
       {user.username ? <h2>Welcome, {user.username}!</h2> : <h2>Welcome!</h2>}
       <p>
         This is the home page. Here you can view all the new stories on the app.{" "}

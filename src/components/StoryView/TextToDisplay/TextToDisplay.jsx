@@ -34,6 +34,8 @@ function TextToDisplay({ text, previousText }) {
       }
       placement="bottom"
       arrow
+      onClose={() => setHovering(false)}
+      onOpen={() => setHovering(true)}
     >
       <Box
         sx={{
@@ -43,11 +45,7 @@ function TextToDisplay({ text, previousText }) {
         }}
       >
         {text.text}
-        {/* This is the dialog box that will display on hover */}
-        {/* It shows the text information: time taken to write it */}
-        {/* and the user who wrote it */}
       </Box>
-      {/* {hovering && <DetailsBox text={text} />} */}
     </Tooltip>
   );
 }

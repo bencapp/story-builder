@@ -41,6 +41,7 @@ function StoryListItem({ story, userVote }) {
         sx={{ position: "relative", zIndex: 10, height: "100px" }}
         container
         direction="row"
+        overflow="true"
       >
         <Grid item xs={1}>
           <UpvoteDownvote story={story} userVote={userVote} />

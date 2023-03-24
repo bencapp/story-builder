@@ -7,8 +7,9 @@ function TextElement({ text, myText }) {
   return (
     <Box
       sx={{
-        border: `2px ${myText ? "solid blue" : "dotted red"}`,
-        padding: "2px",
+        border: `1.5px ${myText ? "solid blue" : "dotted red"}`,
+        padding: "4px",
+        borderRadius: "2px",
       }}
     >
       {text}

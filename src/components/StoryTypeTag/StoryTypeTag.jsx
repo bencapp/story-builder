@@ -23,6 +23,7 @@ function StoryTypeTag({ type, size }) {
         borderRadius: "2px",
         textAlign: "center",
         display: "inline-block",
+        border: ".5px solid grey",
       }}
     >
       {type}

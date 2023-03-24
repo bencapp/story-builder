@@ -25,7 +25,7 @@ function Nav() {
           padding: "10px",
         }}
       >
-        <Box sx={{ fontSize: "2.5vw" }}>StoryBuilder</Box>
+        <Box sx={{ fontSize: "2.5vw", fontWeight: "bold" }}>StoryBuilder</Box>
         {user && (
           <Box sx={{ alignSelf: "center" }}>
             Welcome, <b>{user.username}</b>

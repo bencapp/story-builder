@@ -89,7 +89,12 @@ function NewInvitation() {
         }}
       >
         <Box
-          sx={{ textAlign: "center", fontWeight: "bold", marginBottom: "10px" }}
+          sx={{
+            textAlign: "center",
+            fontWeight: "bold",
+            marginBottom: "10px",
+            fontSize: "1.3em",
+          }}
         >
           Invite a user to a new story
         </Box>

@@ -32,11 +32,21 @@ function MainFeed({ myStories }) {
   return (
     <Box sx={{ margin: "15px" }}>
       {user.username ? <h2>Welcome, {user.username}!</h2> : <h2>Welcome!</h2>}
+      {myStories ? (
+        <p>
+          This is the user stories page. Here you can view all the stories that
+          you contributed to.
+        </p>
+      ) : (
+        <p>
+          This is the home page. Here you can view all the new stories on the
+          app.
+        </p>
+      )}
       <p>
-        This is the home page. Here you can view all the new stories on the app.{" "}
         {!user.username && <span>To start writing, login or register.</span>}
       </p>
-      <Box sx={{ display: "flex", flexDirection: "column", gap: "5px" }}>
+      <Box sx={{ display: "flex", flexDirection: "column", gap: "10px" }}>
         {allStories
           .sort((a, b) => Number(b.vote_count) - Number(a.vote_count))
           .map((story) => (

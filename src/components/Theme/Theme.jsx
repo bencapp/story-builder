@@ -1,8 +1,9 @@
 import { createTheme } from "@mui/material/styles";
 
-import PlayfairDisplay from "../fonts/PlayfairDisplay-Italic-VariableFont_wght.ttf";
-
 const theme = createTheme({
+  typography: {
+    fontFamily: "Crimson Text, serif",
+  },
   palette: {
     primary: {
       main: "#CCAA8B", // dark tan
@@ -64,10 +65,17 @@ const theme = createTheme({
         },
       },
     },
-  },
-
-  typography: {
-    fontFamily: "Playfair Display, serif",
+    MuiTooltip: {
+      styleOverrides: {
+        tooltip: {
+          color: "#D1D1D1",
+          backgroundColor: "#3f3f3f",
+          "& .MuiTooltip-arrow": {
+            color: "#3f3f3f",
+          },
+        },
+      },
+    },
   },
 });
 

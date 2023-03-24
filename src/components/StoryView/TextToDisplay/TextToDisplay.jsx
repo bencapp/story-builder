@@ -2,12 +2,14 @@ import { Box } from "@mui/system";
 import { Tooltip } from "@mui/material";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import { useTheme } from "@mui/material";
 
 function TextToDisplay({ text, previousText }) {
   const [hovering, setHovering] = useState(false);
   const [secondsToWrite, setSecondsToWrite] = useState(0);
 
   const story = useSelector((store) => store.storyToView);
+  const theme = useTheme();
 
   useEffect(() => {
     // the timestamp of the last text added. If this is the first text, make lastTime the time that the story started
@@ -25,10 +27,29 @@ function TextToDisplay({ text, previousText }) {
       title={
         <Box sx={{ fontSize: "medium" }}>
           <Box>
-            Written by: <b>{text.username}</b>
+            Written by:{" "}
+            <Box
+              sx={{
+                display: "inline",
+                fontWeight: "bold",
+                color: "white",
+              }}
+            >
+              {text.username}
+            </Box>
           </Box>
           <Box>
-            Time to write: <b>{secondsToWrite}</b> seconds
+            Time to write:{" "}
+            <Box
+              sx={{
+                display: "inline",
+                fontWeight: "bold",
+                color: "white",
+              }}
+            >
+              {secondsToWrite}
+            </Box>{" "}
+            seconds
           </Box>
         </Box>
       }
@@ -41,6 +62,7 @@ function TextToDisplay({ text, previousText }) {
         sx={{
           padding: hovering ? "2px" : "3px",
           border: hovering ? `1px solid red` : "none",
+          borderRadius: "2px",
         }}
       >
         {text.text}

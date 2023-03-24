@@ -29,7 +29,7 @@ function StoryListItem({ story, userVote }) {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          padding: "0px 5px",
+          padding: "1px 6px",
         }}
       >
         <Box>{story.title}</Box>

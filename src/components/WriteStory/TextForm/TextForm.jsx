@@ -42,7 +42,7 @@ function TextForm() {
     } else {
       // regex for full sentences being valid. sentences must end with a period, and
       // can't be longer than 25 words
-      regex = new RegExp(`^(([a-zA-Z'\".;:\\s]+)[.?!])$`);
+      regex = new RegExp(`^(([a-zA-Z'\",;:\\s]+)[.?!])$`);
     }
 
     console.log("regex is", regex);

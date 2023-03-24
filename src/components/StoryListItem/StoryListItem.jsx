@@ -38,23 +38,38 @@ function StoryListItem({ story, userVote }) {
         </Box>
       </Box>
       <Grid
-        sx={{ position: "relative", zIndex: 10, height: "100px" }}
+        sx={{
+          position: "relative",
+          zIndex: 10,
+          height: "100px",
+          paddingRight: "10px",
+        }}
+        columns={30}
         container
         direction="row"
-        overflow="true"
       >
-        <Grid item xs={1}>
+        <Grid item xs={2}>
           <UpvoteDownvote story={story} userVote={userVote} />
         </Grid>
-        <Grid sx={{ padding: "7px" }} item xs={7}>
+        <Grid
+          sx={{ padding: "7px", overflow: "hidden", height: "100px" }}
+          item
+          xs={20}
+        >
           <StoryText text={story.texts} />
         </Grid>
-        <Grid item xs={2}>
-          <StoryTypeList />
+        <Grid item xs={5}>
+          <StoryTypeList
+            length_type={story.length_type}
+            speed_type={story.speed_type}
+          />
         </Grid>
-        <Grid sx={{ display: "flex", alignItems: "center" }} item xs={2}>
-          <Button onClick={() => history.push(`/story/${story.id}`)}>
-            VIEW FULL STORY
+        <Grid sx={{ display: "flex", alignItems: "center" }} item xs={3}>
+          <Button
+            color="button"
+            onClick={() => history.push(`/story/${story.id}`)}
+          >
+            FULL STORY
           </Button>
         </Grid>
       </Grid>

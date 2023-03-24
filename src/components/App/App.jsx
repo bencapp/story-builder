@@ -24,7 +24,6 @@ import WriteStory from "../WriteStory/WriteStory";
 import RegisterPage from "../RegisterPage/RegisterPage";
 import EndNav from "../EndNav/EndNav";
 import NewInvitation from "../NewInvitation/NewInvitation";
-import MyStoriesFeed from "../MyStoriesFeed/MyStoriesFeed";
 import InviteAcceptedPopup from "../InviteAcceptedPopup/InviteAcceptedPopup";
 
 import "./App.css";
@@ -47,7 +46,7 @@ function App() {
         <Grid item xs={2} sx={{ display: "flex" }}>
           <Nav />
         </Grid>
-        <Grid item xs={8} sx={{ backgroundColor: theme.palette.tertiary.main }}>
+        <Grid item xs={8}>
           {/* If the invite accepted reducer has a value, render the invite accepted popup */}
           {Object.keys(inviteAccepted).length > 0 && <InviteAcceptedPopup />}
           <Switch>
@@ -68,7 +67,7 @@ function App() {
               exact
               path="/home"
             >
-              <MainFeed />
+              <MainFeed myStories={false} />
             </Route>
 
             <Route exact path="/story/:id">
@@ -100,7 +99,7 @@ function App() {
               exact
               path="/user-stories"
             >
-              <MyStoriesFeed />
+              <MainFeed myStories={true} />
             </ProtectedRoute>
 
             <Route exact path="/login">

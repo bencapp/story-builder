@@ -41,7 +41,6 @@ function TextToDisplay({ text, previousText }) {
         sx={{
           padding: hovering ? "2px" : "3px",
           border: hovering ? `1px solid red` : "none",
-          height: "1em",
         }}
       >
         {text.text}

@@ -1,7 +1,7 @@
 import { Box } from "@mui/system";
 import { useTheme } from "@emotion/react";
 
-function StoryTypeTag({ type }) {
+function StoryTypeTag({ type, size }) {
   const theme = useTheme();
 
   return (
@@ -18,7 +18,7 @@ function StoryTypeTag({ type }) {
             ? theme.palette.typeBackground.writersRoom
             : theme.palette.typeBackground.quillAndParchment,
 
-        fontSize: "14px",
+        fontSize: size == "small" ? "12px" : "14px",
         padding: "4px 8px",
         borderRadius: "2px",
         textAlign: "center",

@@ -26,6 +26,9 @@ const theme = createTheme({
     voted: {
       main: "#009cff",
     },
+    button: {
+      main: "#f6f6f6", // lighter
+    },
     typeBackground: {
       hypertype: "#6feb45",
       writersRoom: "#8cf0f0",

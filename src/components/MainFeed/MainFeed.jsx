@@ -5,18 +5,23 @@ import { Box } from "@mui/system";
 
 import StoryListItem from "../StoryListItem/StoryListItem";
 
-function MainFeed() {
+// myStories is a boolean: if true, we should fetch stories by user
+
+function MainFeed({ myStories }) {
   const dispatch = useDispatch();
 
   const user = useSelector((store) => store.user);
   const allStories = useSelector((store) => store.allStories);
-
   const userVotes = useSelector((store) => store.userVotes);
 
   useEffect(() => {
     // on load, get all stories from the database.
     // all stories is an array stored in the allStories reducer
-    dispatch({ type: "FETCH_ALL_STORIES" });
+    if (myStories) {
+      dispatch({ type: "FETCH_STORIES_BY_USER", payload: user.id });
+    } else {
+      dispatch({ type: "FETCH_ALL_STORIES" });
+    }
 
     // also get whether the current user has voted on the stories
     dispatch({

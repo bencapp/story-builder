@@ -1,19 +1,28 @@
 import React from "react";
 
-// This is one of our simplest components
-// It doesn't have local state,
-// It doesn't dispatch any redux actions or display any part of redux state
-// or even care what the redux state is'
+import { Box } from "@mui/system";
 
 function AboutPage() {
   return (
     <div className="container">
-      <div>
+      <Box sx={{ padding: "20px 30px", fontSize: "1.3em" }}>
         <p>
-          StoryBuilder is a great app. Soon there will be more information here
-          about how it works and how it was created.
+          <b>StoryBuilder</b> was created by <b>Ben Capp.</b> This was a two
+          week solo development project.
         </p>
-      </div>
+        <p>
+          Thanks to all the instructors at Prime Digital Academy: Dane, Key,
+          Edan, and Kris, as well as my Amethyst cohort for their support
+          throughout this process!
+        </p>
+        <p>
+          For more information, and to check out the code, you can visit the
+          project's{" "}
+          <a target="_blank" href="https://github.com/bencapp/story-builder">
+            GitHub Repository.
+          </a>
+        </p>
+      </Box>
     </div>
   );
 }

@@ -2,7 +2,7 @@ import { createTheme } from "@mui/material/styles";
 
 const theme = createTheme({
   typography: {
-    fontFamily: "Crimson Text, serif",
+    fontFamily: "Courier Prime, monospace",
   },
   palette: {
     primary: {
@@ -50,6 +50,7 @@ const theme = createTheme({
         sx: {
           border: "1px solid black",
           color: "black",
+          fontWeight: "bold",
         },
       },
     },

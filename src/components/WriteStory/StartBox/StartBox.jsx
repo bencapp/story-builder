@@ -53,7 +53,7 @@ function StartBox({ startStory }) {
   return (
     <Box
       sx={{
-        width: "300px",
+        width: "500px",
         height: "auto",
         backgroundColor: bothPlayersReady
           ? theme.palette.success.main

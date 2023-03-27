@@ -38,6 +38,7 @@ function Nav() {
             <>
               {/* If there's no user, show login/registration links */}
               <Button
+                size="large"
                 color="tertiary"
                 onClick={() => {
                   history.push("/login");
@@ -47,6 +48,7 @@ function Nav() {
               </Button>
               {/* also show a nav button to the main feed page */}
               <Button
+                size="large"
                 color="tertiary"
                 onClick={() => {
                   history.push("/home");
@@ -61,6 +63,7 @@ function Nav() {
           {user.id && (
             <>
               <Button
+                size="large"
                 color="tertiary"
                 onClick={() => {
                   history.push("/home");
@@ -69,6 +72,7 @@ function Nav() {
                 My Feed
               </Button>
               <Button
+                size="large"
                 color="tertiary"
                 onClick={() => {
                   history.push("/user-stories");
@@ -82,6 +86,7 @@ function Nav() {
           )}
 
           <Button
+            size="large"
             color="tertiary"
             onClick={() => {
               history.push("/about");

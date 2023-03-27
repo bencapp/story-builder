@@ -31,10 +31,11 @@ function UsersList() {
             .filter((invitedUser) => invitedUser.id != currentUser.id)
             .map((invitedUser) => (
               <div key={invitedUser.id}>
-                <p>{invitedUser.username}</p>
+                <Box sx={{ marginBottom: "5px" }}>{invitedUser.username}</Box>
                 <Button
                   color="tertiary"
                   onClick={() => handleInvite(invitedUser)}
+                  sx={{ marginBottom: "15px", border: "1px solid black" }}
                 >
                   Invite to Game
                 </Button>
